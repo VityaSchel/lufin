@@ -1,0 +1,21 @@
+.copyButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  & > span {
+    transition: opacity 0.1s ease-in-out;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  & > span:first-child {
+    position: absolute;
+  }
+  
+  > span > svg {
+    flex-shrink: 0;
+  }
+}

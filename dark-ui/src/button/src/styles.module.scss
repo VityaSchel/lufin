@@ -1,0 +1,156 @@
+.button {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+
+  &.contained {
+    padding: 18px 64px;
+    background-color: var(--contained-button-bg, #248bda);
+    color: var(--contained-button-text, #fff);
+    border-radius: 7px;
+    border: 0;
+
+    transition: background-color 120ms ease-in-out, color 120ms ease-in-out;
+
+    &:hover {
+      background-color: var(--contained-button-bg-hover, #4fa2e2);
+    }
+
+    &:active:hover {
+      background-color: var(--contained-button-bg-active, #1d6fae);
+    }
+
+    &[disabled] {
+      background-color: var(--contained-button-bg-disabled, #2D3845);
+      cursor: auto;
+      pointer-events: none;
+    }
+
+    @media screen and (max-width: 768px) {
+      padding: 14px 38px;
+      transition-duration: 100ms;
+      font-size: 14px;
+
+      &:hover {
+        background-color: var(--contained-button-bg, #248bda);
+      }
+
+      &:active:hover {
+        background-color: var(--contained-button-bg-active, #1d6fae);
+      }
+
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
+    }
+  }
+
+  &.dimmed {
+    padding: 18px 64px;
+    background-color: var(--dimmed-button-bg, #21364A);
+    color: var(--dimmed-button-text, #248bda);
+    border-radius: 7px;
+    border: 0;
+
+    transition: background-color 120ms ease-in-out, color 120ms ease-in-out;
+
+    &:hover {
+      background-color: var(--dimmed-button-bg-hover, #406991);
+    }
+
+    &:active:hover {
+      background-color: var(--dimmed-button-bg-active, #111c27);
+    }
+
+    &[disabled] {
+      background-color: var(--dimmed-button-bg-disabled, #98A3B0);
+      cursor: auto;
+      pointer-events: none;
+      color: #fff;
+    }
+
+    @media screen and (max-width: 768px) {
+      padding: 14px 38px;
+      transition-duration: 100ms;
+
+      &:hover {
+        background-color: var(--dimmed-button-bg-hover, #406991);
+      }
+
+      &:active:hover {
+        background-color: var(--dimmed-button-bg-active, #111c27);
+      }
+
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
+    }
+  }
+
+  &.dimmed.blueAccent {
+    &[disabled] {
+      background-color: var(--dimmed-button-bg-disabled, #2D3845);
+      color: rgba(114, 131, 151, 1);
+    }
+  }
+
+  &.dimmed.greenAccent {
+    background-color: var(--dimmed-button-bg-green, #28443d);
+    color: var(--dimmed-button-text-green, #41E77A);
+
+    &:hover {
+      background-color: var(--dimmed-button-bg-hover-green, #4e8477);
+    }
+
+    &:active:hover:not([disabled]) {
+      background-color: var(--dimmed-button-bg-active-green, #152420);
+    }
+
+    &[disabled] {
+      background-color: var(--dimmed-button-bg-disabled-green, #2D3845);
+      color: var(--dimmer-button-text-disabled-green, #728397);
+    }
+  }
+
+  &.dimmed.redAccent {
+    background-color: var(--dimmed-button-bg-red, #4a3131);
+    color: var(--dimmed-button-text-red, #eb5757);
+
+    &:hover {
+      background-color: var(--dimmed-button-bg-hover-red, #875a5a);
+    }
+
+    &:active:hover {
+      background-color: var(--dimmed-button-bg-active-red, #2b1d1d);
+    }
+
+    &[disabled] {
+      background-color: var(--dimmed-button-bg-disabled-red, #2D3845);
+      color: var(--dimmed-button-text-disabled-red, #728397);
+    }
+  }
+
+  &.badge {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 13.5px 30px;
+    border-radius: 7px;
+    font-size: 14px;
+    background: var(--button-badge-bg, rgba(33, 54, 74, 1));
+    color: var(--button-badge-color, #248bda);
+    border: 0;
+    font-weight: 400;
+  }
+
+  &.iconButton {
+    padding: 8px;
+  }
+}

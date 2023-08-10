@@ -1,0 +1,48 @@
+{
+  "name": "@lufen/dark-ui",
+  "version": "1.1.8",
+  "scripts": {
+    "build": "tsc && node build.mjs && cp README.md .npmignore .npmrc ./dist/",
+    "globalbuild": "tsc && rm -rf ./dist && node build.mjs && cp README.md .npmignore .npmrc ./dist/",
+    "prepublishOnly": "[ \"$(basename $PWD)\" = \"dist\" ] || (echo 'You must run `npm run publish` or `npm publish` from the ./dist directory' && exit 1)",
+    "publish": "cd ./dist && npm publish && cd ../"
+  },
+  "keywords": [
+    "react-ui-kit"
+  ],
+  "peerDependencies": {
+    "next": "^13.2.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.17.8",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@types/node": "17.0.23",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "17.0.14",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "@vitejs/plugin-react": "^1.2.0",
+    "eslint": "^8.34.0",
+    "eslint-plugin-react": "^7.32.2",
+    "prompts": "^2.4.2",
+    "rollup-plugin-scss": "^4.0.0",
+    "sass": "^1.69.5",
+    "typescript": "4.6.3",
+    "vite": "2.8.6",
+    "vite-plugin-css-injected-by-js": "^3.0.1",
+    "vite-plugin-dts": "1.0.3",
+    "vite-plugin-svgr": "^2.4.0"
+  },
+  "dependencies": {
+    "@emotion/react": "11.11.0",
+    "@emotion/styled": "11.11.0",
+    "@mui/icons-material": "^5.14.0",
+    "@mui/material": "^5.13.2",
+    "classnames": "^2.3.2",
+    "copy-to-clipboard": "^3.3.3",
+    "fast-glob": "^3.3.2",
+    "react-icons": "^4.12.0"
+  }
+}

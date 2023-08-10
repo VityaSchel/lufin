@@ -1,0 +1,13 @@
+.copyField {
+  display: inline-block;
+  font: inherit;
+  background-color: #434343;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+
+  svg {
+    vertical-align: text-bottom;
+  }
+}

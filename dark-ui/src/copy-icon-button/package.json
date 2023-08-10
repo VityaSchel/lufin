@@ -1,0 +1,7 @@
+{
+  "name": "copy-icon-button",
+  "peerDependencies": {
+    "copy-to-clipboard": "^3.3.3",
+    "react-icons": "^4.12.0"
+  }
+}

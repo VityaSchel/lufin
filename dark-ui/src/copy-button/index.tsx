@@ -1,0 +1,1 @@
+export { CopyButton } from './src/index'
