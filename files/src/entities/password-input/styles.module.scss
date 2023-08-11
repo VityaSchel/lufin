@@ -1,0 +1,12 @@
+.passwordField {
+  border-radius: 10px !important;
+
+  & > span:first-child {
+    width: 24px;
+    height: 100%;
+
+    button {
+      position: absolute;
+    }
+  }
+}

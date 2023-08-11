@@ -1,0 +1,50 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.row {
+  .flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.mobileRow {
+  padding: 24px 15px;
+  border-top: 2px solid #1A2026;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .filename {
+    font-size: 18px;
+    word-break: break-word;
+  }
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span {
+      color: variables.$text-gray;
+      font-size: 14px;
+    }
+  }
+}
+
+.row,
+.mobileRow {
+  &.unavailable:not(:first-child) td {
+    background: #1B232C;
+    color: #728397;
+  }
+}
+
+ .aLink {
+  display: flex;
+  width: fit-content;
+
+  &.disabled {
+    pointer-events: none;
+  }
+}

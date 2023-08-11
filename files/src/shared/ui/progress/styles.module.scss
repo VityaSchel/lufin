@@ -1,0 +1,18 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.progress {
+  background-color: variables.$accent;
+  height: 4px;
+  // border-radius: 0 0 99px 99px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease-in-out, width 200ms ease-in-out;
+
+  &.visible {
+    opacity: 1;
+  }
+}

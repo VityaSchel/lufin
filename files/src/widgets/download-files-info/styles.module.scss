@@ -1,0 +1,33 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.fileInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  .size {
+    color: variables.$text-gray;
+  }
+
+  .files {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    width: 100%;
+  }
+  
+  .downloadAllButton {
+    position: relative;
+    
+    .spinner {
+      position: absolute;
+      left: 15px;
+    }
+
+    .offsetLabel {
+      transform: translateX(15px);
+    }
+  }
+}

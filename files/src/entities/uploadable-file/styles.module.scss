@@ -1,0 +1,91 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.outlined {
+  border-radius: 10px;
+  border: 1px solid var(--hr-border-gray);
+  padding: 18px 25px;
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    padding: 15px;
+  }
+}
+
+.file {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+
+  .mobileTop {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .fileTop {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    .buttons {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+
+      .previewSlide {
+        flex-shrink: 0;
+        transition: transform 300ms ease-in-out;
+        transform: rotate(90deg);
+
+        &.open {
+          transform: rotate(-90deg);
+        }
+      }
+
+      .removeButton {
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  .openPreview {
+    text-align: center;
+    font-size: 9px;
+    color: variables.$text-gray;
+  }
+
+  .preview {
+    height: 0px;
+    overflow: hidden;
+    transition: height 300ms ease-in-out;
+    width: 100%;
+    // clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 0%);
+
+    > *:first-child {
+      margin-top: 30px;
+      width: 100%;
+      height: 500px;
+
+      @media screen and (max-width: variables.$breakpoint-tablet) {
+        height: 250px;
+      }
+    }
+
+    &.open {
+      height: 500px + 30px;
+      // clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  
+      &.smallPreview {
+        height: 100px + 30px;
+      }
+
+      @media screen and (max-width: variables.$breakpoint-tablet) {
+        height: 250px + 30px;
+      }
+    }
+
+    &.smallPreview > *:first-child {
+      max-height: 100px;
+    }
+  }
+}

@@ -1,0 +1,91 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.dragNDropZone {
+  display: flex;
+  height: 550px;
+  // padding: 60px 109px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  border: 1px dashed #67798C;
+  background: #212932;
+  flex: 1;
+
+  &.active {
+    border: 1px dashed #248BDA;
+    background: rgba(42, 66, 89, 0.30);
+  }
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    padding: 40px 27.5px;
+    height: auto;
+  }
+
+  .dragNDropIcon {
+    width: 160px;
+    height: 136px;
+    overflow: visible;
+    display: flex;
+    justify-content: center;
+
+    svg {
+      overflow: visible;
+      width: 230px;
+      height: 157px;
+      
+      @media screen and (max-width: variables.$breakpoint-tablet) {
+        width: inherit;
+        height: inherit;
+      }
+    }
+  }
+
+  .dragNDropContent {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 69px;
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      gap: 10px;
+    }
+
+    .dragNDropLabels {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+
+      @media screen and (max-width: variables.$breakpoint-tablet) {
+        gap: 10px;
+      }
+
+      > span {
+        text-align: center;
+        font-size: 18px;
+        font-family: 'Golos Text', sans-serif;
+        font-weight: 500;
+      }
+
+      > button {
+        padding-left: 30px;
+        padding-right: 30px;
+
+        svg {
+          flex-shrink: 0;
+        }
+
+        @media screen and (max-width: variables.$breakpoint-tablet) {
+          padding-left: 24px;
+          padding-right: 24px;
+          gap: 10px;
+        }
+      }
+
+      .or {
+        font-size: 14px;
+      }
+    }
+  }
+}

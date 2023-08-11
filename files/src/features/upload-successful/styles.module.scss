@@ -1,0 +1,31 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.filesUploaded {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .flex {
+    display: flex;
+    gap: 10px;
+    margin-right: 15px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 16px;
+    
+    .copyButton {
+      margin-left: auto;
+    }
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      flex-direction: column;
+    
+      .copyButton {
+        margin-left: unset;
+        order: -1;
+      }
+    }
+  }
+}

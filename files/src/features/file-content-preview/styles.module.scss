@@ -1,0 +1,260 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.preview {
+  max-height: 500px;
+  border: 1px solid var(--hr-border-gray);
+  border-radius: 5px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  // align-items: center;
+  position: relative;
+  overflow: auto;
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    max-height: 250px;
+    padding: 5px;
+  }
+
+  .imagePreviewContainer {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .imagePreview {
+      position: relative;
+      // align-self: center;
+      height: 100%;
+      background: var(--file-sharing-file-preview-bg);
+
+      .imagePreviewButton {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+
+      img {
+        border: 1px solid #fff;
+        max-height: inherit;
+        max-width: 100%;
+        height: 100%;
+        min-width: 50px;
+        object-fit: contain;
+      }
+    }
+
+    .mobileSliderButtons {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+    }
+  }
+
+  video {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .iframe {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      flex: 1;
+    }
+  }
+
+  .previewText {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: variables.$text-gray;
+      font-size: 0.8em;
+
+      @media screen and (max-width: variables.$breakpoint-tablet) {
+        font-size: 11px;
+      }
+
+      .wrapTextButton {
+        // position: absolute;
+        // right: 20px;
+        // top: 20px;
+        margin-left: auto;
+        // border: 4px solid #fff;
+        transition: opacity 120ms ease-in-out;
+      }
+    }
+
+    .textContainer {
+      overflow: auto;
+      background-color: #fff;
+      color: #000;
+      height: 100%;
+
+      .pre {
+        width: max-content;
+        white-space: pre-wrap;
+        word-break: keep-all;
+        font-family: 'Roboto Mono', monospace;
+
+        &.wrap {
+          width: calc(100% - 40px);
+          word-break: break-word;
+        }
+      }
+    }
+  }
+  
+  .error {
+    color: rgb(255, 103, 103);
+    font-weight: 500;
+  }
+}
+
+.previewUnavailable {
+  text-align: center;
+  padding: 20px;
+  color: variables.$text-gray;
+}
+
+
+.contents {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+  height: 100%;
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tree {
+    flex: 1;
+    height: 100%;
+    flex-shrink: 0;
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      height: 0;
+    }
+
+    .hidden {
+      color: #939393;
+    }
+  }
+
+  .previewZipFile {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    overflow: auto;
+
+    .heading {
+      display: flex;
+      overflow: hidden;
+      position: relative;
+      // height: 24px;
+
+      h3 {
+        word-break: break-word;
+        // width: max-content;
+        // position: absolute;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
+    }
+
+    .date {
+      color: variables.$text-gray;
+    }
+
+    &.maximize > *:last-child {
+      height: 100%;
+      flex: 1;
+    }
+
+    [class^=styles_preview] {
+      flex: 1;
+    }
+  }
+}
+
+.spreadsheetContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  gap: 8px;
+  position: relative;
+
+  .sheets {
+    width: calc(100% - 38px);
+  }
+
+  .tableFrame {
+    border: 0;
+    flex: 1;
+  }
+
+  .openInNewTabButton {
+    position: absolute;
+    top: 16px;
+    right: 0px;
+  }
+}
+
+.spreadsheetIsTooBigWarning {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 32px;
+  text-align: center;
+
+  .icon {
+    font-size: 4rem;
+  }
+
+  span {
+    font-size: 1.5rem;
+    max-width: 75%;
+    font-weight: 500;
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      font-size: 1rem;
+    }
+  }
+}
+
+.loadingSpreadsheet {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}

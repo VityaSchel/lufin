@@ -1,0 +1,75 @@
+@use 'sass:color';
+@use '@/shared/styles/variables.scss' as variables;
+
+.actions {
+  display: flex;
+  gap: 30px;
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  > button {
+    flex: 1;
+    text-align: left;
+    padding: 5px 25px !important;
+    min-height: 70px !important;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 120%;
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      padding: 5px 15px !important;
+    }
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+}
+
+.localStorageData {
+  background-color: variables.$bg-main;
+  border: 1px solid variables.$accent;
+  border-radius: 5px;
+  resize: none;
+  color: #fff;
+  padding: 10px;
+  transition: border-color 200ms ease-out;
+  outline: none;
+  width: 100%;
+  font-family: 'Roboto Mono', monospace;
+  max-height: 200px;
+  overflow: auto !important;
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    flex: 1;
+    max-height: unset;
+  }
+
+  &.error {
+    border: 1px solid red;
+  }
+}
+
+.dialogContent {
+  width: 100%;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      padding: 15px;
+    }
+  }
+
+  .success {
+    color: lime;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+}

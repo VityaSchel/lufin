@@ -1,1 +1,0 @@
-export { ResponsiveMUIDialog } from './src/index'

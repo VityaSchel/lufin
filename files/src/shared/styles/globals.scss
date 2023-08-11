@@ -1,0 +1,215 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+:root {
+  --max-width: 1170px;
+  --padding: #{(1200-1170)/2}px;
+
+  --fonts: 'Golos Text', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: var(--fonts);
+  text-rendering: geometricPrecision;
+  color-scheme: dark;
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    --padding: 18px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: variables.$bg-main;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#__next {
+  min-height: 100vh;
+
+  @supports (min-height: 100lvh) {
+    min-height: 100lvh;
+  }
+
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+@media screen and (max-width: variables.$breakpoint-tablet) {
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 18px;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  word-break: break-word;
+}
+
+[class~=MuiImageListItem-root] {
+  position: relative;
+}
+
+html[class*=scroll-lock] {
+  overflow: hidden !important;
+}
+
+.MuiLinearProgress-bar {
+  transition: none;
+}
+
+.MuiTooltip-tooltip {
+  white-space: pre-wrap;
+  text-align: center;
+}
+
+:root {
+  --accent-color: #248BDA;
+
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
+
+  --link: #98a3b0;
+  --link-active: #fff;
+  --link-hover: #b0b9c2;
+
+  --search-input: #2A333D;
+  --search-input-border: transparent;
+
+  --theme-toggler: #4b5d72;
+
+  --green: #41e77a;
+
+  --bg-main: #1A2026;
+  --bg-default: #212A33;
+  --bg-nav: #212932;
+  --bg-darken: #1A2026;
+  --bg-light: #293440;
+  --bg-lighter: #36414D;
+
+  --default-text-color: #fff;
+  --text-gray: #98A3B0;
+  --text-dimmed: #4B5D72;
+  --text-gray-dim: #98A3B0;
+  --comments-label-text: #4B5D72;
+  --comments-label-gray2: #FFFFFF;
+  --comments-input-color: #212932;
+  --reply-card-bg: #212932;
+
+  --tag-bg: #212932;
+  --tag-text: #98A3B0;
+  --button-bg: #21364A;
+  --dimmed-button-bg: #21364A;
+  --dimmed-button-bg-hover: #2c445c;
+  --dimmed-button-bg-active: #1e3f5d;
+  --dimmed-button-bg-disabled: #32383d;
+  --button-badge-bg: rgb(33, 54, 74);
+
+  --share-bg: #212932;
+  --share-bg-dimed: #212932;
+  --share-bg-alt: #2A343F;
+  --link-color: #fff;
+
+  --footer-bg: #111417;
+
+  --card-bg: #212932;
+  --card-bg-alt: #21364A;
+  --card-dimmed-bg: #2A333D;
+  --card-icon-bg: #21364a;
+  --card-subtext: #FFFFFF;
+
+  --hr-border: #1A2026;
+  --hr-border-gray: #3E4A56;
+
+  --icon-dimmed: #fff;
+  --input-border: #4B5D72;
+  --modal-bg: #29333E;
+
+  --share-menu-bg: #212932;
+  --share-menu-border: transparent;
+  --share-menu-gap: 2px;
+
+  --infocard-after-text: #12171d;
+
+  --file-sharing-border: #374351;
+  --horizontal-card-icon-bg: #2A4259;
+  --file-sharing-file-card-bg: #212932;
+  --file-sharing-editable-input-bg: #303235;
+  --file-sharing-editable-input-bg-disabled: #616161;
+  --file-sharing-file-preview-bg: #1f1f1f;
+  --outlined-textfield-bg: #2d3845;
+}
+
+.no-tap-highlight,
+.roulette-no-tap-highlight {
+  -webkit-tap-highlight-color: transparent;
+}
+
+[class~=MuiDialog-container] {
+  z-index: 100;
+}

@@ -1,0 +1,56 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.uploadableFilesList {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  flex: 1;
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    margin-top: 20px;
+    gap: 20px;
+  }
+
+  .outlined {
+    border-radius: 16px;
+    border: 1px solid var(--hr-border-gray);
+    padding: 16px;
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      padding: 15px;
+    }
+  }
+
+  .uploadableGroup {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-bottom: 16px;
+
+    .uploadableGroupTitle {
+      position: relative;
+      height: 56px + 18px*2 + 2px;
+
+      @media screen and (max-width: variables.$breakpoint-tablet) {
+        height: 56px + 5px;
+      }
+    }
+
+    .files {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hint {
+      color: variables.$text-gray;
+      font-size: 16px;
+      text-align: center;
+      margin-top: 8px;
+
+      @media screen and (max-width: variables.$breakpoint-tablet) {
+        font-size: 11px;
+      }
+    }
+  }
+}

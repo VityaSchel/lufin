@@ -1,0 +1,7 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.text {
+  color: variables.$text-gray;
+  line-height: 140%;
+  white-space: pre-wrap;
+}

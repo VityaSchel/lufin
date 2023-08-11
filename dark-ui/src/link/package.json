@@ -1,7 +1,0 @@
-{
-  "name": "link",
-  "peerDependencies": {
-    "classnames": "^2.3.2",
-    "next": "^13.2.2"
-  }
-}

@@ -1,0 +1,24 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.top {
+  display: flex;
+  // justify-content: space-between;
+  justify-content: flex-end;
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .label {
+    width: 290px;
+    font-size: 9px;
+    text-align: right;
+    color: #848484;
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      width: 100%;
+      text-align: left;
+    }
+  }
+}

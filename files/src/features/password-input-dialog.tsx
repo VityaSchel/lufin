@@ -1,0 +1,129 @@
+
+import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Slide, TextField, Toolbar, Typography, useMediaQuery } from "@mui/material"
+import CloseIcon from '@mui/icons-material/Close'
+import React from "react"
+import { TransitionProps } from "@mui/material/transitions"
+import { useTranslation } from 'next-i18next'
+
+export function PasswordInputDialog(props: {
+  visible: boolean
+  onClose: () => any
+  onSubmit: (password: string) => any
+}) {
+  const isMobile = useMediaQuery('(max-width: 768px)')
+  const randomModalID = React.useRef<number | undefined>()
+
+  React.useEffect(() => {
+    const root = document.querySelector('html')
+    if (root) {
+      if (props.visible) {
+        if (randomModalID.current === undefined) randomModalID.current = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+        root.classList.add('scroll-lock-' + randomModalID.current)
+      } else {
+        root.classList.remove('scroll-lock-' + randomModalID.current)
+      }
+    }
+  }, [props.visible])
+
+  return (
+    isMobile
+      ? <MobileDialog {...props} />
+      : <StandaloneDialog {...props} />
+  )
+}
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />
+})
+
+function MobileDialog({ visible, onClose, onSubmit }: {
+  visible: boolean
+  onClose: () => void
+  onSubmit: (password: string) => void
+}) {
+  const { t } = useTranslation('filesharing')
+  const [passwordValue, setPasswordValue] = React.useState('')
+
+  const handleSubmit = () => {
+    onSubmit(passwordValue)
+  }
+
+  return (
+    <Dialog
+      open={visible}
+      onClose={onClose}
+      scroll='paper'
+      fullScreen
+      TransitionComponent={Transition}
+    >
+      <AppBar sx={{ position: 'relative' }}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={onClose}
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+            {t('upload_form.add_password_title')}
+          </Typography>
+          <Button autoFocus color="inherit" onClick={handleSubmit}>
+            {t('ok_button')}
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <DialogContent>
+        <div className='h-[calc(100vh-100px)] flex items-center'>
+          <TextField
+            fullWidth
+            placeholder={t('password_protection.password_input')}
+            value={passwordValue}
+            onChange={e => setPasswordValue(e.target.value as string)}
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function StandaloneDialog({ visible, onClose, onSubmit }: {
+  visible: boolean
+  onClose: () => any
+  onSubmit: (password: string) => any
+}) {
+  const { t } = useTranslation('filesharing')
+  const [passwordValue, setPasswordValue] = React.useState('')
+
+  const handleSubmit = () => {
+    onSubmit(passwordValue)
+  }
+
+  return (
+    <Dialog
+      open={visible}
+      onClose={onClose}
+      scroll='paper'
+    >
+      <DialogTitle>
+        {t('upload_form.add_password_title')}
+      </DialogTitle>
+      <DialogContent>
+        <TextField
+          placeholder={t('password_protection.password_input')}
+          value={passwordValue}
+          onChange={e => setPasswordValue(e.target.value as string)}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleSubmit}>OK</Button>
+      </DialogActions>
+    </Dialog>
+  )
+}

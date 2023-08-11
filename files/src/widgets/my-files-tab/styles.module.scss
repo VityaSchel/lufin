@@ -1,0 +1,35 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.myFiles {
+
+  .top {
+    padding: 40px;
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      padding: 20px 15px;
+    }
+  }
+
+  p {
+    color: variables.$text-gray;
+    line-height: 120%;
+    font-size: 18px;
+    margin-bottom: 20px;
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      font-size: 14px;
+    }
+  }
+
+  table {
+    width: 100%;
+
+    td {
+      text-align: center;
+      
+      button {
+        margin: auto;
+      }
+    }
+  }
+}

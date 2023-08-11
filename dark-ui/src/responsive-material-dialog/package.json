@@ -1,8 +1,0 @@
-
-{
-  "name": "responsive-material-dialog",
-  "peerDependencies": {
-    "@mui/material": "^5.13.2",
-    "@mui/icons-material": "^5.14.0" 
-  }
-}

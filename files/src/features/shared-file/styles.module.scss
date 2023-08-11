@@ -1,0 +1,69 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.file {
+  border: 1px solid var(--hr-border-gray);
+  background: var(--card-bg);
+  padding: 18px 25px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    svg {
+      color: variables.$accent;
+    }
+
+    .error {
+      font-size: 2em;
+    }
+
+    .flex {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      align-items: center;
+    }
+  }
+}
+
+.content {
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    padding: 0 !important;
+
+    > * {
+      border: 0;
+    }
+  }
+
+  div {
+    max-height: unset;
+  }
+}
+
+.fullScreen [class~=MuiPaper-root]:not([class~=MuiAppBar-root]) {
+  // width: 100%;
+  height: 100%;
+  max-width: 100%;
+
+  [class^=styles_preview] {
+    height: 100%;
+
+    [class^=styles_imagePreview] {
+      // width: 100%;
+
+      img {
+        width: 100%;
+        height: 100%;
+        width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border: none;
+      }
+    }
+  }
+}

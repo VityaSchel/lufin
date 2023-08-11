@@ -1,1 +1,0 @@
-throw new Error('Use `npm run build`')

@@ -1,1 +1,0 @@
-export { CopyField } from './src/index'

@@ -1,0 +1,25 @@
+.error {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: stretch;
+  justify-content: center;
+  max-width: 800px;
+  width: 100%;
+  align-self: center;
+  text-align: left;
+  padding: 50px 0;
+
+  .icon {
+    margin-left: -10px;
+  }
+
+  h2 {
+    width: 100%;
+  }
+
+  p {
+    line-height: 150%;
+    font-size: 16px;
+  }
+}

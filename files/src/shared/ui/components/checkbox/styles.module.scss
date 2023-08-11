@@ -1,0 +1,76 @@
+@use '../variables.scss' as variables;
+@use 'sass:color';
+
+.checkbox {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    align-items: flex-start;
+  }
+
+  &, label {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  input[disabled] ~ label,
+  input[disabled] ~ .check {
+    cursor: default;
+  }
+
+  &.disabled {
+    cursor: default;
+  }
+
+  .hidden {
+    opacity: 0;
+    width: 0;
+    order: 999;
+  }
+
+  .hidden:focus-visible ~ * {
+    outline: 1px solid blue;
+  }
+
+  .check {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid variables.$accent;
+    transition: background-color 120ms ease-in-out;
+    border-radius: 2px;
+    flex-shrink: 0;
+
+    svg {
+      opacity: 0;
+      transition: opacity 120ms ease-in-out;
+    }
+
+    &.checked {
+      background-color: variables.$accent;
+
+      svg {
+        opacity: 1;
+      }
+
+      &.disabled {
+        background-color: color.scale(variables.$accent, $saturation: -100%, $lightness: 10%);
+      }
+    }
+
+    &.disabled {
+      border-color: color.scale(variables.$accent, $saturation: -100%, $lightness: 10%);
+    }
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      margin-top: 3px;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+  }
+}

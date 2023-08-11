@@ -1,0 +1,21 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.passwordForm {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--card-bg);
+  --outlined-textfield-bg: var(--bg-main);
+  border-radius: 8px;
+  padding: 50px;
+
+  .input {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+}

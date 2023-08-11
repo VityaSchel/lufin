@@ -1,0 +1,64 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.uploader {
+  display: flex;
+  gap: 26px;
+  width: 100%;
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    flex-direction: column;
+  }
+
+  .rightCol {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 26px;
+
+    @media screen and (max-width: variables.$breakpoint-tablet) {
+      min-height: unset;
+    }
+
+    .fields {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .checkboxes {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      // gap: 20px;
+      
+      .checkboxContainer {
+        display: flex;
+        flex-direction: column;
+        // gap: 5px;
+        // height: 40px;
+        margin-bottom: 8px;
+      }
+    }
+
+    .zipArchiveName {
+      transition: height 120ms ease-out, opacity 100ms ease-out;
+      height: 0px;
+      overflow: hidden;
+      opacity: 0;
+
+      > * {
+        margin-top: 20px;
+      }
+
+      &.visible {
+        height: 87px;
+        opacity: 1;
+      }
+    }
+
+    // > button:last-child {
+    //   align-self: center;
+    // }
+  }
+}

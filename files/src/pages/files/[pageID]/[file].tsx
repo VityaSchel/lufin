@@ -1,0 +1,157 @@
+'use client'
+
+import { getFilesPageFromDBDirectly } from '@/_app/lib/server-utils'
+import { DecryptionKeyContext } from '@/shared/context/decryption-key'
+import { SharedFileForDownload } from '@/shared/model/shared-file'
+import { DecryptionKey, decodeDecryptionKey } from '@/shared/utils/files-encryption'
+import { DecryptionKeyError } from '@/widgets/decryption-key-error'
+import { DirectLinkFileWidget } from '@/widgets/download-direct-file-info'
+import { FilesPagePasswordInput } from '@/widgets/files-page-password-input'
+import { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
+import React from 'react'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
+type FilePageProps = { page: ({ file: SharedFileForDownload } | { passwordProtected: true }) & { encrypted: boolean } }
+
+export default function DirectLinkFilePage({ page }: FilePageProps) {
+  const [isLoaded, setIsLoaded] = React.useState(false)
+  const [file, setFile] = React.useState<null | SharedFileForDownload>(null)
+  const [password, setPassword] = React.useState<string | undefined>(undefined)
+  const [decryptionKey, setDecryptionKey] = React.useState<null | 'error' | DecryptionKey>(null)
+  const router = useRouter()
+  const fileNameOrIndex = (Array.isArray(router.query.file) ? router.query.file[0] : router.query.file) as string
+
+  React.useEffect(() => {
+    if ('file' in page) {
+      setFile(page.file)
+    }
+    setIsLoaded(true)
+  }, [page])
+
+  React.useEffect(() => {
+    if (page.encrypted) {
+      decodeDecryptionKey()
+        .then(setDecryptionKey)
+    }
+  }, [setDecryptionKey])
+
+  if (!fileNameOrIndex) {
+    router.replace({
+      pathname: '/404'
+    }, router.asPath, { shallow: true })
+    return null
+  }
+
+  return (
+    <DecryptionKeyContext.Provider value={decryptionKey}>
+      {isLoaded && (
+        (page.encrypted === false || decryptionKey !== null) && (
+          decryptionKey === 'error'
+            ? <DecryptionKeyError />
+            : (
+              file
+                ? (
+                  <DirectLinkFileWidget
+                    encrypted={page.encrypted}
+                    file={file}
+                    password={password}
+                    onAbort={() => setDecryptionKey('error')}
+                  />
+                ) : (
+                  'file' in page
+                    ? (
+                      <DirectLinkFileWidget
+                        encrypted={page.encrypted}
+                        file={page.file}
+                        password={password}
+                        onAbort={() => setDecryptionKey('error')}
+                      />
+                    ) : (
+                      <FilesPagePasswordInput
+                        onSuccess={(files: SharedFileForDownload[], password?: string) => {
+                          let file = files.find(file => file.name === fileNameOrIndex)
+                          if (!file) {
+                            const index = Number(fileNameOrIndex)
+                            if (Number.isSafeInteger(index) && index >= 0 && index < files.length) {
+                              file = files[index]
+                            }
+                          }
+                          if(!file) {
+                            router.replace({
+                              pathname: '/404'
+                            }, router.asPath, { shallow: true })
+                            return
+                          } else {
+                            setFile(file)
+                            setPassword(password)
+                          }
+                        }}
+                      />
+                    )
+                )
+            )
+        )
+      )}
+    </DecryptionKeyContext.Provider>
+  )
+}
+
+export const getServerSideProps: GetServerSideProps<FilePageProps, { pageID: string, file: string }> = async (context) => {
+  const pageID = context.params?.pageID
+  const fileNameOrIndex = context.params?.file
+  if (!pageID) {
+    return {
+      props: {},
+      notFound: true
+    }
+  }
+  const db = await (await import('@/_app/db')).getDB()
+  const filesPage = await getFilesPageFromDBDirectly(db, pageID)
+  if (!filesPage) {
+    return {
+      props: {},
+      notFound: true
+    }
+  }
+
+  if (filesPage.passwordHash !== null) {
+    return {
+      props: {
+        ...(await serverSideTranslations(context.locale ?? context.defaultLocale ?? 'en', [
+          'filesharing',
+        ])),
+        page: { passwordProtected: true, encrypted: filesPage.encrypted }
+      }
+    }
+  } else {
+    let file = filesPage.files.find(f => f.filename === fileNameOrIndex)
+    if (!file) {
+      const fileIndex = Number(fileNameOrIndex)
+      if (Number.isSafeInteger(fileIndex) && fileIndex >= 0 && fileIndex < filesPage.files.length) {
+        file = filesPage.files[fileIndex]
+      }
+      if(!file) {
+        return {
+          props: {},
+          notFound: true
+        }
+      }
+    }
+
+    const mappedFile: SharedFileForDownload = {
+      name: file.filename,
+      sizeInBytes: file.filesizeInBytes,
+      mimeType: file.mimeType ?? ''
+    }
+
+    return {
+      props: {
+        ...(await serverSideTranslations(context.locale ?? context.defaultLocale ?? 'en', [
+          'filesharing',
+        ])),
+        page: { file: mappedFile, encrypted: filesPage.encrypted }
+      }
+    }
+  }
+}

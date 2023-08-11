@@ -1,0 +1,48 @@
+@use '@/shared/styles/variables.scss' as variables;
+
+.fileInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .size {
+    color: variables.$text-gray;
+    margin-bottom: 20px;
+  }
+
+  .files {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .downloadAllButton {
+    position: relative;
+    
+    .spinner {
+      position: absolute;
+      left: 15px;
+    }
+
+    .offsetLabel {
+      transform: translateX(15px);
+    }
+  }
+}
+
+.outlinedFile {
+  border-radius: 10px;
+  border: 1px solid var(--hr-border-gray);
+  padding: 18px 25px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 800px;
+
+  @media screen and (max-width: variables.$breakpoint-tablet) {
+    padding: 15px;
+  }
+}
