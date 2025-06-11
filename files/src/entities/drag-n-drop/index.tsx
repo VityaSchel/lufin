@@ -60,12 +60,12 @@ export function DragNDrop({
             <DragNDropIcon />
           </div>
           <div className={styles.dragNDropLabels}>
-            <span>{m['upload_form.drag_n_drop']()}</span>
-            <span className={styles.or}>{m['upload_form.or']()}</span>
+            <span>{m.uploadForm_dragNDrop()}</span>
+            <span className={styles.or}>{m.uploadForm_or()}</span>
             <Button type="button" onClick={() => fileInputRef.current?.click()} disabled={disabled}>
               {values.files?.length
-                ? m['upload_form.add_files']()
-                : m['upload_form.select_files']()}
+                ? m.uploadForm_addFiles()
+                : m.uploadForm_selectFiles()}
               <UploadIcon />
             </Button>
           </div>

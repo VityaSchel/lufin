@@ -80,7 +80,7 @@ export function UploadFilesTab({
               validate={(values: FilesUploaderFormValues) => {
                 const errors: Partial<Record<keyof FilesUploaderFormValues, string>> = {}
                 if (values.expiresAt instanceof Date && isNaN(values.expiresAt.getTime())) {
-                  errors.expiresAt = m['upload_form.expiration_date_invalid']()
+                  errors.expiresAt = m.uploadForm_expirationDateInvalid()
                 }
                 if (
                   values.deleteAtFirstDownload &&
@@ -89,7 +89,7 @@ export function UploadFilesTab({
                   !values.convertToZip
                 ) {
                   errors.deleteAtFirstDownload =
-                    m['upload_form.delete_after_first_download_validation_error']()
+                    m.uploadForm_deleteAfterFirstDownloadValidationError()
                 }
                 return errors
               }}

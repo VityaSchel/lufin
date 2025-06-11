@@ -1,10 +1,14 @@
 import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import svgr from 'vite-plugin-svgr'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    svgr({
+      include: '**/*.svg'
+    }),
     paraglideVitePlugin({ project: './project.inlang', outdir: './src/paraglide' }),
     react()
   ],

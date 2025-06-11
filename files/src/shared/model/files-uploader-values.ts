@@ -1,4 +1,4 @@
-import { UploadableFile } from '$shared/uploadable-file'
+import type { UploadableFile } from '$shared/uploadable-file'
 
 export type FilesUploaderFormValues = {
   files: null | UploadableFile[]

@@ -1,12 +1,12 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import { FormikProps, useFormik, useFormikContext } from 'formik'
+import { type FormikProps, useFormik, useFormikContext } from 'formik'
 import cx from 'classnames'
 import { Checkbox } from '$shared/ui/components/checkbox'
 import { TextField } from '$shared/ui/components/text-field'
 import { DragNDrop } from '$entities/drag-n-drop'
 import { PasswordInput } from '$entities/password-input'
-import { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
 import { FormHelperText, useMediaQuery } from '@mui/material'
 import { isThisAFile } from '$shared/utils/is-this-file'
 import { stripMetadata } from '$shared/utils/strip-metadata'
@@ -15,7 +15,7 @@ import mime from 'mime'
 import { UploaderInfo } from '$entities/uploader-info'
 import { UploadableFilesList } from '$features/uploadable-files-list'
 import { SubmitFilesButton } from '$features/submit-files-button'
-import { UploadableFile } from '$shared/uploadable-file'
+import type { UploadableFile } from '$shared/uploadable-file'
 import { m } from '$m'
 
 export function FilesUploader({
@@ -122,7 +122,7 @@ export function FilesUploader({
               onChange={(isChecked) => setFieldValue('deleteAtFirstDownload', isChecked)}
               disabled={isSubmitting}
             >
-              {m['upload_form.delete_after_first_download_checkbox']()}
+              {m.uploadForm_deleteAfterFirstDownloadCheckbox()}
             </Checkbox>
             {errors.deleteAtFirstDownload && (
               <FormHelperText error>{errors.deleteAtFirstDownload}</FormHelperText>
@@ -134,7 +134,7 @@ export function FilesUploader({
             onChange={(isChecked) => setFieldValue('convertToZip', isChecked)}
             disabled={isSubmitting}
           >
-            {m['upload_form.upload_as_zip_checkbox']()}
+            {m.uploadForm_uploadAsZipCheckbox()}
           </Checkbox>
           <div className="flex flex-col gap-2 mt-2">
             <Checkbox
@@ -143,10 +143,10 @@ export function FilesUploader({
               onChange={(isChecked) => setFieldValue('encrypt', isChecked)}
               disabled={isSubmitting}
             >
-              {m['upload_form.encrypt_checkbox']()}
+              {m.uploadForm_encryptCheckbox()}
             </Checkbox>
             <span className="text-neutral-500 text-sm ml-7">
-              {m['upload_form.encrypt_checkbox_hint']()}
+              {m.uploadForm_encryptCheckboxHint()}
             </span>
           </div>
           {/* <div className={cx(styles.zipArchiveName, { [styles.visible]: values.convertToZip })}>
@@ -155,7 +155,7 @@ export function FilesUploader({
               value={values.zipArchiveName ?? ''}
               onChange={({ target: { value }}) => setFieldValue('zipArchiveName', value)}
               variant='outlined'
-              label={m['upload_form.zip_name_input']()}
+              label={m.uploadForm_zipNameInput()}
               placeholder='documents.zip'
               type='zipArchiveName'
               disabled={isSubmitting}

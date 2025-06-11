@@ -1,6 +1,6 @@
 import React from 'react'
 import { AppBar, Button, Dialog, DialogActions, DialogTitle, IconButton, Slide, Toolbar, Typography, useMediaQuery } from '@mui/material'
-import { TransitionProps } from '@mui/material/transitions'
+import type { TransitionProps } from '@mui/material/transitions'
 import CloseIcon from '@mui/icons-material/Close'
 
 const Transition = React.forwardRef(function Transition(

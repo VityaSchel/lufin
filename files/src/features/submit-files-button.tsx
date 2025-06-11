@@ -1,5 +1,5 @@
 import React from 'react'
-import { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
 import { Button } from '$shared/ui/components/button'
 import { useFormikContext } from 'formik'
 import { m } from '$m'
@@ -26,7 +26,7 @@ export function SubmitFilesButton() {
       className="w-full !rounded-[10px]"
     >
       <span className="flex items-center gap-2">
-        {m['upload_form.finish_upload_button']()}{' '}
+        {m.uploadForm_finishUploadButton()}{' '}
         {values.encrypt ? (
           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
             <path

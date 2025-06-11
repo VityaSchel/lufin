@@ -15,9 +15,10 @@ import { RenamableTitle } from '$entities/uploadable-file/renamable-title'
 import mime from 'mime'
 import { Progress } from '$shared/ui/progress'
 import { filesize } from 'filesize'
-import { UploadableFile as UploadableFileType } from '$shared/uploadable-file'
+import type { UploadableFile as UploadableFileType } from '$shared/uploadable-file'
 import { produce } from 'immer'
 import { m } from '$m'
+import { getLocale } from '$paraglide/runtime'
 
 export function UploadableFile({
   file,
@@ -88,9 +89,9 @@ export function UploadableFile({
               </div>
               {previewAvailable && isMobile && (
                 <span className={styles.openPreview}>
-                  {m['uploadable_file.press_to']()}{' '}
-                  {previewOpen ? m['uploadable_file.close']() : m['uploadable_file.open']()}{' '}
-                  {m['uploadable_file.preview']()}
+                  {m.uploadableFile_pressTo()}{' '}
+                  {previewOpen ? m.uploadableFile_close() : m.uploadableFile_open()}{' '}
+                  {m.uploadableFile_preview()}
                 </span>
               )}
             </div>
@@ -140,7 +141,6 @@ function UploadableImageCompressedPreview({
   file: UploadableFileType
   setFile: (file: UploadableFileType) => void
 }) {
-  const { i18n } = useTranslation()
   const originalUrl = React.useMemo(
     () => URL.createObjectURL(file.isCompressedVersion && file.altBlob ? file.altBlob : file.blob),
     [file]
@@ -189,7 +189,7 @@ function UploadableImageCompressedPreview({
         />
         <span className="shrink-0 text-muted">
           {originalSize !== undefined &&
-            filesize(originalSize, i18n.resolvedLanguage === 'ru' ? ruLocale : undefined)}
+            filesize(originalSize, getLocale() === 'ru' ? ruLocale : undefined)}
         </span>
       </div>
       {/* {(compressedUrl !== null && compressedSize !== null) ? (

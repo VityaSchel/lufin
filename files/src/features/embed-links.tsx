@@ -12,7 +12,7 @@ export function EmbedLinks({ pageID, file }: { pageID: string; file: string }) {
     <section className="mt-12 w-[800px] max-w-full">
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          {m['embed_links_section']()}
+          {m.embedLinksSection()}
         </AccordionSummary>
         <AccordionDetails>
           <div className="flex flex-col gap-1">

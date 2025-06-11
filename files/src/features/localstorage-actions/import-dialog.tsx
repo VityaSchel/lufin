@@ -63,22 +63,22 @@ export function ImportDialog({ open, onClose }: { open: boolean; onClose: () => 
 
   return (
     <ResponsiveMUIDialog
-      title={m['localstorage.import.title']()}
+      title={m.localstorage_import_title()}
       open={open}
       onClose={onClose}
       className={styles.dialogContent}
       actions={
         <DialogActions>
           <Button onClick={handleImport} disabled={!input || !isValid}>
-            {m['localstorage.import.button']()}
+            {m.localstorage_import_button()}
           </Button>
-          {!isMobile && <Button onClick={onClose}>{m['localstorage.cancel_button']()}</Button>}
+          {!isMobile && <Button onClick={onClose}>{m.localstorage_cancelButton()}</Button>}
         </DialogActions>
       }
     >
       <DialogContent className={styles.content}>
         <TextareaAutosize
-          placeholder={m['localstorage.import_input_placeholder']()}
+          placeholder={m.localstorage_importInputPlaceholder()}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           className={cx(styles.localStorageData, { [styles.error]: !isValid })}
@@ -88,11 +88,11 @@ export function ImportDialog({ open, onClose }: { open: boolean; onClose: () => 
             <MdCheck />
             {plural(
               success,
-              m['localstorage.lines_imported.one'](),
-              m['localstorage.lines_imported.few'](),
-              m['localstorage.lines_imported.many']()
+              m.localstorage_linesImported_one(),
+              m.localstorage_linesImported_few(),
+              m.localstorage_linesImported_many()
             )}{' '}
-            {success} {plural(success, m['lines.one'](), m['lines.few'](), m['lines.many']())}
+            {success} {plural(success, m.lines_one(), m.lines_few(), m.lines_many())}
           </span>
         )}
       </DialogContent>

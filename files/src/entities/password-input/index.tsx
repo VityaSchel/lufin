@@ -32,10 +32,10 @@ export function PasswordInput({
       variant="outlined"
       label={
         isOptional
-          ? m['password_protection.set_password_label']()
-          : m['upload_success.password_input']()
+          ? m.passwordProtection_setPasswordLabel()
+          : m.uploadSuccess_passwordInput()
       }
-      placeholder={isOptional ? m['optional']() : m['password_protection.input_password_label']()}
+      placeholder={isOptional ? m.optional() : m.passwordProtection_inputPasswordLabel()}
       type={isPasswordVisible ? 'text' : 'password'}
       maxLength={128}
       {...props}

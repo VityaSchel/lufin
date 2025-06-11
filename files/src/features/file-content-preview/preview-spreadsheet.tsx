@@ -13,9 +13,9 @@ function PreviewSpreadsheetSafeGuard({ spreadsheet }: { spreadsheet: File }) {
   return spreadsheet.size > 1000000 && !confirmed ? (
     <div className={styles.spreadsheetIsTooBigWarning}>
       <PiWarningLight className={styles.icon} />
-      <span>{m['preview.spreadsheet_big_warning']()}</span>
+      <span>{m.preview_spreadsheetBigWarning()}</span>
       <Button onClick={() => setConfirmed(true)}>
-        {m['preview.spreadsheet_big_confirm_button']()}
+        {m.preview_spreadsheetBigConfirmButton()}
       </Button>
     </div>
   ) : (
@@ -40,7 +40,7 @@ export function PreviewSpreadsheetContent({ spreadsheet }: { spreadsheet: File }
   React.useEffect(() => {
     setLoading(true)
     handleLoadSpreadsheet(spreadsheet)
-      .catch((e) => setError(`${m['preview.spreadsheet_loading_error']()}: ${e.message}`))
+      .catch((e) => setError(`${m.preview_spreadsheetLoadingError()}: ${e.message}`))
       .finally(() => setLoading(false))
   }, [spreadsheet])
 

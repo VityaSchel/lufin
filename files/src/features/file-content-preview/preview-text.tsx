@@ -26,7 +26,7 @@ export function PreviewText({ file }: { file: File }) {
     reader.readAsText(file)
   }, [file])
 
-  return text === null ? <span>{m['loading']()}...</span> : <Previewer text={text} />
+  return text === null ? <span>{m.loading()}...</span> : <Previewer text={text} />
 }
 
 function Previewer({ text }: { text: string }) {
@@ -39,12 +39,12 @@ function Previewer({ text }: { text: string }) {
     <div className={styles.previewText}>
       <div className={styles.top}>
         <span>
-          {linesNum} {plural(linesNum, m['lines.one'](), m['lines.few'](), m['lines.many']())}
+          {linesNum} {plural(linesNum, m.lines_one(), m.lines_few(), m.lines_many())}
         </span>
         •
         <span>
-          {chars} {plural(chars, m['char.one'](), m['char.few'](), m['char.many']())} ({length}{' '}
-          {plural(length, m['code_point.one'](), m['code_point.few'](), m['code_point.many']())})
+          {chars} {plural(chars, m.char_one(), m.char_few(), m.char_many())} ({length}{' '}
+          {plural(length, m.codePoint_one(), m.codePoint_few(), m.codePoint_many())})
         </span>
         <Button
           variant={wrapText ? 'contained' : 'dimmed'}

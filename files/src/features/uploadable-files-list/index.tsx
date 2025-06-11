@@ -3,12 +3,12 @@ import styles from './styles.module.scss'
 import { Headline } from '$entities/headline'
 import cx from 'classnames'
 import { useFormikContext } from 'formik'
-import { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
 import { UploadableGroupTitle } from '$entities/uploadable-group-title'
 import { UploadableFile } from '$entities/uploadable-file'
 import { UploadFilesContext } from '$widgets/upload-files-tab'
 import { produce } from 'immer'
-import { UploadableFile as UploadableFileType } from '$shared/uploadable-file'
+import type { UploadableFile as UploadableFileType } from '$shared/uploadable-file'
 import { m } from '$m'
 
 export function UploadableFilesList() {
@@ -46,7 +46,7 @@ export function UploadableFilesList() {
   return (
     <>
       <div className={styles.uploadableFilesList}>
-        {/* <h3>{m['uploadable_file.title']()}</h3> */}
+        {/* <h3>{m.uploadableFile_title()}</h3> */}
         <div className={cx(styles.outlined, styles.uploadableGroup)}>
           <div className={styles.uploadableGroupTitle}>
             <UploadableGroupTitle disabled={isSubmitting} />
@@ -77,8 +77,8 @@ export function UploadableFilesList() {
           {Boolean(!values.files?.length || sumSizeExceededLimit) && (
             <span className={styles.hint}>
               {sumSizeExceededLimit
-                ? m['upload_form.limit_exceeded']()
-                : m['upload_form.drag_here']()}
+                ? m.uploadForm_limitExceeded()
+                : m.uploadForm_dragHere()}
             </span>
           )}
         </div>

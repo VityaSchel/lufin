@@ -19,7 +19,7 @@ export function ExportDialog({ open, onClose }: { open: boolean; onClose: () => 
 
   return (
     <ResponsiveMUIDialog
-      title={m['localstorage.export.title']()}
+      title={m.localstorage_export_title()}
       open={open}
       onClose={onClose}
       className={styles.dialogContent}
@@ -29,11 +29,11 @@ export function ExportDialog({ open, onClose }: { open: boolean; onClose: () => 
         <Button onClick={handleCopy} onMouseLeave={() => setIsCopied(false)}>
           {isCopied ? (
             <>
-              <MdDone /> {m['localstorage.export.copied']()}
+              <MdDone /> {m.localstorage_export_copied()}
             </>
           ) : (
             <>
-              <MdContentCopy /> {m['localstorage.export.copy_button']()}
+              <MdContentCopy /> {m.localstorage_export_copyButton()}
             </>
           )}
         </Button>

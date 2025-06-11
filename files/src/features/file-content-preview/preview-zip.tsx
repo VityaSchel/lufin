@@ -30,6 +30,7 @@ import cx from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'
 import { m } from '$m'
 import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
+import { getLocale } from '$paraglide/runtime'
 
 type PreviewFileValue = null | JSObject
 const ZipPreviewContext = React.createContext<
@@ -58,12 +59,12 @@ export function PreviewZip({ zip }: { zip: File }) {
             ? e.message
             : JSON.stringify(e)
         if (errorString === 'Encrypted zip are not supported') {
-          setErrored(m['preview.encrypted_zip_unsupported_error']())
+          setErrored(m.preview_encryptedZipUnsupportedError())
         } else {
-          setErrored(`${m['preview.zip_load_error']()}: ${e}`)
+          setErrored(`${m.preview_zipLoadError()}: ${e}`)
         }
       } else {
-        setErrored(m['preview.load_error']())
+        setErrored(m.preview_loadError())
       }
     }
   }
@@ -80,8 +81,8 @@ export function PreviewZip({ zip }: { zip: File }) {
       ) : (
         <Button onClick={() => handleOpen()} type="button">
           {zipContents
-            ? m['preview.view_zip_file_preview']()
-            : m['preview.load_zip_file_preview']()}
+            ? m.preview_viewZipFilePreview()
+            : m.preview_loadZipFilePreview()}
         </Button>
       )}
       <Dialog
@@ -98,13 +99,13 @@ export function PreviewZip({ zip }: { zip: File }) {
                 <CloseIcon />
               </IconButton>
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                {m['preview.preview_zip_file_button']()}
+                {m.preview_previewZipFileButton()}
               </Typography>
             </Toolbar>
           </AppBar>
         ) : (
           <DialogTitle id="zip-file-contents-title">
-            {m['preview.preview_zip_file_button']()}
+            {m.preview_previewZipFileButton()}
           </DialogTitle>
         )}
         <DialogContent sx={{ width: '900px', maxWidth: '100%', height: '600px' }}>
@@ -122,7 +123,7 @@ export function PreviewZip({ zip }: { zip: File }) {
         {!isMobile && (
           <DialogActions>
             <MUIButton onClick={handleClose} autoFocus>
-              {m['close_button']()}
+              {m.closeButton()}
             </MUIButton>
           </DialogActions>
         )}
@@ -198,7 +199,6 @@ function RecursiveTreeItem({ item }: { item: NestedLevel }) {
 }
 
 function PreviewFile({ zip }: { zip: JSZip }) {
-  const { i18n } = useTranslation('filesharing')
   const contextValue = React.useContext(ZipPreviewContext)
   const [fileContents, setFileContents] = React.useState<null | File>(null)
   const [guessedMimeType, setGuessedMimeType] = React.useState<null | string>(null)
@@ -239,7 +239,7 @@ function PreviewFile({ zip }: { zip: JSZip }) {
           </div>
           <span className={styles.date}>
             {format(previewFile.date, 'EEEEEE, dd.MM.yyyy HH:mm:ss zzzz', {
-              locale: getDateFnsLocale(i18n.resolvedLanguage ?? 'en')
+              locale: getDateFnsLocale(getLocale())
             })}
           </span>
           {fileContents && <FileContentPreview file={fileContents} />}

@@ -17,7 +17,7 @@ export function FilesDeleted({ success }: { success: boolean }) {
 
   return (
     <section className={styles.deletedFilesMessage}>
-      <Headline>{success ? m['files_deleted']() : m['error']()}</Headline>
+      <Headline>{success ? m.filesDeleted() : m.error()}</Headline>
     </section>
   )
 }

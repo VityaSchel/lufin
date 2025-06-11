@@ -31,7 +31,7 @@ import cx from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { Key } from 'ts-key-enum'
-import { SharedFileForDownload } from '$shared/model/shared-file'
+import type { SharedFileForDownload } from '$shared/model/shared-file'
 import copy from 'copy-to-clipboard'
 import { m } from '$m'
 import { EmbedLinks } from '$features/embed-links'
@@ -164,7 +164,7 @@ const SharedFile = React.forwardRef(
             />
           ) : (
             <div className={styles.flex}>
-              <Tooltip title={m['direct_link']()}>
+              <Tooltip title={m.directLink()}>
                 <IconButton
                   onClick={handleCopyDirectLink}
                   onPointerLeave={() => setDirectLinkCopied(false)}
@@ -175,7 +175,7 @@ const SharedFile = React.forwardRef(
               {previewAvailable && (
                 <PreviewButton file={file} content={content} onClick={handleOpenPreview} />
               )}
-              <Tooltip title={m['download']()}>
+              <Tooltip title={m.download()}>
                 <IconButton onClick={handleStartDownloading}>
                   <Download />
                 </IconButton>
@@ -244,9 +244,9 @@ function PreviewButton({
   return (
     <Tooltip
       title={
-        m['preview.open_label']() +
+        m.preview_openLabel() +
         (canOpenInNewTab
-          ? `\n${isMacOS ? '⌘' : 'ctrl'}+${m['click']()} — ${m['preview.open_in_new_tab']().toLowerCase()}`
+          ? `\n${isMacOS ? '⌘' : 'ctrl'}+${m.click()} — ${m.preview_openInNewTab().toLowerCase()}`
           : '')
       }
     >
@@ -325,13 +325,13 @@ function PreviewDialog({
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1, fontSize: '1rem' }} variant="h6" component="div">
-              {m['preview.title']()} <b>{file.name}</b>
+              {m.preview_title()} <b>{file.name}</b>
             </Typography>
           </Toolbar>
         </AppBar>
       ) : (
         <DialogTitle>
-          {m['preview.title']()} <b>{file.name}</b>
+          {m.preview_title()} <b>{file.name}</b>
         </DialogTitle>
       )}
       <DialogContent className={styles.content}>
@@ -347,7 +347,7 @@ function PreviewDialog({
       </DialogContent>
       {!isMobile && (
         <DialogActions>
-          <MUIButton onClick={() => onClose()}>{m['ok_button']()}</MUIButton>
+          <MUIButton onClick={() => onClose()}>{m.okButton()}</MUIButton>
         </DialogActions>
       )}
     </Dialog>

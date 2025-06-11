@@ -10,9 +10,9 @@ export function DecryptionKeyError() {
       <span className={styles.icon}>
         <Icon path={mdiLockQuestion} size={3} />
       </span>
-      <Headline variant="h2">{m['decryption.key_invalid']()}</Headline>
-      <p dangerouslySetInnerHTML={{ __html: m['decryption.key_invalid_hint1']() }} />
-      <p dangerouslySetInnerHTML={{ __html: m['decryption.key_invalid_hint2']() }} />
+      <Headline variant="h2">{m.decryption_keyInvalid()}</Headline>
+      <p dangerouslySetInnerHTML={{ __html: m.decryption_keyInvalidHint1() }} />
+      <p dangerouslySetInnerHTML={{ __html: m.decryption_keyInvalidHint2() }} />
     </section>
   )
 }

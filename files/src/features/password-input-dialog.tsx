@@ -79,10 +79,10 @@ function MobileDialog({
             <CloseIcon />
           </IconButton>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            {m['upload_form.add_password_title']()}
+            {m.uploadForm_addPasswordTitle()}
           </Typography>
           <Button autoFocus color="inherit" onClick={handleSubmit}>
-            {m['ok_button']()}
+            {m.okButton()}
           </Button>
         </Toolbar>
       </AppBar>
@@ -90,7 +90,7 @@ function MobileDialog({
         <div className="h-[calc(100vh-100px)] flex items-center">
           <TextField
             fullWidth
-            placeholder={m['password_protection.password_input']()}
+            placeholder={m.passwordProtection_passwordInput()}
             value={passwordValue}
             onChange={(e) => setPasswordValue(e.target.value as string)}
           />
@@ -117,10 +117,10 @@ function StandaloneDialog({
 
   return (
     <Dialog open={visible} onClose={onClose} scroll="paper">
-      <DialogTitle>{m['upload_form.add_password_title']()}</DialogTitle>
+      <DialogTitle>{m.uploadForm_addPasswordTitle()}</DialogTitle>
       <DialogContent>
         <TextField
-          placeholder={m['password_protection.password_input']()}
+          placeholder={m.passwordProtection_passwordInput()}
           value={passwordValue}
           onChange={(e) => setPasswordValue(e.target.value as string)}
         />

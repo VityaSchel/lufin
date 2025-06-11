@@ -59,7 +59,7 @@ export function FileContentPreview({
     )
   ) : (
     <div className={styles.previewUnavailable}>
-      <span>{m['preview.unsupported_file_type']()}</span>
+      <span>{m.preview_unsupportedFileType()}</span>
     </div>
   )
 }
@@ -89,7 +89,7 @@ function Preview({
     return (
       <div className={styles.imagePreviewContainer}>
         {!isMobile && slider && (
-          <Tooltip title={m['preview.previous_image_button']()}>
+          <Tooltip title={m.preview_previousImageButton()}>
             <IconButton
               onClick={slider.onOpenPreviousPreview}
               disabled={!slider.onOpenPreviousPreview}
@@ -111,7 +111,7 @@ function Preview({
           <img src={blobURL} alt="" />
         </div>
         {!isMobile && slider && (
-          <Tooltip title={m['preview.next_image_button']()}>
+          <Tooltip title={m.preview_nextImageButton()}>
             <IconButton onClick={slider.onOpenNextPreview} disabled={!slider.onOpenNextPreview}>
               <Icon path={mdiArrowRight} size={1} />
             </IconButton>
@@ -119,7 +119,7 @@ function Preview({
         )}
         {isMobile && slider && (
           <div className={styles.mobileSliderButtons}>
-            <Tooltip title={m['preview.previous_image_button']()}>
+            <Tooltip title={m.preview_previousImageButton()}>
               <IconButton
                 onClick={slider.onOpenPreviousPreview}
                 disabled={!slider.onOpenPreviousPreview}
@@ -127,7 +127,7 @@ function Preview({
                 <Icon path={mdiArrowLeft} size={1.5} />
               </IconButton>
             </Tooltip>
-            <Tooltip title={m['preview.next_image_button']()}>
+            <Tooltip title={m.preview_nextImageButton()}>
               <IconButton onClick={slider.onOpenNextPreview} disabled={!slider.onOpenNextPreview}>
                 <Icon path={mdiArrowRight} size={1.5} />
               </IconButton>
@@ -151,7 +151,7 @@ function Preview({
       <div className={styles.iframe}>
         <iframe src={blobURL} /*sandbox=''*/ />
         <Button onClick={() => window.open(blobURL, '_blank', 'noopener,noreferrer')}>
-          <BiLinkExternal /> {m['preview.open_in_new_tab']()}
+          <BiLinkExternal /> {m.preview_openInNewTab()}
         </Button>
       </div>
     )

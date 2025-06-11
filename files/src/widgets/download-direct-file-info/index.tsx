@@ -69,7 +69,7 @@ export function DirectLinkFileWidget({
       setTimeout(
         () =>
           alert(
-            m['network_error']() +
+            m.networkError() +
               '\n\n' +
               (e instanceof Error
                 ? e.message
@@ -115,7 +115,7 @@ export function DirectLinkFileWidget({
         disabled={status === 'downloading'}
         className="mb-5"
       >
-        {m['download_file_button']()} <DownloadIcon />
+        {m.downloadFileButton()} <DownloadIcon />
       </Button>
       {fileContents ? (
         <FileContentPreview file={fileContents} />
@@ -123,8 +123,8 @@ export function DirectLinkFileWidget({
         <div className={styles.outlinedFile}>
           <HorizontalCard
             icon={getSvgIconByFileType('file')}
-            title={m['downloading_file']()}
-            subtitle={m['downloaded_file']() + ' ' + Math.round(downloadProgress! * 100) + '%'}
+            title={m.downloadingFile()}
+            subtitle={m.downloadedFile() + ' ' + Math.round(downloadProgress! * 100) + '%'}
           />
           <Progress progress={downloadProgress! * 100} />
         </div>

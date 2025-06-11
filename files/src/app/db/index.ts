@@ -1,9 +1,10 @@
 let connection: import('mongodb').MongoClient | undefined = undefined
 async function getConnection() {
-  if(connection) return connection
-  if(!process.env.MONGODB_CONNECTION_STRING) throw new Error('Fill process.env.MONGODB_CONNECTION_STRING')
+  if (connection) return connection
+  if (!import.meta.env.MONGODB_CONNECTION_STRING)
+    throw new Error('Fill import.meta.env.MONGODB_CONNECTION_STRING')
   const { MongoClient } = await import('mongodb')
-  const client = new MongoClient(process.env.MONGODB_CONNECTION_STRING)
+  const client = new MongoClient(import.meta.env.MONGODB_CONNECTION_STRING)
   connection = await client.connect()
   return connection
 }

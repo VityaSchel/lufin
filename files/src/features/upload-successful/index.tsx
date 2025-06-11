@@ -35,14 +35,14 @@ export function UploadSuccessful({
     <div className={styles.filesUploaded}>
       <Headline variant="h2">
         <span className="capitalize">
-          {plural(filesNum, m['files.one'](), m['files.few'](), m['files.many']())}
+          {plural(filesNum, m.files_one(), m.files_few(), m.files_many())}
         </span>{' '}
-        {plural(filesNum, m['uploaded.one'](), m['uploaded.few'](), m['uploaded.many']())}
+        {plural(filesNum, m.uploaded_one(), m.uploaded_few(), m.uploaded_many())}
       </Headline>
       <div className="flex flex-col gap-1">
         <TextField
           variant="outlined"
-          label={m['upload_success.files_link']()}
+          label={m.uploadSuccess_filesLink()}
           value={downloadLink}
           readOnly
           leftAdornment={<DownloadIcon />}
@@ -62,7 +62,7 @@ export function UploadSuccessful({
         {password && (
           <TextField
             variant="outlined"
-            label={m['upload_success.password_input']()}
+            label={m.uploadSuccess_passwordInput()}
             type="password"
             value={password}
             readOnly
@@ -75,7 +75,7 @@ export function UploadSuccessful({
         )}
         <TextField
           variant="outlined"
-          label={m['upload_success.delete_link_input']()}
+          label={m.uploadSuccess_deleteLinkInput()}
           value={links.delete}
           readOnly
           leftAdornment={<DeleteIcon />}
@@ -87,15 +87,15 @@ export function UploadSuccessful({
         />
       </div>
       <div className={styles.actions}>
-        <Button onClick={() => onResetForm()}>{m['load_more']()}</Button>
+        <Button onClick={() => onResetForm()}>{m.loadMore()}</Button>
         <Button onClick={() => onGoToMyFiles()} variant="dimmed">
-          {m['my_files']()}
+          {m.myFiles()}
         </Button>
         <CopyButton
-          content={`${m['upload_success.links']()}: ${downloadLink}\n${m['upload_success.password']()}: ${password || m['upload_success.password_not_specified']()}\n\n${m['upload_success.delete_link']()}: ${links.delete} (${m['upload_success.delete_link_warning']()})`}
+          content={`${m.uploadSuccess_links()}: ${downloadLink}\n${m.uploadSuccess_password()}: ${password || m.uploadSuccess_passwordNotSpecified()}\n\n${m.uploadSuccess_deleteLink()}: ${links.delete} (${m.uploadSuccess_deleteLinkWarning()})`}
           className={styles.copyButton}
         >
-          {m['upload_success.copy_all_button']()}
+          {m.uploadSuccess_copyAllButton()}
         </CopyButton>
       </div>
     </div>

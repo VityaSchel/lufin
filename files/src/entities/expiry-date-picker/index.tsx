@@ -35,10 +35,10 @@ export function ExpiryDatePicker(props: {
       <TextField
         leftAdornment={<ClockIcon />}
         onClear={value === null ? undefined : () => onChange(null)}
-        label={value === null ? undefined : m['expiration.date_of_expiry']()}
+        label={value === null ? undefined : m.expiration_dateOfExpiry()}
         value={
           value === null
-            ? m['expiration.date_of_expiry_input']()
+            ? m.expiration_dateOfExpiryInput()
             : format(value, 'dd.MM.yyyy HH:mm:ss')
         }
         variant="outlined"
@@ -133,10 +133,10 @@ function MobileDialog({
             <CloseIcon />
           </IconButton>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            {m['expiration.select_expiry_date_label']()}
+            {m.expiration_selectExpiryDateLabel()}
           </Typography>
           <Button autoFocus color="inherit" onClick={handleSave}>
-            {m['ok_button']()}
+            {m.okButton()}
           </Button>
         </Toolbar>
       </AppBar>

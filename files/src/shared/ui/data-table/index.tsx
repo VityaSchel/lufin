@@ -27,7 +27,7 @@ export function DataTable<Row>({
         {isLoading ? (
           <tr>
             <td colSpan={columns.length} className={styles.loading}>
-              {m['loading']()}
+              {m.loading()}
             </td>
           </tr>
         ) : rows.length ? (
@@ -35,7 +35,7 @@ export function DataTable<Row>({
         ) : (
           <tr>
             <td colSpan={columns.length} className={styles.loading}>
-              {m['list_empty']()}
+              {m.listEmpty()}
             </td>
           </tr>
         )}

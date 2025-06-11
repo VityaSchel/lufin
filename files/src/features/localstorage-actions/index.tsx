@@ -28,15 +28,15 @@ export function LocalStorageActions() {
   return (
     <div className={styles.actions}>
       <Button variant="dimmed" accent="blue" onClick={handleExport}>
-        {m['localstorage.export_button']()} <ImportIcon />
+        {m.localstorage_exportButton()} <ImportIcon />
       </Button>
       <ExportDialog open={openExportDialog} onClose={() => setOpenExportDialog(false)} />
       <Button variant="dimmed" accent="green" onClick={handleImport}>
-        {m['localstorage.import_button']()} <ExportIcon />
+        {m.localstorage_importButton()} <ExportIcon />
       </Button>
       <ImportDialog open={openImportDialog} onClose={() => setOpenImportDialog(false)} />
       <Button variant="dimmed" accent="red" onClick={handleClear}>
-        {m['localstorage.clear_button']()} <DeleteIcon />
+        {m.localstorage_clearButton()} <DeleteIcon />
       </Button>
     </div>
   )

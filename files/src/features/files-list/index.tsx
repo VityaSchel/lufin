@@ -12,7 +12,6 @@ import FalseIcon from './icons/false.svg'
 import { loadFilesPages, markFilesPageDeleted, updateFilePage } from '$shared/storage'
 import { Link } from 'react-router'
 import { useMediaQuery } from '@mui/material'
-import { getFilesAPIUrl } from '$shared/utils/api-url'
 import { m } from '$m'
 import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
 import { getLocale } from '$paraglide/runtime'
@@ -35,8 +34,6 @@ export function FilesList() {
   const [pages, setPages] = React.useState<null | SharedFile[]>(null)
   const isMobile = useMediaQuery('(max-width: 768px)')
 
-  const host = window.location.host
-
   React.useEffect(() => {
     const handler = () => {
       loadPages()
@@ -53,10 +50,10 @@ export function FilesList() {
         .map((page) => ({
           pageID: page.pageID,
           filesNames: page.files.map((f) => f.name).join(', '),
-          downloadLink: `${host?.startsWith('localhost') ? 'http://' : 'https://'}${host}/files/${page.pageID}#${page.decryptionToken}`,
+          downloadLink: `${window.location.origin}/${page.pageID}#${page.decryptionToken}`,
           uploadDate: new Date(page.createdAt),
           expiresAt: new Date(page.expiresAt),
-          deleteLink: `${host?.startsWith('localhost') ? 'http://' : 'https://'}${host}/files/delete/${page.deleteToken}`,
+          deleteLink: `${window.location.origin}/delete/${page.deleteToken}`,
           deleteToken: page.deleteToken,
           deleted: page.deleted,
           authorToken: page.authorToken
@@ -74,13 +71,13 @@ export function FilesList() {
     <DataTable
       columns={[
         { label: '' },
-        { label: m['files_list.columns.name']() },
-        { label: m['files_list.columns.download_link']() },
-        { label: m['files_list.columns.downloads']() },
+        { label: m.filesList_columns_name() },
+        { label: m.filesList_columns_downloadLink() },
+        { label: m.filesList_columns_downloads() },
         // { label: 'Удалить при\nпервом скачивании?' },
-        { label: m['files_list.columns.uploaded_at']() },
-        { label: m['files_list.columns.expires_at']() },
-        { label: m['files_list.columns.delete_link']() }
+        { label: m.filesList_columns_uploadedAt() },
+        { label: m.filesList_columns_expiresAt() },
+        { label: m.filesList_columns_deleteLink() }
       ]}
       isLoading={pages === null}
       rows={pages === null ? [] : pages}
@@ -101,7 +98,7 @@ const fetchInfo = async (
     setExpiresAt: (ea: number) => any
   }
 ) => {
-  const infoRequest = await fetch(`${getFilesAPIUrl()}/basic-info/${row.pageID}`, {
+  const infoRequest = await fetch(`${import.meta.env.VITE_API_URL}/page/${row.pageID}/info`, {
     headers: {
       Authorization: row.authorToken
     }
@@ -240,26 +237,26 @@ function MobileTableRow({ row }: { row: SharedFile }) {
       {/*<td><Checkbox name={'row'+row.pageID} value={false} onChange={() => {}} /*onChange={e => setIsChecked(e)} /></td>*/}
       <div className={styles.filename}>{row.filesNames}</div>
       <div>
-        <span>{m['files_list.download_link_label']()}</span>
+        <span>{m.filesList_downloadLinkLabel()}</span>
         <DownloadButton disabled={disabled} link={row.downloadLink} />
       </div>
       {!disabled && (
         <div>
-          <span>{m['files_list.downloads']()}</span>
+          <span>{m.filesList_downloads()}</span>
           {downloadsCount}
         </div>
       )}
       {/*<div>{row.deleteAfterFirstDownload ? <TrueIcon /> : <FalseIcon />}</div> */}
       <div>
-        <span>{m['files_list.columns.uploaded_at']()}</span>
+        <span>{m.filesList_columns_uploadedAt()}</span>
         {formatDate(row.uploadDate, getLocale())}
       </div>
       <div>
-        <span>{m['files_list.columns.expires_at']()}</span>
+        <span>{m.filesList_columns_expiresAt()}</span>
         {formatDate(expiresAt, getLocale())}
       </div>
       <div>
-        <span>{m['files_list.delete_button']()}</span>
+        <span>{m.filesList_deleteButton()}</span>
         <DeleteButton disabled={disabled} link={row.deleteLink} />
       </div>
     </div>

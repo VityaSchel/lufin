@@ -11,8 +11,8 @@ export function PageContainer({ children }: React.PropsWithChildren) {
   return (
     <div className="w-full flex flex-col items-center gap-[30px]">
       <Helmet>
-        <title>{m['title']()}</title>
-        <meta rel="description" content={m['description']()} />
+        <title>{m.title()}</title>
+        <meta rel="description" content={m.description()} />
       </Helmet>
       <AppBar />
       <main className="w-[1200px] max-w-full px-[15px] pb-24 flex flex-col gap-[30px]">
@@ -56,7 +56,7 @@ function Footer() {
         onClick={() => setExpanded(!expanded)}
       >
         <span className="font-medium font-[Roboto,sans-serif] text-base md:text-xl">
-          {m['terms_footer.title']()}
+          {m.termsFooter_title()}
         </span>
         <span
           className={cx('transition-transform', {

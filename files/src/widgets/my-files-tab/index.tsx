@@ -7,7 +7,7 @@ export function MyFilesTab() {
   return (
     <div className={styles.myFiles}>
       <div className={styles.top}>
-        <p>{m['files_list.hint']()}</p>
+        <p>{m.filesList_hint()}</p>
         <LocalStorageActions />
       </div>
       <FilesList />

@@ -85,7 +85,7 @@ export function DownloadFilesInfo({
       setTimeout(
         () =>
           alert(
-            m['network_error']() +
+            m.networkError() +
               '\n\n' +
               (e instanceof Error
                 ? e.message
@@ -200,9 +200,9 @@ export function DownloadFilesInfo({
             {files.length}{' '}
             {plural(
               files.length,
-              m['files_genitive.one'](),
-              m['files_genitive.few'](),
-              m['files_genitive.many']()
+              m.filesGenitive_one(),
+              m.filesGenitive_few(),
+              m.filesGenitive_many()
             )}
           </Headline>
           <span className={styles.size}>
@@ -217,12 +217,12 @@ export function DownloadFilesInfo({
               onClick={() => handleSaveAll()}
               disabled={downloadedFilesNum - erroredFilesNum === 0}
             >
-              {m['download']()} {files.length}{' '}
+              {m.download()} {files.length}{' '}
               {plural(
                 files.length,
-                m['files_genitive.one'](),
-                m['files_genitive.few'](),
-                m['files_genitive.many']()
+                m.filesGenitive_one(),
+                m.filesGenitive_few(),
+                m.filesGenitive_many()
               )}
             </Button>
           ) : (
@@ -235,17 +235,17 @@ export function DownloadFilesInfo({
                 <>
                   <CircularProgress size={30} thickness={5} className={styles.spinner} />
                   <span className={styles.offsetLabel}>
-                    {m['loading']()} {downloadingFilesNum}{' '}
+                    {m.loading()} {downloadingFilesNum}{' '}
                     {plural(
                       downloadingFilesNum,
-                      m['files_genitive.one'](),
-                      m['files_genitive.few'](),
-                      m['files_genitive.many']()
+                      m.filesGenitive_one(),
+                      m.filesGenitive_few(),
+                      m.filesGenitive_many()
                     )}
                   </span>
                 </>
               ) : (
-                `${m['download']()} ${startedDlFilesNum === 0 ? m['load_everything']() : `${remainingForDownload} ${plural(remainingForDownload, m['files_genitive.one'](), m['files_genitive.few'](), m['files_genitive.many']())}`}`
+                `${m.download()} ${startedDlFilesNum === 0 ? m.loadEverything() : `${remainingForDownload} ${plural(remainingForDownload, m.filesGenitive_one(), m.filesGenitive_few(), m.filesGenitive_many())}`}`
               )}
             </Button>
           )}
