@@ -106,3 +106,5 @@ dist
 .DS_Store
 
 out
+
+data-retention.config.json

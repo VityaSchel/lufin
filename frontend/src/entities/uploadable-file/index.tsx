@@ -188,8 +188,7 @@ function UploadableImageCompressedPreview({
           // onClick={() => setIsUsingCompressed(false)}
         />
         <span className="shrink-0 text-muted">
-          {originalSize !== undefined &&
-            filesize(originalSize, getLocale() === 'ru' ? ruLocale : undefined)}
+          {originalSize !== undefined && filesize(originalSize, { locale: getLocale() })}
         </span>
       </div>
       {/* {(compressedUrl !== null && compressedSize !== null) ? (

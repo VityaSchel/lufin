@@ -18,7 +18,7 @@ export type PendingPageDocument = BasePageDocument & {
   incomplete: true
   tmpUploadId: string
   wsChannelId: string
-  setExpiresAtTo: number
+  setExpiresAtTo?: number
 }
 
 export type PageDocument = BasePageDocument & {

@@ -63,3 +63,35 @@ export async function deleteFilesPage(deleteToken: string) {
     })
     .parse(await response.json())
 }
+
+const limitsSchema = z.array(
+  z
+    .object({
+      limit: z.number().nonnegative(),
+      seconds: z.number().int().nonnegative()
+    })
+    .strict()
+)
+
+let cachedLimits: { limit: number; seconds: number }[] | null = null
+let getLimitsLock: Promise<z.infer<typeof limitsSchema> | 'error'> | null = null
+export async function getLimits() {
+  if (cachedLimits !== null) return cachedLimits
+  if (!getLimitsLock) {
+    getLimitsLock = new Promise(async (resolve) => {
+      try {
+        const response = await fetch(import.meta.env.VITE_API_URL + '/limits')
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const limits = limitsSchema.parse(await response.json()).sort((a, b) => a.limit - b.limit)
+        cachedLimits = limits
+        resolve(limits)
+      } catch (error) {
+        console.error('Failed to fetch limits:', error)
+        resolve('error')
+      }
+    })
+  }
+  return getLimitsLock
+}

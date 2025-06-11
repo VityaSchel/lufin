@@ -1,6 +1,7 @@
 import getDB from '$db'
 import type { PendingPageDocument } from '$db/schema/file'
 import Elysia, { t, NotFoundError } from 'elysia'
+import { maxUploadSize } from 'src/config'
 import { getMaxFilesSize } from 'src/utils/expiration-time'
 import { uploadFiles } from 'src/utils/submit-files'
 
@@ -37,11 +38,6 @@ export const uploadFilesRoute = new Elysia().post(
       return { ok: false, error: 'LINK_EXPIRED' }
     }
 
-    const maxFilesSize = Math.min(
-      100 * 1000 * 1000,
-      getMaxFilesSize(page.expiresAt - Date.now()),
-    )
-
     const sumNewFileSizeBytes = bodyFiles.reduce(
       (prev, [, file]) => prev + file.size,
       0,
@@ -50,7 +46,10 @@ export const uploadFilesRoute = new Elysia().post(
       (prev, file) => prev + file.filesizeInBytes,
       0,
     )
-    if (sumNewFileSizeBytes + sumExistingFileSizeBytes > maxFilesSize) {
+    if (
+      sumNewFileSizeBytes + sumExistingFileSizeBytes >
+      maxUploadSize * 1000 * 1000
+    ) {
       set.status = 413
       return { ok: false, error: 'FILES_ARE_TOO_BIG' }
     }

@@ -2,8 +2,26 @@ import { Headline } from '$entities/headline'
 import { m } from '$m'
 import { Link } from '$shared/ui/link'
 import Encryption from '$assets/encryption.svg'
+import React from 'react'
+import { CircularProgress } from '@mui/material'
+import { z } from 'zod'
+import { filesize } from 'filesize'
+import { getLocale } from '$paraglide/runtime'
+import { formatDistanceStrict } from 'date-fns'
+import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
+import { getLimits } from '$app/api'
 
 export function UploaderInfo() {
+  const [limits, setLimits] = React.useState<{ limit: number; seconds: number }[] | null | 'error'>(
+    null
+  )
+
+  React.useEffect(() => {
+    getLimits().then(setLimits)
+  }, [])
+
+  const maxUploadSize = limits === 'error' ? undefined : limits?.at(-1)?.limit
+
   return (
     <div className="flex flex-col lg:flex-row gap-16 text-neutral-200 whitespace-pre-wrap [&_p]:leading-[160%] [&_p]:my-2">
       <div className="flex-[4]">
@@ -11,10 +29,29 @@ export function UploaderInfo() {
           {m.termsFooter_expiration()}
         </Headline>
         <p>{m.uploadForm_text()}</p>
-        {/*
-        до 500MБ могут храниться до 30 дней,
-        файлы размером более 500МБ загрузить нельзя
-          */}
+        <div className="mt-6">
+          {limits === null ? (
+            <CircularProgress />
+          ) : limits === 'error' ? (
+            '[Error while fetching limits]'
+          ) : limits.length === 0 ? (
+            'N/A'
+          ) : (
+            <ul className="">
+              {limits.map(({ limit, seconds }, i) => (
+                <li key={i}>
+                  &lt;= {filesize(limit * 1000 * 1000, { locale: getLocale() })}:{' '}
+                  {formatDistanceStrict(seconds * 1000, 0, {
+                    locale: getDateFnsLocale(getLocale())
+                  })}
+                </li>
+              ))}
+              {maxUploadSize !== undefined && maxUploadSize !== Infinity && (
+                <li>&gt;{filesize(maxUploadSize * 1000 * 1000, { locale: getLocale() })}: 🚫</li>
+              )}
+            </ul>
+          )}
+        </div>
         <Headline variant="h4" className="mt-6 mb-2">
           {m.termsFooter_howItWorks_title()}
         </Headline>

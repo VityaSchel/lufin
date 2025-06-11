@@ -42,6 +42,7 @@ type Update =
       type: 'upload_success'
       pageId: string
       authorToken: string
+      pageExpiresAt: number
     }
 
 export function sendUpdate(channelId: string, update: Update) {
@@ -51,7 +52,10 @@ export function sendUpdate(channelId: string, update: Update) {
   if (ws) {
     switch (update.type) {
       case 'upload_success':
-        sendWsUploadSuccess(ws.send, update.authorToken)
+        sendWsUploadSuccess(ws.send, {
+          authorToken: update.authorToken,
+          expiresAt: update.pageExpiresAt,
+        })
         ws.close(1000)
         break
       case 'upload_errored':
@@ -91,12 +95,13 @@ type SendFunction = import('elysia/ws').ElysiaWS['send']
 
 export const sendWsUploadSuccess = (
   send: SendFunction,
-  authorToken: string,
+  { authorToken, expiresAt }: { authorToken: string; expiresAt: number },
 ) => {
   send(
     JSON.stringify({
       update_type: 'upload_success',
       author_token: authorToken,
+      expires_at: expiresAt,
       isClosing: true,
     }),
   )

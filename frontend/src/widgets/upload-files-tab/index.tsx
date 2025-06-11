@@ -68,7 +68,6 @@ export function UploadFilesTab({
             <Formik
               initialValues={{
                 files: null,
-                expiresAt: null,
                 password: null,
                 deleteAtFirstDownload: false,
                 convertToZip: false,
@@ -77,9 +76,6 @@ export function UploadFilesTab({
               }}
               validate={(values: FilesUploaderFormValues) => {
                 const errors: Partial<Record<keyof FilesUploaderFormValues, string>> = {}
-                if (values.expiresAt instanceof Date && isNaN(values.expiresAt.getTime())) {
-                  errors.expiresAt = m.uploadForm_expirationDateInvalid()
-                }
                 if (
                   values.deleteAtFirstDownload &&
                   values.files &&

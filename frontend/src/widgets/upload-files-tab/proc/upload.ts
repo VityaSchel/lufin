@@ -1,7 +1,6 @@
 import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
 import { saveFilesPage as saveFilesPageToLocalStorage } from '$shared/storage'
 import { encryptFiles } from '$shared/utils/files-encryption'
-import { getExpiresAt } from '$shared/utils/get-max-expiration'
 import { nmZipFilename } from '$shared/utils/zip-file-name'
 import type { Links } from '$widgets/upload-files-tab'
 import JSZip from 'jszip'
@@ -77,13 +76,18 @@ export function onSubmitForm({
       const tmpUploadId = startUploadResponse.tmpUploadId
       const links = startUploadResponse.links
 
-      const onUploadSuccess = ({ authorToken }: { authorToken: string }) => {
-        const filesSumSize = files.reduce((prev, cur) => prev + cur.size, 0)
+      const onUploadSuccess = ({
+        authorToken,
+        expiresAt
+      }: {
+        authorToken: string
+        expiresAt: number
+      }) => {
         saveFilesPageToLocalStorage({
           pageId: links.download,
           decryptionToken: privateDecryptionKey,
           files: srcFiles.map((f) => ({ name: f.name, type: f.type })),
-          expiresAt: new Date(getExpiresAt(values.expiresAt, filesSumSize)),
+          expiresAt: new Date(expiresAt),
           deleteAfterFirstDownload: values.deleteAtFirstDownload,
           deleteToken: links.delete,
           authorToken
@@ -152,9 +156,6 @@ function generateUploadBody(
   const startUploadBody: Record<string, any> = {}
   const uploadBody = new FormData()
 
-  const filesSumSize = files.reduce((prev, cur) => prev + cur.size, 0)
-  startUploadBody['expiresAt'] = String(getExpiresAt(values.expiresAt, filesSumSize))
-
   if (values.password) {
     startUploadBody['password'] = values.password
   }
@@ -181,7 +182,7 @@ function generateUploadBody(
 function subscribeToWebSocket(
   channelId: string,
   onFileUploaded: (fileIndex: number) => any,
-  onUploadSuccess: (data: { links: Links; authorToken: string }) => any,
+  onUploadSuccess: (data: { links: Links; authorToken: string; expiresAt: number }) => any,
   resolve: () => any
 ) {
   const url = new URL(`${import.meta.env.VITE_API_URL}/updates/${channelId}`)
@@ -197,6 +198,7 @@ function subscribeToWebSocket(
           update_type: 'upload_success'
           links: { download: string; delete: string }
           author_token: string
+          expires_at: number
           isClosing: true
         }
       | { update_type: 'errored'; reason: string; isClosing: true }
@@ -206,16 +208,20 @@ function subscribeToWebSocket(
         onFileUploaded(Number(data.file.substring('file'.length)))
         break
       case 'upload_errored':
-        alert('Ошибка во время загрузки файлов: ' + data.error)
+        alert('Error while uploading files: ' + data.error)
         resolve()
         break
       case 'upload_success':
-        onUploadSuccess({ links: data.links, authorToken: data.author_token })
+        onUploadSuccess({
+          links: data.links,
+          authorToken: data.author_token,
+          expiresAt: data.expires_at
+        })
         resolve()
         break
       case 'errored':
         console.error('Error while uploading files', data.reason)
-        alert('Ошибка во время загрузки файлов!')
+        alert('Error while uploading files!')
         resolve()
         break
     }

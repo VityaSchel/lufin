@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import { Headline } from '$entities/headline'
 import cx from 'classnames'
 import { useFormikContext } from 'formik'
 import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
@@ -10,17 +9,21 @@ import { UploadFilesContext } from '$widgets/upload-files-tab'
 import { produce } from 'immer'
 import type { UploadableFile as UploadableFileType } from '$shared/uploadable-file'
 import { m } from '$m'
+import { filesize } from 'filesize'
+import { getLocale } from '$paraglide/runtime'
+import * as API from '$app/api'
 
 export function UploadableFilesList() {
   const { values, setFieldValue, isSubmitting } = useFormikContext<FilesUploaderFormValues>()
   const context = React.useContext(UploadFilesContext)
+  const [fileSizeLimit, setFileSizeLimit] = React.useState<undefined | number>()
 
   const sumSizeBytes = React.useMemo(
     () => (values.files ? values.files.reduce((prev, cur) => prev + cur.blob.size, 0) : 0),
     [values.files]
   )
 
-  const sumSizeExceededLimit = sumSizeBytes > 1000 * 1000 * 100
+  const sumSizeExceededLimit = fileSizeLimit !== undefined && sumSizeBytes > fileSizeLimit
 
   const handleRemove = (i: number) => {
     const files = produce(values.files!, (draft) => {
@@ -42,6 +45,15 @@ export function UploadableFilesList() {
     })
     setFieldValue('files', files)
   }
+
+  React.useEffect(() => {
+    API.getLimits().then((limits) => {
+      const maxUploadSize = limits === 'error' ? undefined : limits?.at(-1)?.limit
+      if (maxUploadSize !== undefined && maxUploadSize !== Infinity) {
+        setFileSizeLimit(maxUploadSize * 1000 * 1000)
+      }
+    })
+  }, [])
 
   return (
     <>
@@ -77,7 +89,9 @@ export function UploadableFilesList() {
           {Boolean(!values.files?.length || sumSizeExceededLimit) && (
             <span className={styles.hint}>
               {sumSizeExceededLimit
-                ? m.uploadForm_limitExceeded()
+                ? m.uploadForm_limitExceeded({
+                    maxSize: filesize(fileSizeLimit, { locale: getLocale() })
+                  })
                 : m.uploadForm_dragHere()}
             </span>
           )}

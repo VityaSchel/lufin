@@ -10,7 +10,7 @@ export async function cleanup() {
 
   const pages = await db
     .collection<PageDocument>('files')
-    .find({ expiresAt: { $lt: expirationTime } })
+    .find({ expiresAt: { $lte: expirationTime } })
     .toArray()
 
   console.log(

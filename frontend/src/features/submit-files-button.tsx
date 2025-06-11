@@ -3,16 +3,27 @@ import type { FilesUploaderFormValues } from '$shared/model/files-uploader-value
 import { Button } from '$shared/ui/components/button'
 import { useFormikContext } from 'formik'
 import { m } from '$m'
+import * as API from '$app/api'
 
 export function SubmitFilesButton() {
   const { values, errors, isSubmitting } = useFormikContext<FilesUploaderFormValues>()
+  const [fileSizeLimit, setFileSizeLimit] = React.useState<undefined | number>()
 
   const sumSizeBytes = React.useMemo(
     () => (values.files ? values.files.reduce((prev, cur) => prev + cur.blob.size, 0) : 0),
     [values.files]
   )
 
-  const sumSizeExceededLimit = sumSizeBytes > 1000 * 1000 * 100
+  const sumSizeExceededLimit = fileSizeLimit !== undefined && sumSizeBytes > fileSizeLimit
+
+  React.useEffect(() => {
+    API.getLimits().then((limits) => {
+      const maxUploadSize = limits === 'error' ? undefined : limits?.at(-1)?.limit
+      if (maxUploadSize !== undefined && maxUploadSize !== Infinity) {
+        setFileSizeLimit(maxUploadSize * 1000 * 1000)
+      }
+    })
+  }, [])
 
   return (
     <Button

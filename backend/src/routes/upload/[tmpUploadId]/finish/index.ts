@@ -3,6 +3,7 @@ import Elysia, { t, NotFoundError } from 'elysia'
 import { sendUpdate as sendWsUpdate } from 'src/ws'
 import { nanoid } from 'nanoid'
 import type { PendingPageDocument } from '$db/schema/file'
+import { getMaxExpirationTime } from 'src/utils/expiration-time'
 
 export const finishFilesUploadRoute = new Elysia().post(
   '/upload/:tmpUploadId/finish',
@@ -23,6 +24,14 @@ export const finishFilesUploadRoute = new Elysia().post(
 
     const authorToken = nanoid(32)
 
+    const pageFilesSize = page.files.reduce(
+      (acc, f) => acc + f.filesizeInBytes,
+      0,
+    )
+
+    const expiresAt =
+      page.setExpiresAtTo ?? Date.now() + getMaxExpirationTime(pageFilesSize)
+
     await db.collection<PendingPageDocument>('files').updateOne(
       { incomplete: true, tmpUploadId },
       {
@@ -35,7 +44,7 @@ export const finishFilesUploadRoute = new Elysia().post(
         $set: {
           authorToken: authorToken,
           downloadsNum: 0,
-          expiresAt: page.setExpiresAtTo,
+          expiresAt,
         },
       },
     )
@@ -44,6 +53,7 @@ export const finishFilesUploadRoute = new Elysia().post(
       type: 'upload_success',
       pageId: page.pageId,
       authorToken: authorToken,
+      pageExpiresAt: page.expiresAt,
     })
 
     return { ok: true }

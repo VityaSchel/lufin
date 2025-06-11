@@ -9,15 +9,18 @@ import type { PendingPageDocument } from '$db/schema/file'
 export const uploadRoute = new Elysia().post(
   '/upload',
   async ({ body, set }) => {
-    const tooLittleTimeToExpire =
-      new Date(body.expiresAt).getTime() < Date.now() + 1 * 1000
-    const tooMuchTimeToExpire =
-      new Date(body.expiresAt).getTime() > Date.now() + getMaxExpirationTime(0)
-    if (tooLittleTimeToExpire || tooMuchTimeToExpire) {
-      set.status = 400
-      return {
-        ok: false,
-        error: 'EXPIRY_DATE_INVALID',
+    if (body.expiresAt) {
+      const tooLittleTimeToExpire =
+        new Date(body.expiresAt).getTime() < Date.now() + 1 * 1000
+      const tooMuchTimeToExpire =
+        new Date(body.expiresAt).getTime() >
+        Date.now() + getMaxExpirationTime(0)
+      if (tooLittleTimeToExpire || tooMuchTimeToExpire) {
+        set.status = 400
+        return {
+          ok: false,
+          error: 'EXPIRY_DATE_INVALID',
+        }
       }
     }
 
@@ -53,16 +56,18 @@ export const uploadRoute = new Elysia().post(
   },
   {
     body: t.Object({
-      expiresAt: t
-        .Transform(t.Union([t.String(), t.Number()]))
-        .Decode((value) => {
-          const num = typeof value === 'string' ? Number(value) : value
-          if (!Number.isInteger(num) || num <= 0 || num > 33247742400000) {
-            throw new Error('Invalid expiresAt value')
-          }
-          return num
-        })
-        .Encode((value) => value),
+      expiresAt: t.Optional(
+        t
+          .Transform(t.Union([t.String(), t.Number()]))
+          .Decode((value) => {
+            const num = typeof value === 'string' ? Number(value) : value
+            if (!Number.isInteger(num) || num <= 0 || num > 33247742400000) {
+              throw new Error('Invalid expiresAt value')
+            }
+            return num
+          })
+          .Encode((value) => value),
+      ),
 
       checksum: t.Optional(
         t.String({
