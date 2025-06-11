@@ -129,7 +129,7 @@ export function DirectLinkFileWidget({
           <Progress progress={downloadProgress! * 100} />
         </div>
       )}
-      {!encrypted && getFileType(file.mimeType, file.name) === 'image' && (
+      {!encrypted && !password && getFileType(file.mimeType, file.name) === 'image' && (
         <EmbedLinks pageId={pageId} file={fileNameOrIndex} />
       )}
     </section>

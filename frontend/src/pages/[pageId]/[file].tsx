@@ -8,6 +8,7 @@ import { FilesPagePasswordInput } from '$widgets/files-page-password-input'
 import { useParams } from 'react-router'
 import * as API from '$app/api'
 import PageNotFound from '$pages/404'
+import { m } from '$m'
 
 export default function DirectFilePage() {
   const [isLoaded, setIsLoaded] = React.useState(false)
@@ -17,7 +18,7 @@ export default function DirectFilePage() {
   const [encrypted, setEncrypted] = React.useState<boolean>(false)
 
   const [password, setPassword] = React.useState<string | undefined>(undefined)
-  const [passwordError, setPasswordError] = React.useState<boolean>(false)
+  const [passwordError, setPasswordError] = React.useState<string | null>(null)
   const [passwordSubmitting, setPasswordSubmitting] = React.useState<boolean>(false)
 
   const params = useParams()
@@ -58,14 +59,20 @@ export default function DirectFilePage() {
           }
           setIsLoaded(true)
         } else {
-          if (response.error === 'PAGE_NOT_FOUND') {
+          if (response.error === 'NOT_FOUND') {
             setPageNotFound(true)
           } else if (response.error === 'PAGE_PASSWORD_PROTECTED') {
             setIsLoaded(true)
-          } else if (response.error === 'PASSWORD_INVALID') {
+          } else if (response.error === 'INVALID_PAGE_PASSWORD') {
             setFile(null)
-            setPasswordError(true)
+            setPasswordError(m.passwordProtection_incorrectPassword())
           }
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        if (password) {
+          setPasswordError(m.passwordProtection_error())
         }
       })
       .finally(() => {

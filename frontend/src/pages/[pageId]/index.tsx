@@ -8,6 +8,7 @@ import { DecryptionKeyContext } from '$shared/context/decryption-key'
 import { useParams } from 'react-router'
 import * as API from '$app/api'
 import PageNotFound from '$pages/404'
+import { m } from '$m'
 
 export default function FilePage() {
   const [isLoaded, setIsLoaded] = React.useState(false)
@@ -17,18 +18,13 @@ export default function FilePage() {
   const [encrypted, setEncrypted] = React.useState<boolean>(false)
 
   const [password, setPassword] = React.useState<string | undefined>(undefined)
-  const [passwordError, setPasswordError] = React.useState<boolean>(false)
+  const [passwordError, setPasswordError] = React.useState<string | null>(null)
   const [passwordSubmitting, setPasswordSubmitting] = React.useState<boolean>(false)
 
   const params = useParams()
   const pageId = params.pageId
 
-  if (!pageId || pageNotFound) {
-    return <PageNotFound />
-  }
-
-  React.useEffect(() => {
-    setPasswordSubmitting(true)
+  const fetchFiles = (pageId: string, password: string | undefined) => {
     API.getFilesPage(pageId, password)
       .then((response) => {
         if (response.ok) {
@@ -45,20 +41,35 @@ export default function FilePage() {
           }
           setIsLoaded(true)
         } else {
-          if (response.error === 'PAGE_NOT_FOUND') {
+          if (response.error === 'NOT_FOUND') {
             setPageNotFound(true)
           } else if (response.error === 'PAGE_PASSWORD_PROTECTED') {
             setIsLoaded(true)
-          } else if (response.error === 'PASSWORD_INVALID') {
+          } else if (response.error === 'INVALID_PAGE_PASSWORD') {
             setFiles(null)
-            setPasswordError(true)
+            setPasswordError(m.passwordProtection_incorrectPassword())
           }
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        if (password) {
+          setPasswordError(m.passwordProtection_error())
         }
       })
       .finally(() => {
         setPasswordSubmitting(false)
       })
+  }
+
+  React.useEffect(() => {
+    setPasswordSubmitting(true)
+    if (pageId) fetchFiles(pageId, password)
   }, [pageId, password])
+
+  if (!pageId || pageNotFound) {
+    return <PageNotFound />
+  }
 
   return (
     <DecryptionKeyContext.Provider value={decryptionKey}>
@@ -77,8 +88,9 @@ export default function FilePage() {
           <FilesPagePasswordInput
             onSubmit={(password) => {
               setPassword(password)
-              setPasswordError(false)
+              setPasswordError(null)
               setIsLoaded(true)
+              fetchFiles(pageId, password)
             }}
             error={passwordError}
             submitting={passwordSubmitting}

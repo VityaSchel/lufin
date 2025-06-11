@@ -257,6 +257,7 @@ export function DownloadFilesInfo({
             ref={(el: (typeof sharedFileComponentRefs.current)[number]) =>
               (sharedFileComponentRefs.current[i] = el)
             }
+            passwordProtected={Boolean(password)}
             pageId={pageId}
             isErrored={erroredIndexes[i] ?? false}
             downloadProgress={fileIndexesDlProgress[i] ?? false}

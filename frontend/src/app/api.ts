@@ -9,8 +9,12 @@ export async function getFilesPage(pageId: string, password?: string) {
     }
   })
   const filesResponse = (await filesRequest.json()) as
-    | { ok: true; encrypted: boolean; files: { filename: string; sizeInBytes: number; mimeType: string }[] }
-    | { ok: false; error: 'PAGE_NOT_FOUND' | 'PAGE_PASSWORD_PROTECTED' | 'PASSWORD_INVALID' }
+    | {
+        ok: true
+        encrypted: boolean
+        files: { filename: string; sizeInBytes: number; mimeType: string }[]
+      }
+    | { ok: false; error: 'NOT_FOUND' | 'PAGE_PASSWORD_PROTECTED' | 'INVALID_PAGE_PASSWORD' }
   return filesResponse
 }
 

@@ -46,6 +46,7 @@ const SharedFile = React.forwardRef(
       onSave,
       file,
       encrypted,
+      passwordProtected,
       content,
       onOpenPreviousPreview,
       onOpenNextPreview,
@@ -53,6 +54,7 @@ const SharedFile = React.forwardRef(
     }: {
       pageId: string
       encrypted: boolean
+      passwordProtected: boolean
       isErrored: boolean
       downloadProgress: number | false
       onDownloadStarted: (endedCallback?: 'SAVE' | 'PREVIEW') => any
@@ -194,7 +196,9 @@ const SharedFile = React.forwardRef(
             onOpenNextPreview={handleOpenNextPreview}
           />
         )}
-        {!encrypted && fileType === 'image' && <EmbedLinks pageId={pageId} file={file.name} />}
+        {!encrypted && !passwordProtected && fileType === 'image' && (
+          <EmbedLinks pageId={pageId} file={file.name} />
+        )}
       </div>
     )
   }

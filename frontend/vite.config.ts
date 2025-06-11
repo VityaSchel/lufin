@@ -9,7 +9,11 @@ export default defineConfig({
     svgr({
       include: '**/*.svg'
     }),
-    paraglideVitePlugin({ project: './project.inlang', outdir: './src/paraglide' }),
+    paraglideVitePlugin({
+      project: './project.inlang',
+      outdir: './src/paraglide',
+      strategy: ['cookie', 'preferredLanguage', 'baseLocale']
+    }),
     react()
   ],
   resolve: {

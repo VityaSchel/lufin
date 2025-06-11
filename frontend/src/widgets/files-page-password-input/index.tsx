@@ -12,7 +12,7 @@ export function FilesPagePasswordInput({
   submitting
 }: {
   onSubmit: (password: string) => void
-  error: boolean
+  error: string | null
   submitting: boolean
 }) {
   const [password, setInput] = React.useState('')
@@ -35,7 +35,7 @@ export function FilesPagePasswordInput({
           disabled={submitting}
           autoComplete="new-password"
         />
-        {error !== null && <FormHelperText error>{m.passwordProtection_error()}</FormHelperText>}
+        {error !== null && <FormHelperText error>{error}</FormHelperText>}
       </div>
       <Button disabled={!password || submitting} onClick={handleSubmit}>
         {m.passwordProtection_submitButton()}
