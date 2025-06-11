@@ -41,14 +41,13 @@ fastify.register(fastifyMultipart, {
   }
 })
 
-fastify.post('/start-upload', PostStartUpload)
+fastify.post('/upload', PostStartUpload)
 fastify.post('/upload/:tmpUploadID', PostUpload)
-fastify.post('/finish-upload/:tmpUploadID', PostFinishUpload)
-fastify.get('/files/:pageID', GetFiles)
-fastify.get('/files/:pageID/:file', GetPageFile)
-fastify.delete('/files/:deleteToken', DeleteFiles)
-fastify.get('/files/delete/:deleteToken', DeleteFiles)
-fastify.get('/basic-info/:pageID', GetFilesBasicInfo)
+fastify.post('/upload/:tmpUploadID/finish', PostFinishUpload)
+fastify.get('/page/:pageID', GetFiles)
+fastify.get('/page/:pageID/:file', GetPageFile)
+fastify.delete('/page', DeleteFiles)
+fastify.get('/page/:pageID/info', GetFilesBasicInfo)
 
 fastify.setErrorHandler((error, req, reply) => {
   if(error.code === 'FST_ERR_CTP_INVALID_MEDIA_TYPE') {
@@ -61,7 +60,7 @@ fastify.setErrorHandler((error, req, reply) => {
     reply.code(500).send({ ok: false, error: 'INTERNAL_SERVER_ERROR' })
   }
 })
-const port = process.env.PORT ? Number(process.env.PORT) : 18723
+const port = process.env.PORT ? Number(process.env.PORT) : 3000
 
 fastify.register((instance) => {
   instance.get('/updates/:channelID', { websocket: true }, WebsocketHandler)

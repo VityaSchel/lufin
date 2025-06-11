@@ -220,13 +220,17 @@ export async function GetFiles(request: FastifyRequest<{ Params: { pageID: unkno
   
   const db = await getDB()
   const page = (await db.collection<DBFileMetadata>('files')
-    .findOne({ pageID: pageIdParsing, incomplete: { $ne: true } }))!
+    .findOne({ pageID: pageIdParsing.data, incomplete: { $ne: true } }))!
   
-  reply.send({ ok: true, files: page.files.map(f => ({
-    filename: f.filename,
-    sizeInBytes: f.filesizeInBytes,
-    mimeType: f.mimeType ?? ''
-  })) })
+  reply.send({
+    ok: true,
+    encrypted: page.encrypted,
+    files: page.files.map(f => ({
+      filename: f.filename,
+      sizeInBytes: f.filesizeInBytes,
+      mimeType: f.mimeType ?? ''
+    }))
+  })
 }
 
 export async function GetPageFile(request: FastifyRequest<{ Params: { pageID: unknown, file: unknown } }>, reply: FastifyReply) {
@@ -278,8 +282,8 @@ export async function GetPageFile(request: FastifyRequest<{ Params: { pageID: un
     .send(fileContentsStream)
 }
 
-export async function DeleteFiles(request: FastifyRequest<{ Params: { deleteToken: unknown } }>, reply: FastifyReply) {
-  const deleteToken = request.params.deleteToken
+export async function DeleteFiles(request: FastifyRequest, reply: FastifyReply) {
+  const deleteToken = request.headers.authorization
   if(typeof deleteToken !== 'string') { throw new MiddlewareError({ code: 403, error: '' }) }
   const db = await getDB()
   const page = await db.collection<DBFileMetadata>('files')

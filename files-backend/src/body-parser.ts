@@ -28,7 +28,7 @@ export async function parseBody(request: FastifyRequest): Promise<{ body: Record
       await new Promise(resolve => part.file.on('end', resolve))
       const stream = createReadableStream(chunks)
       const buf = await stream2buffer(stream)
-      const sizeInBytes = Buffer.byteLength(buf)
+      const sizeInBytes = buf.byteLength
       if(sizeInBytes === 0) continue
       files.push({
         fieldname: part.fieldname,
