@@ -1,15 +1,31 @@
 import { base64toUint8, uint8ToBase64Fast } from '$shared/utils/encodings'
 
-export async function encryptFiles(files: File[]): Promise<{ files: File[], privateDecryptionKey: string }> {
+async function calculateChecksum({ iv, key }: DecryptionKey) {
+  const encoded = await crypto.subtle.encrypt(
+    { name: 'AES-CBC', iv },
+    key,
+    new TextEncoder().encode('hloth')
+  )
+  const hashBuffer = await crypto.subtle.digest('SHA-256', encoded)
+  const checksum = Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+  return checksum
+}
+
+export async function encryptFiles(
+  files: File[]
+): Promise<{ result: { files: File[]; privateDecryptionKey: string }; checksum: string }> {
   const encryptedBuffers: ArrayBuffer[] = []
 
   const iv = crypto.getRandomValues(new Uint8Array(16))
-  const key = await crypto.subtle.generateKey({ 'name': 'AES-CBC', 'length': 128 }, true, ['encrypt', 'decrypt'])
+  const key = await crypto.subtle.generateKey({ name: 'AES-CBC', length: 128 }, true, [
+    'encrypt',
+    'decrypt'
+  ])
 
-  for(const file of files) {
-    encryptedBuffers.push(
-      await encryptFile(file, iv, key)
-    )
+  for (const file of files) {
+    encryptedBuffers.push(await encryptFile(file, iv, key))
   }
 
   const encryptedFiles = encryptedBuffers.map((buf, i) => {
@@ -25,18 +41,21 @@ export async function encryptFiles(files: File[]): Promise<{ files: File[], priv
   const privateDecryptionKey = uint8ToBase64Fast(concatPrivateKey)
 
   return {
-    files: encryptedFiles,
-    privateDecryptionKey: privateDecryptionKey
+    result: {
+      files: encryptedFiles,
+      privateDecryptionKey: privateDecryptionKey
+    },
+    checksum: await calculateChecksum({ iv, key })
   }
 }
 
 function encryptFile(file: File, iv: Uint8Array, key: CryptoKey) {
-  return new Promise<ArrayBuffer>(resolve => {
+  return new Promise<ArrayBuffer>((resolve) => {
     const fileReader = new FileReader()
-    
+
     fileReader.addEventListener('load', async (e) => {
       const data = e.target!.result as ArrayBuffer
-      const encrypted = await crypto.subtle.encrypt({ 'name': 'AES-CBC', iv }, key, data)
+      const encrypted = await crypto.subtle.encrypt({ name: 'AES-CBC', iv }, key, data)
       resolve(encrypted)
     })
 
@@ -44,17 +63,26 @@ function encryptFile(file: File, iv: Uint8Array, key: CryptoKey) {
   })
 }
 
-export type DecryptionKey = { iv: ArrayBuffer, key: CryptoKey }
+export async function verifyChecksum(storedChecksum: string, decryptionKey: DecryptionKey) {
+  const calculatedChecksum = await calculateChecksum(decryptionKey)
+  return storedChecksum === calculatedChecksum
+}
+
+export type DecryptionKey = { iv: Uint8Array<ArrayBuffer>; key: CryptoKey }
 export function decryptFile(decryptionKey: DecryptionKey, content: Blob) {
   return new Promise<ArrayBuffer>((resolve, reject) => {
     const fileReader = new FileReader()
-    
+
     fileReader.addEventListener('load', async (e) => {
       const data = e.target!.result as ArrayBuffer
       try {
-        const decrypted = await crypto.subtle.decrypt({ 'name': 'AES-CBC', iv: decryptionKey.iv }, decryptionKey.key, data)
+        const decrypted = await crypto.subtle.decrypt(
+          { name: 'AES-CBC', iv: decryptionKey.iv },
+          decryptionKey.key,
+          data
+        )
         resolve(decrypted)
-      } catch(e) {
+      } catch (e) {
         reject(e)
       }
     })
@@ -66,20 +94,34 @@ export function decryptFile(decryptionKey: DecryptionKey, content: Blob) {
 export async function getDecryptionKey(encodedKey: string): Promise<DecryptionKey> {
   const uint8array = base64toUint8(encodedKey, 0)
   if (uint8array.length !== 33) {
-    throw new Error('Invalid decryption key length. Expected 32 bytes. Found ' + (uint8array.length - 1) + ' bytes.')
+    throw new Error(
+      'Invalid decryption key length. Expected 32 bytes. Found ' +
+        (uint8array.length - 1) +
+        ' bytes.'
+    )
   }
   const iv = uint8array.slice(0, 16)
   const keyUint = uint8array.slice(16, 32)
-  const key = await crypto.subtle.importKey('raw', keyUint, { name: 'AES-CBC' }, true, ['encrypt', 'decrypt'])
+  const key = await crypto.subtle.importKey('raw', keyUint, { name: 'AES-CBC' }, true, [
+    'encrypt',
+    'decrypt'
+  ])
   return { iv, key }
 }
 
-export const decodeDecryptionKey = async () => {
+export const decodeDecryptionKey = async ({ checksum }: { checksum?: string }) => {
   try {
     const encodedKey = window.location.hash
-    const key = await getDecryptionKey(encodedKey.startsWith('#') ? encodedKey.substring(1) : encodedKey)
+    const key = await getDecryptionKey(
+      encodedKey.startsWith('#') ? encodedKey.substring(1) : encodedKey
+    )
+    if (checksum) {
+      if (!(await verifyChecksum(checksum, key))) {
+        throw new Error('Checksum verification failed')
+      }
+    }
     return key
-  } catch(e) {
+  } catch (e) {
     console.error('Error while decoding decryption key', e)
     return 'error'
   }

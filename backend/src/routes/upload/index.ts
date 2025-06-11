@@ -33,6 +33,7 @@ export const uploadRoute = new Elysia().post(
       incomplete: true,
       pageId,
       files: [],
+      checksum: body.checksum,
       expiresAt: Date.now() + 1000 * 60 * 5, // 5 minutes to upload files
       setExpiresAtTo: body.expiresAt,
       deleteAtFirstDownload: body.deleteAtFirstDownload,
@@ -62,6 +63,14 @@ export const uploadRoute = new Elysia().post(
           return num
         })
         .Encode((value) => value),
+
+      checksum: t.Optional(
+        t.String({
+          minLength: 64,
+          maxLength: 64,
+          pattern: '^[a-f0-9]{64}$',
+        }),
+      ),
 
       password: t.Optional(t.String({ minLength: 1, maxLength: 128 })),
 

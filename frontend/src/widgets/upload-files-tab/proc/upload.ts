@@ -6,7 +6,7 @@ import { nmZipFilename } from '$shared/utils/zip-file-name'
 import type { Links } from '$widgets/upload-files-tab'
 import JSZip from 'jszip'
 
-type ValidatedValues = FilesUploaderFormValues & { files: File[] }
+type ValidatedValues = FilesUploaderFormValues & { files: File[]; checksum?: string }
 export function onSubmitForm({
   values,
   uploadStrategy,
@@ -48,9 +48,10 @@ export function onSubmitForm({
     let privateDecryptionKey: string
     if (values.encrypt) {
       try {
-        const result = await encryptFiles(srcFiles)
+        const { result, checksum } = await encryptFiles(srcFiles)
         files = result.files
         privateDecryptionKey = result.privateDecryptionKey
+        validatedValues.checksum = checksum
       } catch (e) {
         alert('Error while encrypting files')
         throw e
@@ -159,6 +160,9 @@ function generateUploadBody(
   }
   startUploadBody['deleteAtFirstDownload'] = values.deleteAtFirstDownload ? 'true' : 'false'
   startUploadBody['encrypted'] = values.encrypt ? 'true' : 'false'
+  if (values.checksum) {
+    startUploadBody['checksum'] = values.checksum
+  }
 
   files.forEach((file, i) => {
     uploadBody.append(`file${i}`, file)

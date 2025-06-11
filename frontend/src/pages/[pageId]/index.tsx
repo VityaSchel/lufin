@@ -16,6 +16,7 @@ export default function FilePage() {
   const [decryptionKey, setDecryptionKey] = React.useState<null | 'error' | DecryptionKey>(null)
   const [pageNotFound, setPageNotFound] = React.useState(false)
   const [encrypted, setEncrypted] = React.useState<boolean>(false)
+  const [checksum, setChecksum] = React.useState<string | undefined>()
 
   const [password, setPassword] = React.useState<string | undefined>(undefined)
   const [passwordError, setPasswordError] = React.useState<string | null>(null)
@@ -37,7 +38,7 @@ export default function FilePage() {
           )
           if (response.encrypted) {
             setEncrypted(true)
-            decodeDecryptionKey().then(setDecryptionKey)
+            setChecksum(response.checksum)
           }
           setIsLoaded(true)
         } else {
@@ -66,6 +67,17 @@ export default function FilePage() {
     setPasswordSubmitting(true)
     if (pageId) fetchFiles(pageId, password)
   }, [pageId, password])
+
+  React.useEffect(() => {
+    const onHashChange = () => {
+      decodeDecryptionKey({ checksum }).then(setDecryptionKey)
+    }
+    window.addEventListener('hashchange', onHashChange)
+    onHashChange()
+    return () => {
+      window.removeEventListener('hashchange', onHashChange)
+    }
+  }, [checksum])
 
   if (!pageId || pageNotFound) {
     return <PageNotFound />

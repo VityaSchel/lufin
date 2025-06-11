@@ -16,6 +16,7 @@ export default function DirectFilePage() {
   const [decryptionKey, setDecryptionKey] = React.useState<null | 'error' | DecryptionKey>(null)
   const [pageNotFound, setPageNotFound] = React.useState(false)
   const [encrypted, setEncrypted] = React.useState<boolean>(false)
+  const [checksum, setChecksum] = React.useState<undefined | string>(undefined)
 
   const [password, setPassword] = React.useState<string | undefined>(undefined)
   const [passwordError, setPasswordError] = React.useState<string | null>(null)
@@ -55,9 +56,9 @@ export default function DirectFilePage() {
           })
           if (response.encrypted) {
             setEncrypted(true)
-            decodeDecryptionKey().then(setDecryptionKey)
           }
           setIsLoaded(true)
+          setChecksum(response.checksum)
         } else {
           if (response.error === 'NOT_FOUND') {
             setPageNotFound(true)
@@ -79,6 +80,17 @@ export default function DirectFilePage() {
         setPasswordSubmitting(false)
       })
   }, [pageId, password])
+
+  React.useEffect(() => {
+    const onHashChange = () => {
+      decodeDecryptionKey({ checksum }).then(setDecryptionKey)
+    }
+    window.addEventListener('hashchange', onHashChange)
+    onHashChange()
+    return () => {
+      window.removeEventListener('hashchange', onHashChange)
+    }
+  }, [checksum])
 
   return (
     <DecryptionKeyContext.Provider value={decryptionKey}>

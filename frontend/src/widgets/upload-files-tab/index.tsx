@@ -29,8 +29,6 @@ export function UploadFilesTab({
   const [uploadRequestProgress, setUploadRequestProgress, uploadRequestProgressRef] =
     useComplexState<number[]>([])
 
-  const host = window.location.host
-
   const formikRef = React.useRef<FormikProps<FilesUploaderFormValues>>()
 
   const handleOnFileUploaded = (fileIndex: number) => {

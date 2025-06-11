@@ -6,6 +6,7 @@ type BasePageDocument = {
     filesizeInBytes: number
     mimeType: string
   }[]
+  checksum?: string
   expiresAt: number
   deleteAtFirstDownload: boolean
   deleteToken: string

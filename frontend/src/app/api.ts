@@ -12,6 +12,7 @@ export async function getFilesPage(pageId: string, password?: string) {
     | {
         ok: true
         encrypted: boolean
+        checksum?: string
         files: { filename: string; sizeInBytes: number; mimeType: string }[]
       }
     | { ok: false; error: 'NOT_FOUND' | 'PAGE_PASSWORD_PROTECTED' | 'INVALID_PAGE_PASSWORD' }

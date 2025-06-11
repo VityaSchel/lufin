@@ -1,5 +1,7 @@
 # Lufin — a modern filesharing service based on lufi
 
+![Screenshot](docs/screenshot.png)
+
 Lufin (Let’s Upload that File—Next) is a modern alternative to lufi with nicer design, S3 storage support (with Cloudflare R2 compatability) and rich client-side preview features, translated to 24 languages: English, Русский, Български, Čeština, Dansk, Nederlands, Eesti, Suomi, Français, Deutsch, Ελληνικά, Magyar, Italiano, Latviešu, Lietuvių, Norsk, Polski, Português, Română, Slovenčina, Slovenščina, Español, Svenska, Türkçe.
 
 **This app requires JavaScript in order for client-side encryption to work.**
