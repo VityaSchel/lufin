@@ -33,7 +33,8 @@ export const uploadRoute = new Elysia().post(
       incomplete: true,
       pageId,
       files: [],
-      expiresAt: body.expiresAt,
+      expiresAt: Date.now() + 1000 * 60 * 5, // 5 minutes to upload files
+      setExpiresAtTo: body.expiresAt,
       deleteAtFirstDownload: body.deleteAtFirstDownload,
       deleteToken: deleteToken,
       passwordHash: passwordHash ?? null,

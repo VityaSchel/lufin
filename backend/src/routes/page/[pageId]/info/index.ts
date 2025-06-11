@@ -14,7 +14,6 @@ export const getFilesPageInfoRoute = new Elysia().get(
     }
     return {
       ok: true,
-      exists: true,
       downloads: filesPage.downloadsNum,
       expiresAt: filesPage.expiresAt,
     }

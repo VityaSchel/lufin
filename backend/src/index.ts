@@ -4,8 +4,9 @@ import {
   getFilesPageSubrouter,
   PageMiddlewareError,
 } from 'src/routes/page/[pageId]'
-import { uploadFilesRoute } from 'src/routes/page/upload/[tmpUploadId]'
-import { finishFilesUploadRoute } from 'src/routes/page/upload/[tmpUploadId]/finish'
+import { uploadRoute } from 'src/routes/upload'
+import { uploadFilesRoute } from 'src/routes/upload/[tmpUploadId]'
+import { finishFilesUploadRoute } from 'src/routes/upload/[tmpUploadId]/finish'
 import { deleteFilesPageRoute } from 'src/routes/page'
 import { getFilesPageInfoRoute } from 'src/routes/page/[pageId]/info'
 import { updatesWebsocketRoute } from 'src/routes/updates/[channelId]'
@@ -34,6 +35,7 @@ const app = new Elysia()
     }
   })
   .use(getFilesPageSubrouter)
+  .use(uploadRoute)
   .use(uploadFilesRoute)
   .use(finishFilesUploadRoute)
   .use(deleteFilesPageRoute)

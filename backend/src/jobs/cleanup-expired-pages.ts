@@ -2,7 +2,7 @@ import getDB, { close as closeDb } from '../db'
 import type { PageDocument } from '../db/schema/file'
 import { deleteFile } from '../s3'
 
-export async function deleteOldFiles() {
+export async function cleanup() {
   const db = await getDB()
   const hour = 1000 * 60 * 60
   const gracePeriod = 2 * hour
@@ -32,6 +32,6 @@ export async function deleteOldFiles() {
   return files.length
 }
 
-await deleteOldFiles()
+await cleanup()
 await closeDb()
 process.exit(0)

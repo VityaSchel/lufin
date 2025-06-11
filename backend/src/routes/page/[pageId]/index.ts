@@ -15,7 +15,7 @@ export class PageMiddlewareError extends Error {
 }
 
 export const getFilesPageSubrouter = new Elysia({ prefix: '/page/:pageId' })
-  .resolve(async ({ set, params: { pageId }, headers }) => {
+  .resolve(async ({ params: { pageId }, headers }) => {
     const db = await getDB()
     const page = await db
       .collection<PageDocument>('files')
