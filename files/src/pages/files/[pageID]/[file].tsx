@@ -1,16 +1,11 @@
-'use client'
-
-import { getFilesPageFromDBDirectly } from '@/_app/lib/server-utils'
-import { DecryptionKeyContext } from '@/shared/context/decryption-key'
-import { SharedFileForDownload } from '@/shared/model/shared-file'
-import { DecryptionKey, decodeDecryptionKey } from '@/shared/utils/files-encryption'
-import { DecryptionKeyError } from '@/widgets/decryption-key-error'
-import { DirectLinkFileWidget } from '@/widgets/download-direct-file-info'
-import { FilesPagePasswordInput } from '@/widgets/files-page-password-input'
-import { GetServerSideProps } from 'next'
-import { useRouter } from 'next/router'
 import React from 'react'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { getFilesPageFromDBDirectly } from '$app/lib/server-utils'
+import { DecryptionKeyContext } from '$shared/context/decryption-key'
+import type { SharedFileForDownload } from '$shared/model/shared-file'
+import { type DecryptionKey, decodeDecryptionKey } from '$shared/utils/files-encryption'
+import { DecryptionKeyError } from '$widgets/decryption-key-error'
+import { DirectLinkFileWidget } from '$widgets/download-direct-file-info'
+import { FilesPagePasswordInput } from '$widgets/files-page-password-input'
 
 type FilePageProps = { page: ({ file: SharedFileForDownload } | { passwordProtected: true }) & { encrypted: boolean } }
 
@@ -106,7 +101,7 @@ export const getServerSideProps: GetServerSideProps<FilePageProps, { pageID: str
       notFound: true
     }
   }
-  const db = await (await import('@/_app/db')).getDB()
+  const db = await (await import('$app/db')).getDB()
   const filesPage = await getFilesPageFromDBDirectly(db, pageID)
   if (!filesPage) {
     return {

@@ -1,6 +1,6 @@
-import { getFilesPage } from '@/_app/lib/server-utils'
-import { SharedFileForDownload } from '@/shared/model/shared-file'
-import { withHTTPMethods } from '@/shared/utils/api-middlewars'
+import { getFilesPage } from '$app/lib/server-utils'
+import { SharedFileForDownload } from '$shared/model/shared-file'
+import { withHTTPMethods } from '$shared/utils/api-middlewars'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { z } from 'zod'
 

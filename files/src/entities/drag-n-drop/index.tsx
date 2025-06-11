@@ -1,13 +1,13 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import DragNDropIcon from './drag-n-drop-zone-icon.svg'
-import { Button } from '@/shared/ui/components/button'
+import { Button } from '$shared/ui/components/button'
 import UploadIcon from './upload-icon.svg'
 import { DropTargetMonitor, useDrop } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 import cx from 'classnames'
 import { useFormikContext } from 'formik'
-import { FilesUploaderFormValues } from '@/shared/model/files-uploader-values'
+import { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
 import { useTranslation } from 'next-i18next'
 
 export function DragNDrop({ onChange, disabled }: {

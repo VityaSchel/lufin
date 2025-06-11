@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import { TextField } from '@/shared/ui/components/text-field'
+import { TextField } from '$shared/ui/components/text-field'
 import { IconButton, useMediaQuery } from '@mui/material'
 import ViewIcon from './icons/view.svg'
 import HiddenIcon from './icons/hidden.svg'

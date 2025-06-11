@@ -1,7 +1,3 @@
-import React from "react"
-import { useTranslation } from 'next-i18next'
-import { GetStaticProps } from "next"
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default function PageNotFound() {
   const { t } = useTranslation('filesharing')
@@ -11,14 +7,4 @@ export default function PageNotFound() {
       <h1>{t('page_not_found')}</h1>
     </div>
   )
-}
-
-export const getStaticProps: GetStaticProps = async (context) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(context.locale ?? context.defaultLocale ?? 'en', [
-        'filesharing',
-      ])),
-    }
-  }
 }

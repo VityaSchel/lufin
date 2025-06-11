@@ -1,6 +1,6 @@
 import React from 'react'
-import { SharedFileForDownload } from '@/shared/model/shared-file'
-import { getFileType } from '@/shared/utils/get-file-type'
+import { SharedFileForDownload } from '$shared/model/shared-file'
+import { getFileType } from '$shared/utils/get-file-type'
 
 export const supportedInstantPreviews = ['image']
 export function InstantPreview({ file, content }: {

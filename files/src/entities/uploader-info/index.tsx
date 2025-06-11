@@ -1,7 +1,7 @@
-import { Headline } from '@/entities/headline'
+import { Headline } from '$entities/headline'
 import { useTranslation } from 'next-i18next'
-import { Link } from '@/shared/ui/link'
-import Encryption from '@/assets/encryption.svg'
+import { Link } from '$shared/ui/link'
+import Encryption from '$assets/encryption.svg'
 
 export function UploaderInfo() {
   const { t } = useTranslation('filesharing')

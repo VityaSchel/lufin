@@ -1,4 +1,4 @@
-import { base64toUint8, uint8ToBase64Fast } from '@/shared/utils/encodings'
+import { base64toUint8, uint8ToBase64Fast } from '$shared/utils/encodings'
 
 export async function encryptFiles(files: File[]): Promise<{ files: File[], privateDecryptionKey: string }> {
   const encryptedBuffers: ArrayBuffer[] = []

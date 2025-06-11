@@ -1,15 +1,15 @@
 import styles from './styles.module.scss'
 import { Fade, useMediaQuery } from '@mui/material'
 import FilesIcon from './icons/files.svg'
-import ArchiveIcon from '@/assets/archive.svg'
+import ArchiveIcon from '$assets/archive.svg'
 import { useFormikContext } from 'formik'
-import { FilesUploaderFormValues } from '@/shared/model/files-uploader-values'
-import { nmZipFilename } from '@/shared/utils/zip-file-name'
-import { HorizontalCard } from '@/shared/ui/components/horizontal-card'
+import { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import { nmZipFilename } from '$shared/utils/zip-file-name'
+import { HorizontalCard } from '$shared/ui/components/horizontal-card'
 import byteSize from 'byte-size'
 import plural from 'plural-ru'
 import { useTranslation } from 'next-i18next'
-import { RenamableTitle } from '@/entities/uploadable-file/renamable-title'
+import { RenamableTitle } from '$entities/uploadable-file/renamable-title'
 
 export function UploadableGroupTitle({ disabled }: {
   disabled: boolean

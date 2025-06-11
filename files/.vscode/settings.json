@@ -1,17 +1,33 @@
 {
   "editor.tabCompletion": "on",
   "path-intellisense.mappings": {
-    "@/*": "${workspaceRoot}/src/*",
-    "@": "${workspaceRoot}/src"
+    "$app/*": "${workspaceRoot}/src/app/*",
+    "$pages/*": "${workspaceRoot}/src/pages/*",
+    "$widgets/*": "${workspaceRoot}/src/widgets/*",
+    "$features/*": "${workspaceRoot}/src/features/*",
+    "$entities/*": "${workspaceRoot}/src/entities/*",
+    "$shared/*": "${workspaceRoot}/src/shared/*"
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.validate": [
-    "javascript"
-  ],
-  "files.associations": { 
-    "tailwind.css": "tailwindcss",
+  "eslint.validate": ["javascript", "typescript", "javascriptreact", "typescriptreact"],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.associations": {
+    "tailwind.css": "tailwindcss"
   },
   "files.watcherExclude": {
     "**/target": true
@@ -20,23 +36,12 @@
     "strings": "on"
   },
   "i18n-ally.sourceLanguage": "ru",
-  "i18n-ally.localesPaths": [
-    "public/locales"
-  ],
+  "i18n-ally.localesPaths": ["public/locales"],
   "i18n-ally.namespace": true,
   "i18n-ally.pathMatcher": "{locale}/{namespace}.{ext}",
   "i18n-ally.keystyle": "nested",
   "i18n-ally.extract.autoDetect": false,
-  "i18n-ally.enabledFrameworks": [
-    "i18next",
-    "react",
-    "react-i18next"
-  ],
-  "i18n-ally.translate.engines": [
-    "deepl"
-  ],
-  "i18n-ally.extract.ignored": [
-    "nofollow noreferrer",
-    "nofollow noreferrer"
-  ]
+  "i18n-ally.enabledFrameworks": ["i18next", "react", "react-i18next"],
+  "i18n-ally.translate.engines": ["deepl"],
+  "i18n-ally.extract.ignored": ["nofollow noreferrer", "nofollow noreferrer"]
 }

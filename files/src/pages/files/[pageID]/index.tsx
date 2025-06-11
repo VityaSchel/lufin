@@ -1,14 +1,12 @@
-'use client'
-
 import React from 'react'
 import { GetServerSideProps } from 'next'
-import { DownloadFilesInfo } from '@/widgets/download-files-info'
-import { getFilesPageFromDBDirectly } from '@/_app/lib/server-utils'
-import { FilesPagePasswordInput } from '@/widgets/files-page-password-input'
-import { DecryptionKey, decodeDecryptionKey } from '@/shared/utils/files-encryption'
-import { DecryptionKeyError } from '@/widgets/decryption-key-error'
-import { SharedFileForDownload } from '@/shared/model/shared-file'
-import { DecryptionKeyContext } from '@/shared/context/decryption-key'
+import { DownloadFilesInfo } from '$widgets/download-files-info'
+import { getFilesPageFromDBDirectly } from '$app/lib/server-utils'
+import { FilesPagePasswordInput } from '$widgets/files-page-password-input'
+import { DecryptionKey, decodeDecryptionKey } from '$shared/utils/files-encryption'
+import { DecryptionKeyError } from '$widgets/decryption-key-error'
+import { SharedFileForDownload } from '$shared/model/shared-file'
+import { DecryptionKeyContext } from '$shared/context/decryption-key'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 type FilePageProps = { page: ({ files: SharedFileForDownload[] } | { passwordProtected: true }) & { encrypted: boolean } }
@@ -82,7 +80,7 @@ export const getServerSideProps: GetServerSideProps<FilePageProps, { pageID: str
     }
   }
 
-  const db = await (await import('@/_app/db')).getDB()
+  const db = await (await import('$app/db')).getDB()
   const filesPage = await getFilesPageFromDBDirectly(db, pageID)
   if (!filesPage) {
     return {

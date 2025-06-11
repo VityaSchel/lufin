@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { LanguageSwitch } from '@/features/language-switch'
-import Logo from '@/assets/logo.svg'
+import { LanguageSwitch } from '$features/language-switch'
+import Logo from '$assets/logo.svg'
 
 export function AppBar() {
   return (

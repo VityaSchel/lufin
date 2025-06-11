@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import { Button } from '@/shared/ui/components/button'
+import { Button } from '$shared/ui/components/button'
 import { MdWrapText } from 'react-icons/md'
 import cx from 'classnames'
 import plural from 'plural-ru'

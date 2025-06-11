@@ -1,22 +1,20 @@
-'use client'
-
 import React from 'react'
 import styles from './styles.module.scss'
 import cx from 'classnames'
-import { DataTable } from '@/shared/ui/data-table'
+import { DataTable } from '$shared/ui/data-table'
 import { format } from 'date-fns'
-import { Button } from '@/shared/ui/components/button'
-import { Checkbox } from '@/shared/ui/components/checkbox'
+import { Button } from '$shared/ui/components/button'
+import { Checkbox } from '$shared/ui/components/checkbox'
 import DownloadIcon from './icons/download.svg'
 import DeleteIcon from './icons/delete.svg'
 import TrueIcon from './icons/true.svg'
 import FalseIcon from './icons/false.svg'
-import { loadFilesPages, markFilesPageDeleted, updateFilePage } from '@/shared/storage'
+import { loadFilesPages, markFilesPageDeleted, updateFilePage } from '$shared/storage'
 import Link from 'next/link'
 import { useMediaQuery } from '@mui/material'
-import { getFilesAPIUrl } from '@/shared/utils/api-url'
+import { getFilesAPIUrl } from '$shared/utils/api-url'
 import { useTranslation } from 'next-i18next'
-import { getDateFnsLocale } from '@/shared/utils/get-date-fns-locale'
+import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
 
 type SharedFile = {
   pageID: string

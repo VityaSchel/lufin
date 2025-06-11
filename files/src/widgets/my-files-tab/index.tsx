@@ -1,6 +1,6 @@
-import { LocalStorageActions } from '@/features/localstorage-actions'
+import { LocalStorageActions } from '$features/localstorage-actions'
 import styles from './styles.module.scss'
-import { FilesList } from '@/features/files-list'
+import { FilesList } from '$features/files-list'
 import { useTranslation } from 'next-i18next'
 
 export function MyFilesTab() {

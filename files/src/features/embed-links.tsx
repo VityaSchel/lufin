@@ -2,9 +2,9 @@ import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { getEmbedLinks } from '@/shared/embed-links'
-import { CopyIconButton } from '@/shared/ui/copy-icon-button'
-import { TextField } from '@/shared/ui/components/text-field'
+import { getEmbedLinks } from '$shared/embed-links'
+import { CopyIconButton } from '$shared/ui/copy-icon-button'
+import { TextField } from '$shared/ui/components/text-field'
 import { useTranslation } from 'next-i18next'
 
 export function EmbedLinks({ pageID, file }: { pageID: string, file: string }) {

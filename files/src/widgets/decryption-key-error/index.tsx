@@ -1,6 +1,6 @@
 import Icon from '@mdi/react'
 import styles from './styles.module.scss'
-import { Headline } from '@/entities/headline'
+import { Headline } from '$entities/headline'
 import { mdiLockQuestion } from '@mdi/js'
 import { useTranslation } from 'next-i18next'
 

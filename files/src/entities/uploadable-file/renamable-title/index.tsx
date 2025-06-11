@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import { getRandomFileName, normalizeFilename } from '@/shared/utils/normalize-file-name'
+import { getRandomFileName, normalizeFilename } from '$shared/utils/normalize-file-name'
 
 export function RenamableTitle({ value, onChange, readonly, placeholder }: {
   value: string

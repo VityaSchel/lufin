@@ -4,8 +4,8 @@ import { AppBar } from './nav'
 import { useTranslation } from 'next-i18next'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import cx from 'classnames'
-import { UploaderInfo } from '@/entities/uploader-info'
-import { FilesPageWarning } from '@/widgets/files-page-warning'
+import { UploaderInfo } from '$entities/uploader-info'
+import { FilesPageWarning } from '$widgets/files-page-warning'
 
 export function PageContainer({ children }: React.PropsWithChildren) {
   const { t } = useTranslation('filesharing')

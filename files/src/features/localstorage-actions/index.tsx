@@ -1,12 +1,12 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import { Button } from '@/shared/ui/components/button'
+import { Button } from '$shared/ui/components/button'
 import ImportIcon from './icons/import.svg'
 import ExportIcon from './icons/export.svg'
 import DeleteIcon from './icons/delete.svg'
-import { clearUnavailableFiles } from '@/shared/storage'
-import { ExportDialog } from '@/features/localstorage-actions/export-dialog'
-import { ImportDialog } from '@/features/localstorage-actions/import-dialog'
+import { clearUnavailableFiles } from '$shared/storage'
+import { ExportDialog } from '$features/localstorage-actions/export-dialog'
+import { ImportDialog } from '$features/localstorage-actions/import-dialog'
 import { useTranslation } from 'next-i18next'
 
 export function LocalStorageActions() {

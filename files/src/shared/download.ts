@@ -1,4 +1,4 @@
-import { getFilesAPIUrl } from '@/shared/utils/api-url'
+import { getFilesAPIUrl } from '$shared/utils/api-url'
 
 export async function downloadFile(pageID: string, file: string, events: { onDownloaded?: (file: Blob) => any, onProgress?: (progress: number) => any }, options?: { password?: string }) {
   const downloadURL = `${getFilesAPIUrl()}/files/${pageID}/${encodeURIComponent(file)}`

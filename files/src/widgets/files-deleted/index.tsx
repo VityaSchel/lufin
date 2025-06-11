@@ -1,7 +1,7 @@
 import React from 'react'
-import { Headline } from '@/entities/headline'
+import { Headline } from '$entities/headline'
 import styles from './styles.module.scss'
-import { markFilesPageDeleted } from '@/shared/storage'
+import { markFilesPageDeleted } from '$shared/storage'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 

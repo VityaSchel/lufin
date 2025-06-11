@@ -1,6 +1,6 @@
 import React from 'react'
-import { FilesUploaderFormValues } from '@/shared/model/files-uploader-values'
-import { Button } from '@/shared/ui/components/button'
+import { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import { Button } from '$shared/ui/components/button'
 import { useFormikContext } from 'formik'
 import { useTranslation } from 'next-i18next'
 

@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui/components/button'
+import { Button } from '$shared/ui/components/button'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 

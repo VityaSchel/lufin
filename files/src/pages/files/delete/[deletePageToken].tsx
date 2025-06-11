@@ -1,11 +1,9 @@
-'use client'
-
 import React from 'react'
 import { GetServerSideProps } from 'next'
-import { FilesDeleted } from '@/widgets/files-deleted'
-import { deleteFilesPage } from '@/_app/lib/server-utils'
+import { FilesDeleted } from '$widgets/files-deleted'
+import { deleteFilesPage } from '$app/lib/server-utils'
 import { useRouter } from 'next/router'
-import { FilesDeletionConfirmation } from '@/widgets/files-deleted/confirmation'
+import { FilesDeletionConfirmation } from '$widgets/files-deleted/confirmation'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 type DeleteFilesPageProps = { success: boolean | null }

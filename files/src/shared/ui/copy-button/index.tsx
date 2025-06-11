@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './styles.module.scss'
 import copy from 'copy-to-clipboard'
 import { MdContentCopy, MdDone } from 'react-icons/md'
-import { Button } from '@/shared/ui/components/button'
+import { Button } from '$shared/ui/components/button'
 import cx from 'classnames'
 
 export function CopyButton({ content, className, children, ...props }: React.PropsWithChildren<{
