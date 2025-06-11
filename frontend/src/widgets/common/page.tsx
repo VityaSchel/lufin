@@ -11,7 +11,7 @@ export function PageContainer({ children }: React.PropsWithChildren) {
   return (
     <div className="w-full flex flex-col items-center gap-[30px]">
       <Helmet>
-        <title>{m.title()}</title>
+        <title>Lufin {m.title()}</title>
         <meta rel="description" content={m.description()} />
       </Helmet>
       <AppBar />

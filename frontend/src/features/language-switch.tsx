@@ -31,7 +31,12 @@ const languagesMap = [
 
 export function LanguageSwitch() {
   return (
-    <Select value={getLocale()} onChange={(e) => setLocale(e.target.value as Locale)}>
+    <Select
+      value={getLocale()}
+      onChange={(e) => setLocale(e.target.value as Locale)}
+      variant="outlined"
+      size="small"
+    >
       {languagesMap.map(({ code, flag, name }) => (
         <MenuItem value={code} key={code}>
           <div className="flex gap-2 items-center">

@@ -1,7 +1,7 @@
 {
   "name": "lufin-frontend",
   "version": "0.1.0",
-  "private": true,
+  "author": "Viktor Shchelochkov <hi@hloth.dev> (https://hloth.dev)",
   "type": "module",
   "scripts": {
     "dev": "vite",
