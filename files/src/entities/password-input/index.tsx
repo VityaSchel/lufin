@@ -4,14 +4,18 @@ import { TextField } from '$shared/ui/components/text-field'
 import { IconButton, useMediaQuery } from '@mui/material'
 import ViewIcon from './icons/view.svg'
 import HiddenIcon from './icons/hidden.svg'
-import { useTranslation } from 'next-i18next'
+import { m } from '$m'
 
-export function PasswordInput({ value, onChange, isOptional = true, ...props }: {
+export function PasswordInput({
+  value,
+  onChange,
+  isOptional = true,
+  ...props
+}: {
   value: string
   onChange: (newPassword: string) => any
   isOptional?: boolean
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
-  const { t } = useTranslation('filesharing')
   const [isPasswordVisible, setIsPasswordVisible] = React.useState(false)
 
   return (
@@ -25,9 +29,13 @@ export function PasswordInput({ value, onChange, isOptional = true, ...props }: 
       onClear={() => onChange('')}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      variant='outlined'
-      label={isOptional ? t('password_protection.set_password_label') : t('upload_success.password_input')}
-      placeholder={isOptional ? t('optional') : t('password_protection.input_password_label')}
+      variant="outlined"
+      label={
+        isOptional
+          ? m['password_protection.set_password_label']()
+          : m['upload_success.password_input']()
+      }
+      placeholder={isOptional ? m['optional']() : m['password_protection.input_password_label']()}
       type={isPasswordVisible ? 'text' : 'password'}
       maxLength={128}
       {...props}

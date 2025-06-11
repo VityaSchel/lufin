@@ -1,7 +1,6 @@
 import type { FilesPage } from '../db/schema/file.js'
 import _ from 'lodash'
 import type mongodb from 'mongodb'
-import { ReadableStream } from 'stream/web'
 
 export async function getFilesPageFromDBDirectly(db: mongodb.Db, pageID: string): Promise<FilesPage | null> {
   const page = await db.collection<FilesPage>('files')

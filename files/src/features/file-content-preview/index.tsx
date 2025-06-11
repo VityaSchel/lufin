@@ -9,21 +9,30 @@ import { IconButton, Tooltip, useMediaQuery } from '@mui/material'
 import { mdiArrowLeft, mdiArrowRight } from '@mdi/js'
 import Icon from '@mdi/react'
 import { PreviewSpreadsheet } from '$features/file-content-preview/preview-spreadsheet'
-import { useTranslation } from 'next-i18next'
+import { m } from '$m'
 
-export const supportedMimeTypes = ['audio', 'image', 'video', 'pdf', 'text', 'archive', 'spreadsheet'] as const
-export function FileContentPreview({ file, slider }: {
+export const supportedMimeTypes = [
+  'audio',
+  'image',
+  'video',
+  'pdf',
+  'text',
+  'archive',
+  'spreadsheet'
+] as const
+export function FileContentPreview({
+  file,
+  slider
+}: {
   file: File
   slider?: {
     onOpenPreviousPreview?: () => any
     onOpenNextPreview?: () => any
   }
 }): JSX.Element {
-  const { t } = useTranslation('filesharing')
-  const fileType = React.useMemo(() =>
-    getFileType(file.type, file.name),
-  [file])
-  const isPreviewAvailable = fileType && supportedMimeTypes.includes(fileType as typeof supportedMimeTypes[number])
+  const fileType = React.useMemo(() => getFileType(file.type, file.name), [file])
+  const isPreviewAvailable =
+    fileType && supportedMimeTypes.includes(fileType as (typeof supportedMimeTypes)[number])
 
   const [fileBlobSrc, setFileBlobSrc] = React.useState<null | string>(null)
 
@@ -35,29 +44,33 @@ export function FileContentPreview({ file, slider }: {
     }
   }, [isPreviewAvailable, file])
 
-  return (
-    isPreviewAvailable
-      ? (
-        fileBlobSrc !== null ? (
-          <div className={styles.preview}>
-            <Preview 
-              type={fileType as typeof supportedMimeTypes[number]} 
-              file={file}
-              blobURL={fileBlobSrc}
-              slider={slider}
-            />
-          </div>
-        ) : <></>
-      ) : (
-        <div className={styles.previewUnavailable}>
-          <span>{t('preview.unsupported_file_type')}</span>
-        </div>
-      )
+  return isPreviewAvailable ? (
+    fileBlobSrc !== null ? (
+      <div className={styles.preview}>
+        <Preview
+          type={fileType as (typeof supportedMimeTypes)[number]}
+          file={file}
+          blobURL={fileBlobSrc}
+          slider={slider}
+        />
+      </div>
+    ) : (
+      <></>
+    )
+  ) : (
+    <div className={styles.previewUnavailable}>
+      <span>{m['preview.unsupported_file_type']()}</span>
+    </div>
   )
 }
 
-function Preview({ type, file, blobURL, slider }: {
-  type: typeof supportedMimeTypes[number]
+function Preview({
+  type,
+  file,
+  blobURL,
+  slider
+}: {
+  type: (typeof supportedMimeTypes)[number]
   file: File
   blobURL: string
   slider?: {
@@ -65,13 +78,10 @@ function Preview({ type, file, blobURL, slider }: {
     onOpenNextPreview?: () => any
   }
 }): React.ReactElement {
-  const { t } = useTranslation('filesharing')
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   if (type === 'text') {
-    return (
-      <PreviewText file={file} />
-    )
+    return <PreviewText file={file} />
   }
 
   // eslint-disable-next-line @next/next/no-img-element
@@ -79,8 +89,11 @@ function Preview({ type, file, blobURL, slider }: {
     return (
       <div className={styles.imagePreviewContainer}>
         {!isMobile && slider && (
-          <Tooltip title={t('preview.previous_image_button')}>
-            <IconButton onClick={slider.onOpenPreviousPreview} disabled={!slider.onOpenPreviousPreview}>
+          <Tooltip title={m['preview.previous_image_button']()}>
+            <IconButton
+              onClick={slider.onOpenPreviousPreview}
+              disabled={!slider.onOpenPreviousPreview}
+            >
               <Icon path={mdiArrowLeft} size={1} />
             </IconButton>
           </Tooltip>
@@ -90,15 +103,15 @@ function Preview({ type, file, blobURL, slider }: {
             variant={'dimmed'}
             iconButton
             onClick={() => window.open(blobURL, '_blank', 'noopener,noreferrer')}
-            type='button'
+            type="button"
             className={styles.imagePreviewButton}
           >
-            <BiLinkExternal /> 
+            <BiLinkExternal />
           </Button>
-          <img src={blobURL} alt='' />
+          <img src={blobURL} alt="" />
         </div>
         {!isMobile && slider && (
-          <Tooltip title={t('preview.next_image_button')}>
+          <Tooltip title={m['preview.next_image_button']()}>
             <IconButton onClick={slider.onOpenNextPreview} disabled={!slider.onOpenNextPreview}>
               <Icon path={mdiArrowRight} size={1} />
             </IconButton>
@@ -106,12 +119,15 @@ function Preview({ type, file, blobURL, slider }: {
         )}
         {isMobile && slider && (
           <div className={styles.mobileSliderButtons}>
-            <Tooltip title={t('preview.previous_image_button')}>
-              <IconButton onClick={slider.onOpenPreviousPreview} disabled={!slider.onOpenPreviousPreview}>
+            <Tooltip title={m['preview.previous_image_button']()}>
+              <IconButton
+                onClick={slider.onOpenPreviousPreview}
+                disabled={!slider.onOpenPreviousPreview}
+              >
                 <Icon path={mdiArrowLeft} size={1.5} />
               </IconButton>
             </Tooltip>
-            <Tooltip title={t('preview.next_image_button')}>
+            <Tooltip title={m['preview.next_image_button']()}>
               <IconButton onClick={slider.onOpenNextPreview} disabled={!slider.onOpenNextPreview}>
                 <Icon path={mdiArrowRight} size={1.5} />
               </IconButton>
@@ -122,37 +138,31 @@ function Preview({ type, file, blobURL, slider }: {
     )
   }
 
-  if(type === 'audio') {
-    return (
-      <audio src={blobURL} controls />
-    )
+  if (type === 'audio') {
+    return <audio src={blobURL} controls />
   }
 
-  if(type === 'video') {
-    return (
-      <video src={blobURL} controls />
-    )
+  if (type === 'video') {
+    return <video src={blobURL} controls />
   }
 
-  if(type ==='pdf') {
+  if (type === 'pdf') {
     return (
       <div className={styles.iframe}>
         <iframe src={blobURL} /*sandbox=''*/ />
-        <Button onClick={() => window.open(blobURL, '_blank', 'noopener,noreferrer')}><BiLinkExternal /> {t('preview.open_in_new_tab')}</Button>
+        <Button onClick={() => window.open(blobURL, '_blank', 'noopener,noreferrer')}>
+          <BiLinkExternal /> {m['preview.open_in_new_tab']()}
+        </Button>
       </div>
     )
   }
 
-  if(type === 'archive') {
-    return (
-      <PreviewZip zip={file} />
-    )
+  if (type === 'archive') {
+    return <PreviewZip zip={file} />
   }
 
   if (type === 'spreadsheet') {
-    return (
-      <PreviewSpreadsheet spreadsheet={file} />
-    )
+    return <PreviewSpreadsheet spreadsheet={file} />
   }
 
   return <></>

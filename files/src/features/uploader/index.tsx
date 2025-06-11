@@ -16,38 +16,38 @@ import { UploaderInfo } from '$entities/uploader-info'
 import { UploadableFilesList } from '$features/uploadable-files-list'
 import { SubmitFilesButton } from '$features/submit-files-button'
 import { UploadableFile } from '$shared/uploadable-file'
-import { useTranslation } from 'next-i18next'
+import { m } from '$m'
 
-export function FilesUploader({ formikRef }: {
+export function FilesUploader({
+  formikRef
+}: {
   formikRef: React.MutableRefObject<FormikProps<FilesUploaderFormValues>>
 }) {
-  const { t } = useTranslation('filesharing')
-  const { 
-    values,
-    errors,
-    touched,
-    setFieldValue,
-    isSubmitting
-  } = useFormikContext<FilesUploaderFormValues>()
+  const { values, errors, touched, setFieldValue, isSubmitting } =
+    useFormikContext<FilesUploaderFormValues>()
   const isMobile = !useMediaQuery('(min-width: 768px)')
 
   return (
     <div className={styles.uploader}>
       <DragNDrop
-        onChange={async newEntries => {
+        onChange={async (newEntries) => {
           if (newEntries && !isSubmitting) {
             const newFiles = []
             for (const file of newEntries) {
-              if(await isThisAFile(file)) {
+              if (await isThisAFile(file)) {
                 newFiles.push(file)
               }
             }
-            if(newFiles.length === 0) return
+            if (newFiles.length === 0) return
 
             const metadataFreeNewFiles = await stripMetadata(newFiles)
-            const normalizedFilenamesFiles = metadataFreeNewFiles.map(f => normalizeFileFilename(f))
+            const normalizedFilenamesFiles = metadataFreeNewFiles.map((f) =>
+              normalizeFileFilename(f)
+            )
             const randomizedFilenamesFiles = normalizedFilenamesFiles.map((f, i) => {
-              const extension = f.name.includes('.') ? f.name.split('.').at(-1) : mime.getExtension(f.type)
+              const extension = f.name.includes('.')
+                ? f.name.split('.').at(-1)
+                : mime.getExtension(f.type)
               const name = getRandomFileName(extension || undefined)
               return {
                 id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
@@ -86,9 +86,10 @@ export function FilesUploader({ formikRef }: {
             //     }
             //   })
             // })
-            setFieldValue('files', (formikRef.current.values['files'] ?? []).concat(
-              ...randomizedFilenamesFiles
-            ))
+            setFieldValue(
+              'files',
+              (formikRef.current.values['files'] ?? []).concat(...randomizedFilenamesFiles)
+            )
           }
         }}
         key={values.files?.length}
@@ -107,36 +108,46 @@ export function FilesUploader({ formikRef }: {
           /> */}
           <PasswordInput
             value={values.password ?? ''}
-            onChange={newPassword => setFieldValue('password', newPassword || null)}
+            onChange={(newPassword) => setFieldValue('password', newPassword || null)}
             disabled={isSubmitting}
-            autoComplete='new-password'
+            autoComplete="new-password"
           />
           {errors.password && touched.password && errors.password}
         </div>
         <div className={styles.checkboxes}>
           <div className={styles.checkboxContainer}>
-            <Checkbox 
-              name={'deleteAtFirstDownload'} 
-              value={values.deleteAtFirstDownload} 
-              onChange={isChecked => setFieldValue('deleteAtFirstDownload', isChecked)}
+            <Checkbox
+              name={'deleteAtFirstDownload'}
+              value={values.deleteAtFirstDownload}
+              onChange={(isChecked) => setFieldValue('deleteAtFirstDownload', isChecked)}
               disabled={isSubmitting}
-            >{t('upload_form.delete_after_first_download_checkbox')}</Checkbox>
-            {errors.deleteAtFirstDownload && <FormHelperText error>{errors.deleteAtFirstDownload}</FormHelperText>}
+            >
+              {m['upload_form.delete_after_first_download_checkbox']()}
+            </Checkbox>
+            {errors.deleteAtFirstDownload && (
+              <FormHelperText error>{errors.deleteAtFirstDownload}</FormHelperText>
+            )}
           </div>
           <Checkbox
-            name='convertToZip'
+            name="convertToZip"
             value={values.convertToZip}
-            onChange={isChecked => setFieldValue('convertToZip', isChecked)}
+            onChange={(isChecked) => setFieldValue('convertToZip', isChecked)}
             disabled={isSubmitting}
-          >{t('upload_form.upload_as_zip_checkbox')}</Checkbox>
-          <div className='flex flex-col gap-2 mt-2'>
+          >
+            {m['upload_form.upload_as_zip_checkbox']()}
+          </Checkbox>
+          <div className="flex flex-col gap-2 mt-2">
             <Checkbox
-              name='encrypt'
+              name="encrypt"
               value={values.encrypt}
-              onChange={isChecked => setFieldValue('encrypt', isChecked)}
+              onChange={(isChecked) => setFieldValue('encrypt', isChecked)}
               disabled={isSubmitting}
-            >{t('upload_form.encrypt_checkbox')}</Checkbox>
-            <span className='text-neutral-500 text-sm ml-7'>{t('upload_form.encrypt_checkbox_hint')}</span>
+            >
+              {m['upload_form.encrypt_checkbox']()}
+            </Checkbox>
+            <span className="text-neutral-500 text-sm ml-7">
+              {m['upload_form.encrypt_checkbox_hint']()}
+            </span>
           </div>
           {/* <div className={cx(styles.zipArchiveName, { [styles.visible]: values.convertToZip })}>
             <TextField
@@ -144,7 +155,7 @@ export function FilesUploader({ formikRef }: {
               value={values.zipArchiveName ?? ''}
               onChange={({ target: { value }}) => setFieldValue('zipArchiveName', value)}
               variant='outlined'
-              label={t('upload_form.zip_name_input')}
+              label={m['upload_form.zip_name_input']()}
               placeholder='documents.zip'
               type='zipArchiveName'
               disabled={isSubmitting}

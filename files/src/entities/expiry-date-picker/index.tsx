@@ -2,13 +2,23 @@ import React from 'react'
 import styles from './styles.module.scss'
 import ClockIcon from './clock.svg'
 import { StaticDateTimePicker } from '@mui/x-date-pickers/StaticDateTimePicker'
-import { AppBar, Button, Dialog, DialogContent, FormHelperText, IconButton, Toolbar, Typography, useMediaQuery } from '@mui/material'
+import {
+  AppBar,
+  Button,
+  Dialog,
+  DialogContent,
+  FormHelperText,
+  IconButton,
+  Toolbar,
+  Typography,
+  useMediaQuery
+} from '@mui/material'
 import { TextField } from '$shared/ui/components/text-field'
 import { format } from 'date-fns'
 import CloseIcon from '@mui/icons-material/Close'
 import Slide from '@mui/material/Slide'
 import { TransitionProps } from '@mui/material/transitions'
-import { useTranslation } from 'next-i18next'
+import { m } from '$m'
 
 export function ExpiryDatePicker(props: {
   value: Date | null
@@ -17,23 +27,21 @@ export function ExpiryDatePicker(props: {
   onChange: (newDate: Date | null) => any
   disabled: boolean
 }) {
-  const { t } = useTranslation('filesharing')
   const { value, max, error, onChange, disabled } = props
   const [open, setOpen] = React.useState(false)
 
   return (
     <div className={styles.datePicker}>
       <TextField
-        leftAdornment={
-          <ClockIcon />
-        }
+        leftAdornment={<ClockIcon />}
         onClear={value === null ? undefined : () => onChange(null)}
-        label={value === null ? undefined : t('expiration.date_of_expiry')}
-        value={value === null 
-          ? t('expiration.date_of_expiry_input')
-          : format(value, 'dd.MM.yyyy HH:mm:ss') 
+        label={value === null ? undefined : m['expiration.date_of_expiry']()}
+        value={
+          value === null
+            ? m['expiration.date_of_expiry_input']()
+            : format(value, 'dd.MM.yyyy HH:mm:ss')
         }
-        variant='outlined'
+        variant="outlined"
         readOnly
         wrapperProps={{
           onClick: () => setOpen(true)
@@ -46,7 +54,11 @@ export function ExpiryDatePicker(props: {
   )
 }
 
-function ResponsiveDialog({ open, onClose, ...props }: {
+function ResponsiveDialog({
+  open,
+  onClose,
+  ...props
+}: {
   open: boolean
   onClose: () => any
 } & Parameters<typeof ExpiryDatePicker>['0']) {
@@ -57,7 +69,8 @@ function ResponsiveDialog({ open, onClose, ...props }: {
     const root = document.querySelector('html')
     if (root) {
       if (open) {
-        if (randomModalID.current === undefined) randomModalID.current = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+        if (randomModalID.current === undefined)
+          randomModalID.current = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
         root.classList.add('scroll-lock-' + randomModalID.current)
       } else {
         root.classList.remove('scroll-lock-' + randomModalID.current)
@@ -65,10 +78,10 @@ function ResponsiveDialog({ open, onClose, ...props }: {
     }
   }, [open])
 
-  return (
-    isMobile
-      ? <MobileDialog open={open} onClose={() => onClose()} {...props} />
-      : <StandaloneDialog open={open} onClose={() => onClose()} {...props} />
+  return isMobile ? (
+    <MobileDialog open={open} onClose={() => onClose()} {...props} />
+  ) : (
+    <StandaloneDialog open={open} onClose={() => onClose()} {...props} />
   )
 }
 
@@ -80,16 +93,26 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />
 })
-function MobileDialog({ open, onClose, value, max, onChange, disabled }: { 
+function MobileDialog({
+  open,
+  onClose,
+  value,
+  max,
+  onChange,
+  disabled
+}: {
   open: boolean
   onClose: () => any
 } & Parameters<typeof ExpiryDatePicker>['0']) {
-  const { t } = useTranslation('filesharing')
   const [newValue, setNewValue] = React.useState<Date | null>(null)
 
-  React.useEffect(() => { setNewValue(value) }, [value])
+  React.useEffect(() => {
+    setNewValue(value)
+  }, [value])
 
-  React.useEffect(() => { !open && setNewValue(value) }, [open, value])
+  React.useEffect(() => {
+    !open && setNewValue(value)
+  }, [open, value])
 
   const handleSave = () => {
     onChange(newValue)
@@ -100,25 +123,20 @@ function MobileDialog({ open, onClose, value, max, onChange, disabled }: {
     <Dialog
       open={open}
       onClose={onClose}
-      scroll='paper'
+      scroll="paper"
       fullScreen
       TransitionComponent={Transition}
     >
       <AppBar sx={{ position: 'relative' }}>
         <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={onClose}
-            aria-label="close"
-          >
+          <IconButton edge="start" color="inherit" onClick={onClose} aria-label="close">
             <CloseIcon />
           </IconButton>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            {t('expiration.select_expiry_date_label')}
+            {m['expiration.select_expiry_date_label']()}
           </Typography>
           <Button autoFocus color="inherit" onClick={handleSave}>
-            {t('ok_button')}
+            {m['ok_button']()}
           </Button>
         </Toolbar>
       </AppBar>
@@ -127,25 +145,36 @@ function MobileDialog({ open, onClose, value, max, onChange, disabled }: {
           value={value}
           sx={{ width: '100%', flex: 1 }}
           disablePast
-          onChange={newDate => onChange(newDate)}
+          onChange={(newDate) => onChange(newDate)}
           slots={{ actionBar: () => <></> }}
           maxDateTime={new Date(max)}
-          displayStaticWrapperAs='mobile'
+          displayStaticWrapperAs="mobile"
         />
       </DialogContent>
     </Dialog>
   )
 }
 
-function StandaloneDialog({ open, onClose, value, max, onChange, disabled }: {
+function StandaloneDialog({
+  open,
+  onClose,
+  value,
+  max,
+  onChange,
+  disabled
+}: {
   open: boolean
   onClose: () => any
 } & Parameters<typeof ExpiryDatePicker>['0']) {
   const [newValue, setNewValue] = React.useState<Date | null>(null)
 
-  React.useEffect(() => { setNewValue(value) }, [value])
+  React.useEffect(() => {
+    setNewValue(value)
+  }, [value])
 
-  React.useEffect(() => { !open && setNewValue(value) }, [open, value])
+  React.useEffect(() => {
+    !open && setNewValue(value)
+  }, [open, value])
 
   const handleSave = () => {
     onChange(newValue)
@@ -153,22 +182,20 @@ function StandaloneDialog({ open, onClose, value, max, onChange, disabled }: {
   }
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      scroll='paper'
-    >
+    <Dialog open={open} onClose={onClose} scroll="paper">
       <DialogContent sx={{ padding: 0 }}>
         <StaticDateTimePicker
           value={newValue}
           sx={{ maxWidth: 300 }}
           disablePast
-          onChange={v => setNewValue(v)}
+          onChange={(v) => setNewValue(v)}
           slots={{ actionBar: () => <></> }}
           maxDateTime={new Date(max)}
-          displayStaticWrapperAs='mobile'
+          displayStaticWrapperAs="mobile"
         />
-        <Button fullWidth onClick={handleSave}>OK</Button>
+        <Button fullWidth onClick={handleSave}>
+          OK
+        </Button>
       </DialogContent>
     </Dialog>
   )

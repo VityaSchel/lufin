@@ -6,13 +6,9 @@ import { DialogContent, TextareaAutosize } from '@mui/material'
 import { Button } from '$shared/ui/components/button'
 import { MdContentCopy, MdDone } from 'react-icons/md'
 import copy from 'copy-to-clipboard'
-import { useTranslation } from 'next-i18next'
+import { m } from '$m'
 
-export function ExportDialog({ open, onClose }: {
-  open: boolean
-  onClose: () => any
-}) {
-  const { t } = useTranslation('filesharing')
+export function ExportDialog({ open, onClose }: { open: boolean; onClose: () => any }) {
   const filesPages = React.useMemo(() => JSON.stringify(loadFilesPages()), [])
   const [isCopied, setIsCopied] = React.useState(false)
 
@@ -22,26 +18,24 @@ export function ExportDialog({ open, onClose }: {
   }
 
   return (
-    <ResponsiveMUIDialog 
-      title={t('localstorage.export.title')}
-      open={open} 
+    <ResponsiveMUIDialog
+      title={m['localstorage.export.title']()}
+      open={open}
       onClose={onClose}
       className={styles.dialogContent}
     >
       <DialogContent className={styles.content}>
-        <TextareaAutosize 
-          value={filesPages}
-          readOnly
-          className={styles.localStorageData}
-        />
-        <Button 
-          onClick={handleCopy}
-          onMouseLeave={() => setIsCopied(false)}
-        >
-          {isCopied
-            ? <><MdDone /> {t('localstorage.export.copied')}</>
-            : <><MdContentCopy /> {t('localstorage.export.copy_button')}</>
-          }
+        <TextareaAutosize value={filesPages} readOnly className={styles.localStorageData} />
+        <Button onClick={handleCopy} onMouseLeave={() => setIsCopied(false)}>
+          {isCopied ? (
+            <>
+              <MdDone /> {m['localstorage.export.copied']()}
+            </>
+          ) : (
+            <>
+              <MdContentCopy /> {m['localstorage.export.copy_button']()}
+            </>
+          )}
         </Button>
       </DialogContent>
     </ResponsiveMUIDialog>

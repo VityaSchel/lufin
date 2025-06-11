@@ -21,7 +21,8 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
+    "noImplicitAny": false,
+    "allowJs": true,
 
     "baseUrl": ".",
     "paths": {
@@ -31,6 +32,9 @@
       "$features/*": ["src/features/*"],
       "$entities/*": ["src/entities/*"],
       "$shared/*": ["src/shared/*"],
+      "$assets/*": ["src/assets/*"],
+      "$m": ["src/paraglide/messages.js"],
+      "$paraglide/*": ["src/paraglide/*"]
     }
   },
   "include": ["src"]

@@ -1,10 +1,10 @@
-import { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
 import { saveFilesPage as saveFilesPageToLocalStorage } from '$shared/storage'
 import { getFilesAPIUrl, getFilesAPIWSUrl } from '$shared/utils/api-url'
 import { encryptFiles } from '$shared/utils/files-encryption'
 import { getExpiresAt } from '$shared/utils/get-max-expiration'
 import { nmZipFilename } from '$shared/utils/zip-file-name'
-import { Links } from '$widgets/upload-files-tab'
+import type { Links } from '$widgets/upload-files-tab'
 import JSZip from 'jszip'
 
 type ValidatedValues = FilesUploaderFormValues & { files: File[] }

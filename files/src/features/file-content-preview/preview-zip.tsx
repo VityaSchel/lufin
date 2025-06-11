@@ -1,7 +1,20 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import { Button } from '$shared/ui/components/button'
-import { CircularProgress, Dialog, DialogTitle, DialogContent, Button as MUIButton, DialogActions, Divider, useMediaQuery, AppBar, Toolbar, IconButton, Typography } from '@mui/material'
+import {
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Button as MUIButton,
+  DialogActions,
+  Divider,
+  useMediaQuery,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography
+} from '@mui/material'
 import JSZip from 'jszip'
 import TreeView from '@mui/lab/TreeView'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -15,15 +28,14 @@ import { getSvgIconByFileType } from '$shared/utils/get-svg-icon-by-filetype'
 import { getFileType } from '$shared/utils/get-file-type'
 import cx from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'
-import { useTranslation } from 'next-i18next'
+import { m } from '$m'
 import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
 
 type PreviewFileValue = null | JSObject
-const ZipPreviewContext = React.createContext<[PreviewFileValue, React.Dispatch<React.SetStateAction<PreviewFileValue>>] | undefined>(undefined)
-export function PreviewZip({ zip }: {
-  zip: File
-}) {
-  const { t } = useTranslation('filesharing')
+const ZipPreviewContext = React.createContext<
+  [PreviewFileValue, React.Dispatch<React.SetStateAction<PreviewFileValue>>] | undefined
+>(undefined)
+export function PreviewZip({ zip }: { zip: File }) {
   const [zipContents, setZipContents] = React.useState<null | JSZip>(null)
   const [alertOpened, setAlertOpened] = React.useState(false)
   const [errored, setErrored] = React.useState<false | string>(false)
@@ -32,23 +44,26 @@ export function PreviewZip({ zip }: {
 
   const handleOpen = () => {
     setAlertOpened(true)
-    if(!zipContents) handleLoadZip()
+    if (!zipContents) handleLoadZip()
   }
 
   const handleLoadZip = async () => {
     try {
       const jszip = await JSZip.loadAsync(zip)
       setZipContents(jszip)
-    } catch(e) {
-      if(typeof e === 'object' && e !== null) {
-        const errorString = ('message' in e && typeof e.message === 'string' && e.message.length) ? e.message : JSON.stringify(e)
+    } catch (e) {
+      if (typeof e === 'object' && e !== null) {
+        const errorString =
+          'message' in e && typeof e.message === 'string' && e.message.length
+            ? e.message
+            : JSON.stringify(e)
         if (errorString === 'Encrypted zip are not supported') {
-          setErrored(t('preview.encrypted_zip_unsupported_error'))
+          setErrored(m['preview.encrypted_zip_unsupported_error']())
         } else {
-          setErrored(`${t('preview.zip_load_error')}: ${e}`)
+          setErrored(`${m['preview.zip_load_error']()}: ${e}`)
         }
       } else {
-        setErrored(t('preview.load_error'))
+        setErrored(m['preview.load_error']())
       }
     }
   }
@@ -60,18 +75,15 @@ export function PreviewZip({ zip }: {
 
   return (
     <>
-      {errored 
-        ? (
-          <span className={styles.error}>{errored}</span>
-        ) : (
-          <Button
-            onClick={() => handleOpen()}
-            type='button'
-          >
-            {zipContents ? t('preview.view_zip_file_preview') : t('preview.load_zip_file_preview')}
-          </Button>
-        )
-      }
+      {errored ? (
+        <span className={styles.error}>{errored}</span>
+      ) : (
+        <Button onClick={() => handleOpen()} type="button">
+          {zipContents
+            ? m['preview.view_zip_file_preview']()
+            : m['preview.load_zip_file_preview']()}
+        </Button>
+      )}
       <Dialog
         open={!errored && alertOpened}
         onClose={handleClose}
@@ -79,45 +91,39 @@ export function PreviewZip({ zip }: {
         maxWidth={false}
         fullScreen={isMobile}
       >
-        {isMobile
-          ? (
-            <AppBar sx={{ position: 'relative' }}>
-              <Toolbar>
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  onClick={handleClose}
-                  aria-label="close"
-                >
-                  <CloseIcon />
-                </IconButton>
-                <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                  {t('preview.preview_zip_file_button')}
-                </Typography>
-              </Toolbar>
-            </AppBar>
-          ) : (
-            <DialogTitle id='zip-file-contents-title'>
-              {t('preview.preview_zip_file_button')}
-            </DialogTitle>
-          )
-        }
+        {isMobile ? (
+          <AppBar sx={{ position: 'relative' }}>
+            <Toolbar>
+              <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+                <CloseIcon />
+              </IconButton>
+              <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                {m['preview.preview_zip_file_button']()}
+              </Typography>
+            </Toolbar>
+          </AppBar>
+        ) : (
+          <DialogTitle id="zip-file-contents-title">
+            {m['preview.preview_zip_file_button']()}
+          </DialogTitle>
+        )}
         <DialogContent sx={{ width: '900px', maxWidth: '100%', height: '600px' }}>
           <ZipPreviewContext.Provider value={[previewFile, setPreviewFile]}>
-            {zipContents 
-              ? (
-                <div className={styles.contents}>
-                  <ZipContentsTree file={zipContents} />
-                  <PreviewFile zip={zipContents} />
-                </div>
-              )
-              : <CircularProgress />
-            }
+            {zipContents ? (
+              <div className={styles.contents}>
+                <ZipContentsTree file={zipContents} />
+                <PreviewFile zip={zipContents} />
+              </div>
+            ) : (
+              <CircularProgress />
+            )}
           </ZipPreviewContext.Provider>
         </DialogContent>
         {!isMobile && (
           <DialogActions>
-            <MUIButton onClick={handleClose} autoFocus>{t('close_button')}</MUIButton>
+            <MUIButton onClick={handleClose} autoFocus>
+              {m['close_button']()}
+            </MUIButton>
           </DialogActions>
         )}
       </Dialog>
@@ -125,15 +131,12 @@ export function PreviewZip({ zip }: {
   )
 }
 
-type JSObject = typeof JSZip['files'][string]
+type JSObject = (typeof JSZip)['files'][string]
 interface NestedLevel {
   '0': JSObject
   [key: string]: NestedLevel | JSObject
 }
-function ZipContentsTree({ file }: {
-  file: JSZip
-}) {
-
+function ZipContentsTree({ file }: { file: JSZip }) {
   const tree = React.useMemo(() => {
     return unflatten(file.files, { delimiter: '/' }) as NestedLevel
   }, [file])
@@ -141,7 +144,7 @@ function ZipContentsTree({ file }: {
   return (
     <div className={styles.tree}>
       <TreeView
-        aria-label='zip-file-contents-title'
+        aria-label="zip-file-contents-title"
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
         sx={{ height: '100%', flexGrow: 1, minWidth: 200, overflowY: 'auto' }}
@@ -152,9 +155,7 @@ function ZipContentsTree({ file }: {
   )
 }
 
-function RecursiveTreeItem({ item }: {
-  item: NestedLevel
-}) {
+function RecursiveTreeItem({ item }: { item: NestedLevel }) {
   const contextValue = React.useContext(ZipPreviewContext)
   if (!contextValue) return null
   const [, setPreviewFile] = contextValue
@@ -170,7 +171,7 @@ function RecursiveTreeItem({ item }: {
             const guessedMimeType = mime.getType(file.name)
             const fileType = getFileType(guessedMimeType ?? '', file.name)
             return (
-              <TreeItem 
+              <TreeItem
                 icon={getSvgIconByFileType(fileType)}
                 nodeId={key}
                 label={key}
@@ -181,7 +182,12 @@ function RecursiveTreeItem({ item }: {
           } else {
             const _value = value as NestedLevel
             return (
-              <TreeItem nodeId={key} label={key} key={key} className={cx({ [styles.hidden]: key === '__MACOSX' })}>
+              <TreeItem
+                nodeId={key}
+                label={key}
+                key={key}
+                className={cx({ [styles.hidden]: key === '__MACOSX' })}
+              >
                 <RecursiveTreeItem item={_value} />
               </TreeItem>
             )
@@ -191,9 +197,7 @@ function RecursiveTreeItem({ item }: {
   )
 }
 
-function PreviewFile({ zip }: {
-  zip: JSZip
-}) {
+function PreviewFile({ zip }: { zip: JSZip }) {
   const { i18n } = useTranslation('filesharing')
   const contextValue = React.useContext(ZipPreviewContext)
   const [fileContents, setFileContents] = React.useState<null | File>(null)
@@ -203,8 +207,8 @@ function PreviewFile({ zip }: {
   React.useEffect(() => {
     loadFileContents()
   }, [contextValue])
-  
-  if(!contextValue) return null
+
+  if (!contextValue) return null
 
   const [previewFile] = contextValue
 
@@ -216,19 +220,27 @@ function PreviewFile({ zip }: {
     const data = await previewFileInstance.async('blob')
     const guessedMimeType = mime.getType(previewFile.name)
     setGuessedMimeType(guessedMimeType)
-    setFileContents(new File([data], previewFile.name, guessedMimeType ? { type: guessedMimeType } : undefined))
+    setFileContents(
+      new File([data], previewFile.name, guessedMimeType ? { type: guessedMimeType } : undefined)
+    )
   }
 
   return (
     previewFile && (
       <>
         <Divider flexItem orientation={isMobile ? 'horizontal' : 'vertical'} />
-        <div className={cx(styles.previewZipFile, { [styles.maximize]: guessedMimeType === 'application/pdf' })}>
+        <div
+          className={cx(styles.previewZipFile, {
+            [styles.maximize]: guessedMimeType === 'application/pdf'
+          })}
+        >
           <div className={styles.heading}>
             <h3 title={previewFile.name}>{previewFile.name}</h3>
           </div>
           <span className={styles.date}>
-            {format(previewFile.date, 'EEEEEE, dd.MM.yyyy HH:mm:ss zzzz', { locale: getDateFnsLocale(i18n.resolvedLanguage ?? 'en') })}
+            {format(previewFile.date, 'EEEEEE, dd.MM.yyyy HH:mm:ss zzzz', {
+              locale: getDateFnsLocale(i18n.resolvedLanguage ?? 'en')
+            })}
           </span>
           {fileContents && <FileContentPreview file={fileContents} />}
         </div>

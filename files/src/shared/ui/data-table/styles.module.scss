@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .table {
   border-radius: 7px;
   overflow: clip;
@@ -25,7 +27,7 @@
     
     td {
       background: #212932;
-      padding: 25px #{(65/2)}px;
+      padding: 25px #{math.div(65, 2)}px;
       white-space: pre-wrap;
     }
 

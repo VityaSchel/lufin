@@ -1,9 +1,6 @@
 import { MenuItem, Select } from '@mui/material'
-import { useTranslation } from 'next-i18next'
-import { useRouter } from 'next/router'
+import { getLocale, setLocale, type Locale } from '$paraglide/runtime'
 import Flag from 'react-world-flags'
-import Cookies from 'js-cookie'
-import React from 'react'
 
 const languagesMap = [
   { code: 'ru', flag: 'ru', name: 'Русский' },
@@ -33,51 +30,11 @@ const languagesMap = [
 ]
 
 export function LanguageSwitch() {
-  const { i18n } = useTranslation()
-  const router = useRouter()
-  const ranEffect = React.useRef(false)
-
-  React.useEffect(() => {
-    if (ranEffect.current) {
-      return
-    }
-    ranEffect.current = true
-    const urlParts = window.location.pathname.split('/')
-    const pageLanguagePart = urlParts[1]
-    let pageLanguage: string | undefined
-    if (pageLanguagePart && pageLanguagePart.length === 2 && languagesMap.some(({ code }) => code === pageLanguagePart)) {
-      pageLanguage = pageLanguagePart
-    }
-    if (pageLanguage === undefined) {
-      let preferredLocale = Cookies.get('NEXT_LOCALE')
-      if(!preferredLocale) {
-        preferredLocale = navigator.language.slice(0, 2)
-        if(!languagesMap.some(({ code }) => code === preferredLocale)) {
-          preferredLocale = 'en'
-        }
-      }
-      handleChangeLanguage(preferredLocale)
-    }
-  }, [])
-
-  const handleChangeLanguage = (language: string) => {
-    router.push({
-      pathname: router.pathname,
-      query: router.query,
-    }, router.asPath, { locale: language })
-    Cookies.set('NEXT_LOCALE', language, {
-      expires: 365
-    })
-  }
-
   return (
-    <Select
-      value={i18n.resolvedLanguage}
-      onChange={(e) => handleChangeLanguage(e.target.value as string)}
-    >
+    <Select value={getLocale()} onChange={(e) => setLocale(e.target.value as Locale)}>
       {languagesMap.map(({ code, flag, name }) => (
         <MenuItem value={code} key={code}>
-          <div className='flex gap-2 items-center'>
+          <div className="flex gap-2 items-center">
             <Flag code={flag} width={20} height={20} />
             <span>{name}</span>
           </div>

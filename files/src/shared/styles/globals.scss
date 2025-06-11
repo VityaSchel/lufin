@@ -1,10 +1,13 @@
 @use '$shared/styles/variables.scss' as variables;
+@use 'sass:math';
 
 :root {
   --max-width: 1170px;
-  --padding: #{(1200-1170)/2}px;
+  --padding: #{math.div(1200-1170, 2)}px;
 
-  --fonts: 'Golos Text', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --fonts:
+    'Golos Text', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-family: var(--fonts);
   text-rendering: geometricPrecision;
   color-scheme: dark;
@@ -86,11 +89,11 @@ h6 {
   word-break: break-word;
 }
 
-[class~=MuiImageListItem-root] {
+[class~='MuiImageListItem-root'] {
   position: relative;
 }
 
-html[class*=scroll-lock] {
+html[class*='scroll-lock'] {
   overflow: hidden !important;
 }
 
@@ -104,7 +107,7 @@ html[class*=scroll-lock] {
 }
 
 :root {
-  --accent-color: #248BDA;
+  --accent-color: #248bda;
 
   --background: 222.2 84% 4.9%;
   --foreground: 210 40% 98%;
@@ -138,33 +141,33 @@ html[class*=scroll-lock] {
   --link-active: #fff;
   --link-hover: #b0b9c2;
 
-  --search-input: #2A333D;
+  --search-input: #2a333d;
   --search-input-border: transparent;
 
   --theme-toggler: #4b5d72;
 
   --green: #41e77a;
 
-  --bg-main: #1A2026;
-  --bg-default: #212A33;
+  --bg-main: #1a2026;
+  --bg-default: #212a33;
   --bg-nav: #212932;
-  --bg-darken: #1A2026;
+  --bg-darken: #1a2026;
   --bg-light: #293440;
-  --bg-lighter: #36414D;
+  --bg-lighter: #36414d;
 
   --default-text-color: #fff;
-  --text-gray: #98A3B0;
-  --text-dimmed: #4B5D72;
-  --text-gray-dim: #98A3B0;
-  --comments-label-text: #4B5D72;
-  --comments-label-gray2: #FFFFFF;
+  --text-gray: #98a3b0;
+  --text-dimmed: #4b5d72;
+  --text-gray-dim: #98a3b0;
+  --comments-label-text: #4b5d72;
+  --comments-label-gray2: #ffffff;
   --comments-input-color: #212932;
   --reply-card-bg: #212932;
 
   --tag-bg: #212932;
-  --tag-text: #98A3B0;
-  --button-bg: #21364A;
-  --dimmed-button-bg: #21364A;
+  --tag-text: #98a3b0;
+  --button-bg: #21364a;
+  --dimmed-button-bg: #21364a;
   --dimmed-button-bg-hover: #2c445c;
   --dimmed-button-bg-active: #1e3f5d;
   --dimmed-button-bg-disabled: #32383d;
@@ -172,23 +175,23 @@ html[class*=scroll-lock] {
 
   --share-bg: #212932;
   --share-bg-dimed: #212932;
-  --share-bg-alt: #2A343F;
+  --share-bg-alt: #2a343f;
   --link-color: #fff;
 
   --footer-bg: #111417;
 
   --card-bg: #212932;
-  --card-bg-alt: #21364A;
-  --card-dimmed-bg: #2A333D;
+  --card-bg-alt: #21364a;
+  --card-dimmed-bg: #2a333d;
   --card-icon-bg: #21364a;
-  --card-subtext: #FFFFFF;
+  --card-subtext: #ffffff;
 
-  --hr-border: #1A2026;
-  --hr-border-gray: #3E4A56;
+  --hr-border: #1a2026;
+  --hr-border-gray: #3e4a56;
 
   --icon-dimmed: #fff;
-  --input-border: #4B5D72;
-  --modal-bg: #29333E;
+  --input-border: #4b5d72;
+  --modal-bg: #29333e;
 
   --share-menu-bg: #212932;
   --share-menu-border: transparent;
@@ -197,7 +200,7 @@ html[class*=scroll-lock] {
   --infocard-after-text: #12171d;
 
   --file-sharing-border: #374351;
-  --horizontal-card-icon-bg: #2A4259;
+  --horizontal-card-icon-bg: #2a4259;
   --file-sharing-file-card-bg: #212932;
   --file-sharing-editable-input-bg: #303235;
   --file-sharing-editable-input-bg-disabled: #616161;
@@ -210,6 +213,6 @@ html[class*=scroll-lock] {
   -webkit-tap-highlight-color: transparent;
 }
 
-[class~=MuiDialog-container] {
+[class~='MuiDialog-container'] {
   z-index: 100;
 }

@@ -8,13 +8,10 @@ import { nmZipFilename } from '$shared/utils/zip-file-name'
 import { HorizontalCard } from '$shared/ui/components/horizontal-card'
 import byteSize from 'byte-size'
 import plural from 'plural-ru'
-import { useTranslation } from 'next-i18next'
+import { m } from '$m'
 import { RenamableTitle } from '$entities/uploadable-file/renamable-title'
 
-export function UploadableGroupTitle({ disabled }: {
-  disabled: boolean
-}) {
-  const { t } = useTranslation('filesharing')
+export function UploadableGroupTitle({ disabled }: { disabled: boolean }) {
   const { values, setFieldValue } = useFormikContext<FilesUploaderFormValues>()
   const isZip = values.convertToZip
   const isMobile = useMediaQuery('(max-width: 768px)')
@@ -27,8 +24,8 @@ export function UploadableGroupTitle({ disabled }: {
         <div style={{ position: 'absolute' }}>
           <HorizontalCard
             icon={<FilesIcon />}
-            title={t('upload_form.directory_upload')}
-            subtitle={`${filesCount} ${plural(filesCount, t('files_genitive.one'), t('files_genitive.few'), t('files_genitive.many'))}`}
+            title={m['upload_form.directory_upload']()}
+            subtitle={`${filesCount} ${plural(filesCount, m['files_genitive.one'](), m['files_genitive.few'](), m['files_genitive.many']())}`}
           />
         </div>
       </Fade>
@@ -39,16 +36,17 @@ export function UploadableGroupTitle({ disabled }: {
             title={
               <RenamableTitle
                 value={values.zipArchiveName ?? ''}
-                onChange={name => {
+                onChange={(name) => {
                   setFieldValue('zipArchiveName', nmZipFilename(name))
                 }}
-                placeholder='documents.zip'
+                placeholder="documents.zip"
                 readonly={disabled}
               />
             }
-            subtitle={values.files?.length 
-              ? byteSize(values.files.reduce((prev, cur) => prev + cur.blob.size, 0)).toString()
-              : t('upload_form.archive_empty')
+            subtitle={
+              values.files?.length
+                ? byteSize(values.files.reduce((prev, cur) => prev + cur.blob.size, 0)).toString()
+                : m['upload_form.archive_empty']()
             }
           />
         </div>

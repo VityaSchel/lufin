@@ -6,7 +6,10 @@
     "$widgets/*": "${workspaceRoot}/src/widgets/*",
     "$features/*": "${workspaceRoot}/src/features/*",
     "$entities/*": "${workspaceRoot}/src/entities/*",
-    "$shared/*": "${workspaceRoot}/src/shared/*"
+    "$shared/*": "${workspaceRoot}/src/shared/*",
+    "$paraglide/*": "${workspaceRoot}/src/paraglide/*",
+    "$assets/*": "${workspaceRoot}/src/assets/*",
+    "$m": "${workspaceRoot}/src/paraglide/messages.js",
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"

@@ -1,26 +1,31 @@
 import styles from './styles.module.scss'
-import NextLink from 'next/link'
+import { Link as ReactRouterLink } from 'react-router'
 import cx from 'classnames'
 
-export function Link({ href, variant = 'default', className, children, ...props }: React.PropsWithChildren<{
+export function Link({
+  href,
+  variant = 'default',
+  className,
+  children,
+  ...props
+}: React.PropsWithChildren<{
   href: string
   variant?: 'default' | 'dimmed' | 'highlighted' | 'underlined'
   className?: string
-}> & React.ComponentProps<typeof NextLink>) {
+}> &
+  Omit<React.ComponentProps<typeof ReactRouterLink>, 'to'>) {
   return (
-    <NextLink 
-      href={href} 
-      className={
-        cx(styles.link, className, {
-          [styles.default]: variant === 'default',
-          [styles.dimmed]: variant === 'dimmed',
-          [styles.highlighted]: variant === 'highlighted',
-          [styles.underlined]: variant === 'underlined',
-        })
-      }
+    <ReactRouterLink
+      to={href}
+      className={cx(styles.link, className, {
+        [styles.default]: variant === 'default',
+        [styles.dimmed]: variant === 'dimmed',
+        [styles.highlighted]: variant === 'highlighted',
+        [styles.underlined]: variant === 'underlined'
+      })}
       {...props}
     >
       {children}
-    </NextLink>
+    </ReactRouterLink>
   )
 }

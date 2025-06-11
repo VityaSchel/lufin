@@ -1,17 +1,22 @@
 import React from 'react'
-import { GetServerSideProps } from 'next'
 import { DownloadFilesInfo } from '$widgets/download-files-info'
 import { getFilesPageFromDBDirectly } from '$app/lib/server-utils'
 import { FilesPagePasswordInput } from '$widgets/files-page-password-input'
-import { DecryptionKey, decodeDecryptionKey } from '$shared/utils/files-encryption'
 import { DecryptionKeyError } from '$widgets/decryption-key-error'
-import { SharedFileForDownload } from '$shared/model/shared-file'
+import { type DecryptionKey, decodeDecryptionKey } from '$shared/utils/files-encryption'
+import { type SharedFileForDownload } from '$shared/model/shared-file'
 import { DecryptionKeyContext } from '$shared/context/decryption-key'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-type FilePageProps = { page: ({ files: SharedFileForDownload[] } | { passwordProtected: true }) & { encrypted: boolean } }
+type Props = ({ files: SharedFileForDownload[] } | { passwordProtected: true }) & { encrypted: boolean }
 
-function FilePage({ page }: FilePageProps) {
+
+export default function FilePage() {
+  const page: Props = { passwordProtected: true, encrypted: true }
+
+  return <Page page={page} />
+}
+
+function Page({ page }: { page: Props }) {
   const [isLoaded, setIsLoaded] = React.useState(false)
   const [files, setFiles] = React.useState<null | SharedFileForDownload[]>(null)
   const [password, setPassword] = React.useState<string | undefined>(undefined)
@@ -71,49 +76,47 @@ function FilePage({ page }: FilePageProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<FilePageProps, { pageID: string }> = async (context) => {
-  const pageID = context.params?.pageID
-  if (!pageID) {
-    return {
-      props: {},
-      notFound: true
-    }
-  }
+// export const getServerSideProps: GetServerSideProps<FilePageProps, { pageID: string }> = async (context) => {
+//   const pageID = context.params?.pageID
+//   if (!pageID) {
+//     return {
+//       props: {},
+//       notFound: true
+//     }
+//   }
 
-  const db = await (await import('$app/db')).getDB()
-  const filesPage = await getFilesPageFromDBDirectly(db, pageID)
-  if (!filesPage) {
-    return {
-      props: {},
-      notFound: true
-    }
-  }
+//   const db = await (await import('$app/db')).getDB()
+//   const filesPage = await getFilesPageFromDBDirectly(db, pageID)
+//   if (!filesPage) {
+//     return {
+//       props: {},
+//       notFound: true
+//     }
+//   }
 
-  if (filesPage.passwordHash !== null) {
-    return {
-      props: {
-        ...(await serverSideTranslations(context.locale ?? context.defaultLocale ?? 'en', [
-          'filesharing',
-        ])),
-        page: { passwordProtected: true, encrypted: filesPage.encrypted }
-      }
-    }
-  } else {
-    const files: SharedFileForDownload[] = filesPage.files.map(file => ({
-      name: file.filename,
-      sizeInBytes: file.filesizeInBytes,
-      mimeType: file.mimeType ?? ''
-    }))
+//   if (filesPage.passwordHash !== null) {
+//     return {
+//       props: {
+//         ...(await serverSideTranslations(context.locale ?? context.defaultLocale ?? 'en', [
+//           'filesharing',
+//         ])),
+//         page: { passwordProtected: true, encrypted: filesPage.encrypted }
+//       }
+//     }
+//   } else {
+//     const files: SharedFileForDownload[] = filesPage.files.map(file => ({
+//       name: file.filename,
+//       sizeInBytes: file.filesizeInBytes,
+//       mimeType: file.mimeType ?? ''
+//     }))
 
-    return {
-      props: {
-        ...(await serverSideTranslations(context.locale ?? context.defaultLocale ?? 'en', [
-          'filesharing',
-        ])),
-        page: { files, encrypted: filesPage.encrypted }
-      }
-    }
-  }
-}
-
-export default FilePage
+//     return {
+//       props: {
+//         ...(await serverSideTranslations(context.locale ?? context.defaultLocale ?? 'en', [
+//           'filesharing',
+//         ])),
+//         page: { files, encrypted: filesPage.encrypted }
+//       }
+//     }
+//   }
+// }

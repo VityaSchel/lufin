@@ -3,26 +3,31 @@ import styles from './styles.module.scss'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { FilesUploader } from '$features/uploader'
-import { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
-import { Formik, FormikProps } from 'formik'
+import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import { Formik, type FormikProps } from 'formik'
 import clone from 'just-clone'
 import { UploadSuccessful } from '$features/upload-successful'
 import { onSubmitForm } from '$widgets/upload-files-tab/proc/upload'
 import { useComplexState } from '$shared/utils/react-hooks/complex-state'
 import { StylesSuspense } from '$shared/ui/styles-suspense'
-import { useTranslation } from 'next-i18next'
+import { m } from '$m'
 
-export type Links = { download: string, delete: string }
-export const UploadFilesContext = React.createContext<{ uploadedFiles: boolean[], uploadRequestProgress: number[] } | undefined>(undefined)
+export type Links = { download: string; delete: string }
+export const UploadFilesContext = React.createContext<
+  { uploadedFiles: boolean[]; uploadRequestProgress: number[] } | undefined
+>(undefined)
 
-export function UploadFilesTab({ uploadStrategy, onGoToMyFiles }: {
+export function UploadFilesTab({
+  uploadStrategy,
+  onGoToMyFiles
+}: {
   uploadStrategy: 'parallel' | 'sequential'
   onGoToMyFiles: () => any
 }) {
-  const { t } = useTranslation('filesharing')
   const [uploadedFiles, setUploadedFiles, uploadedFilesRef] = useComplexState<boolean[]>([])
   const [links, setLinks] = React.useState<Links | null>(null)
-  const [uploadRequestProgress, setUploadRequestProgress, uploadRequestProgressRef] = useComplexState<number[]>([])
+  const [uploadRequestProgress, setUploadRequestProgress, uploadRequestProgressRef] =
+    useComplexState<number[]>([])
 
   const host = window.location.host
 
@@ -38,7 +43,7 @@ export function UploadFilesTab({ uploadStrategy, onGoToMyFiles }: {
     setLinks(links)
     setUploadRequestProgress([])
   }
-  
+
   const handleResetForm = () => {
     setUploadedFiles([])
     setLinks(null)
@@ -63,7 +68,7 @@ export function UploadFilesTab({ uploadStrategy, onGoToMyFiles }: {
         <div className={styles.uploadFiles}>
           <DndProvider backend={HTML5Backend}>
             <Formik
-              initialValues={{ 
+              initialValues={{
                 files: null,
                 expiresAt: null,
                 password: null,
@@ -75,22 +80,28 @@ export function UploadFilesTab({ uploadStrategy, onGoToMyFiles }: {
               validate={(values: FilesUploaderFormValues) => {
                 const errors: Partial<Record<keyof FilesUploaderFormValues, string>> = {}
                 if (values.expiresAt instanceof Date && isNaN(values.expiresAt.getTime())) {
-                  errors.expiresAt = t('upload_form.expiration_date_invalid')
+                  errors.expiresAt = m['upload_form.expiration_date_invalid']()
                 }
-                if (values.deleteAtFirstDownload && values.files && values.files.length > 1 && !values.convertToZip) {
-                  errors.deleteAtFirstDownload = t('upload_form.delete_after_first_download_validation_error')
+                if (
+                  values.deleteAtFirstDownload &&
+                  values.files &&
+                  values.files.length > 1 &&
+                  !values.convertToZip
+                ) {
+                  errors.deleteAtFirstDownload =
+                    m['upload_form.delete_after_first_download_validation_error']()
                 }
                 return errors
               }}
               onSubmit={(values: FilesUploaderFormValues) => {
                 setUploadedFiles([])
                 return onSubmitForm(
-                  values, 
+                  values,
                   uploadStrategy,
                   { host },
-                  { 
-                    onFileUploaded: handleOnFileUploaded, 
-                    onLinksReady: handleLinksReady, 
+                  {
+                    onFileUploaded: handleOnFileUploaded,
+                    onLinksReady: handleLinksReady,
                     setUploadRequestProgress: handleFileUploadProgress,
                     setUploadRequestProgressForAll: handleAllFilesUploadProgress
                   }
@@ -98,22 +109,21 @@ export function UploadFilesTab({ uploadStrategy, onGoToMyFiles }: {
               }}
               innerRef={formikRef as any}
             >
-              {({ values, handleSubmit }) => (
-                (links && values.files)
-                  ? (
-                    <UploadSuccessful
-                      filesNum={values.files.length}
-                      links={links}
-                      password={values.password}
-                      onResetForm={() => handleResetForm()}
-                      onGoToMyFiles={() => onGoToMyFiles()}
-                    />
-                  ) : (
-                    <form onSubmit={handleSubmit}>
-                      <FilesUploader formikRef={formikRef as any} />
-                    </form>
-                  )
-              )}
+              {({ values, handleSubmit }) =>
+                links && values.files ? (
+                  <UploadSuccessful
+                    filesNum={values.files.length}
+                    links={links}
+                    password={values.password}
+                    onResetForm={() => handleResetForm()}
+                    onGoToMyFiles={() => onGoToMyFiles()}
+                  />
+                ) : (
+                  <form onSubmit={handleSubmit}>
+                    <FilesUploader formikRef={formikRef as any} />
+                  </form>
+                )
+              }
             </Formik>
           </DndProvider>
         </div>

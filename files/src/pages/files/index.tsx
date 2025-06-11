@@ -2,9 +2,9 @@ import React from 'react'
 import { FilesPageTabs } from '$widgets/files-page-tabs'
 import { MyFilesTab } from '$widgets/my-files-tab'
 import { UploadFilesTab } from '$widgets/upload-files-tab'
+import { m } from '$m'
 
 export default function FilesPage() {
-  const { t } = useTranslation('filesharing')
   const [tab, setTab] = React.useState<'my_files' | 'upload'>('upload')
 
   const uploadStrategy: 'sequential' | 'parallel' = 'parallel'
@@ -16,7 +16,7 @@ export default function FilesPage() {
       tabs={[
         {
           key: 'upload',
-          title: t('nav.upload_tab'),
+          title: m['nav.upload_tab'](),
           content: (
             <UploadFilesTab
               uploadStrategy={uploadStrategy}
@@ -24,7 +24,7 @@ export default function FilesPage() {
             />
           )
         },
-        { key: 'my_files', title: t('nav.my_files'), content: <MyFilesTab /> }
+        { key: 'my_files', title: m['nav.my_files'](), content: <MyFilesTab /> }
       ]}
     />
   )
