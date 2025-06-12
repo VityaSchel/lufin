@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { z } from 'zod'
 
 export async function getFilesPage(pageId: string, password?: string) {

@@ -1,10 +1,11 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import cx from 'classnames'
-import { CircularProgress, Collapse, Fade, IconButton, Radio, useMediaQuery } from '@mui/material'
+import { Collapse, Fade, IconButton, useMediaQuery } from '@mui/material'
 import { HorizontalCard } from '$shared/ui/components/horizontal-card'
 import byteSize from 'byte-size'
-import { MdClose, MdOutlineArrowForwardIos } from 'react-icons/md'
+import MdClose from '$assets/icons/close.svg?react'
+import MdOutlineArrowForwardIos from '$assets/icons/chevron-right.svg?react'
 import {
   FileContentPreview,
   supportedMimeTypes as previewSupportedMimeTypes
@@ -12,7 +13,6 @@ import {
 import { getFileType } from '$shared/utils/get-file-type'
 import { getSvgIconByFileType } from '$shared/utils/get-svg-icon-by-filetype'
 import { RenamableTitle } from '$entities/uploadable-file/renamable-title'
-import mime from 'mime'
 import { Progress } from '$shared/ui/progress'
 import { filesize } from 'filesize'
 import type { UploadableFile as UploadableFileType } from '$shared/uploadable-file'
@@ -118,20 +118,6 @@ export function UploadableFile({
       </Fade>
     </>
   )
-}
-
-const ruLocale = {
-  symbols: {
-    B: 'Б',
-    kB: 'кБ',
-    MB: 'МБ',
-    GB: 'ГБ',
-    TB: 'ТБ',
-    PB: 'ПБ',
-    EB: 'ЭБ',
-    ZB: 'ЗБ',
-    YB: 'ЙБ'
-  }
 }
 
 function UploadableImageCompressedPreview({

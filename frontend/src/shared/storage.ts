@@ -1,6 +1,5 @@
 import { z } from 'zod'
 import sjson from 'secure-json-parse'
-import _ from 'lodash'
 
 export type FilesPageLocalStorage = {
   files: { name: string; type: string }[]
@@ -65,10 +64,11 @@ export function markFilesPageDeleted(deletePageToken: string) {
   const fp = filePages.find((p) => p.deleteToken === deletePageToken)
 
   if (fp) {
+    const { pageId, ...rest } = fp
     localStorage.setItem(
-      fp.pageId,
+      pageId,
       JSON.stringify({
-        ..._.omit(fp, 'pageId'),
+        ...rest,
         deleted: true
       } satisfies z.infer<typeof schema> satisfies FilesPageLocalStorage)
     )

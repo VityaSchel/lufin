@@ -12,9 +12,8 @@ import sjson from 'secure-json-parse'
 import cx from 'classnames'
 import { getItem as getItemFromLocalStorage, schema as localStorageSchema } from '$shared/storage'
 import { z } from 'zod'
-import _ from 'lodash'
 import plural from 'plural-ru'
-import { MdCheck } from 'react-icons/md'
+import MdCheck from '$assets/icons/check.svg?react'
 import { m } from '$m'
 
 const importDataSchema = z.object({
@@ -52,8 +51,8 @@ export function ImportDialog({ open, onClose }: { open: boolean; onClose: () => 
     for (const page of data) {
       const result = importDataSchema.parse(page)
       if (getItemFromLocalStorage(result.pageId) === null) {
-        const pageWithoutPageId = _.omit(result, 'pageId')
-        window.localStorage.setItem(result.pageId, JSON.stringify(pageWithoutPageId))
+        const { pageId, ...rest } = result
+        window.localStorage.setItem(pageId, JSON.stringify(rest))
         window.dispatchEvent(new Event('storage'))
       }
     }

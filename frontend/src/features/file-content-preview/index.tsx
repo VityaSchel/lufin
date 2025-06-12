@@ -4,12 +4,12 @@ import { getFileType } from '$shared/utils/get-file-type'
 import { PreviewText } from '$features/file-content-preview/preview-text'
 import { PreviewZip } from '$features/file-content-preview/preview-zip'
 import { Button } from '$shared/ui/components/button'
-import { BiLinkExternal } from 'react-icons/bi'
+import BiLinkExternal from '$assets/icons/link-external.svg?react'
 import { IconButton, Tooltip, useMediaQuery } from '@mui/material'
-import { mdiArrowLeft, mdiArrowRight } from '@mdi/js'
-import Icon from '@mdi/react'
 import { PreviewSpreadsheet } from '$features/file-content-preview/preview-spreadsheet'
 import { m } from '$m'
+import ArrowLeft from '$assets/icons/arrow-left.svg?react'
+import ArrowRight from '$assets/icons/arrow-right.svg?react'
 
 export const supportedMimeTypes = [
   'audio',
@@ -94,7 +94,7 @@ function Preview({
               onClick={slider.onOpenPreviousPreview}
               disabled={!slider.onOpenPreviousPreview}
             >
-              <Icon path={mdiArrowLeft} size={1} />
+              <ArrowLeft />
             </IconButton>
           </Tooltip>
         )}
@@ -113,7 +113,7 @@ function Preview({
         {!isMobile && slider && (
           <Tooltip title={m.preview_nextImageButton()}>
             <IconButton onClick={slider.onOpenNextPreview} disabled={!slider.onOpenNextPreview}>
-              <Icon path={mdiArrowRight} size={1} />
+              <ArrowRight />
             </IconButton>
           </Tooltip>
         )}
@@ -124,12 +124,12 @@ function Preview({
                 onClick={slider.onOpenPreviousPreview}
                 disabled={!slider.onOpenPreviousPreview}
               >
-                <Icon path={mdiArrowLeft} size={1.5} />
+                <ArrowLeft />
               </IconButton>
             </Tooltip>
             <Tooltip title={m.preview_nextImageButton()}>
               <IconButton onClick={slider.onOpenNextPreview} disabled={!slider.onOpenNextPreview}>
-                <Icon path={mdiArrowRight} size={1.5} />
+                <ArrowRight />
               </IconButton>
             </Tooltip>
           </div>

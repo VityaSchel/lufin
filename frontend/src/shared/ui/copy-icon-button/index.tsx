@@ -1,7 +1,8 @@
 import React from 'react'
 import { IconButton } from '@mui/material'
 import copy from 'copy-to-clipboard'
-import { MdContentCopy, MdDone } from 'react-icons/md'
+import MdContentCopy from '$assets/icons/copy-content.svg?react'
+import MdDone from '$assets/icons/done.svg?react'
 
 export function CopyIconButton({ content }: {
   content: string

@@ -18,10 +18,11 @@ import {
 import Download from './icons/download.svg'
 import { getSvgIconByFileType } from '$shared/utils/get-svg-icon-by-filetype'
 import { getFileType } from '$shared/utils/get-file-type'
-import Icon from '@mdi/react'
-import { mdiSyncAlert } from '@mdi/js'
+import SyncAlert from '$assets/icons/sync-alert.svg?react'
 import MUIButton from '@mui/material/Button'
-import { MdDone, MdLink, MdPreview } from 'react-icons/md'
+import MdDone from '$assets/icons/done.svg?react'
+import MdLink from '$assets/icons/link.svg?react'
+import MdPreview from '$assets/icons/preview.svg?react'
 import {
   FileContentPreview,
   supportedMimeTypes as previewSupportedMimeTypes
@@ -156,7 +157,7 @@ const SharedFile = React.forwardRef(
           />
           {isErrored ? (
             <IconButton onClick={() => onDownloadStarted()}>
-              <Icon path={mdiSyncAlert} size={1} />
+              <SyncAlert />
             </IconButton>
           ) : isDownloading && !content ? (
             <CircularProgress

@@ -13,19 +13,23 @@ import { ThemeProvider } from '@mui/material'
 import theme from '$app/mui'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import ruRU from 'date-fns/locale/ru'
 import FilesPage from '$pages/index'
 import DeleteFilesPage from '$pages/delete/[deletePageToken]'
 import FilePage from '$pages/[pageId]'
 import DirectLinkFilePage from '$pages/[pageId]/[file]'
 import PageNotFound from '$pages/404'
+import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
+import { getLocale } from '$paraglide/runtime'
 
 function App() {
   return (
     <BrowserRouter>
       <HelmetProvider>
         <ThemeProvider theme={theme}>
-          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ruRU}>
+          <LocalizationProvider
+            dateAdapter={AdapterDateFns}
+            adapterLocale={getDateFnsLocale(getLocale())}
+          >
             <Toaster richColors />
             <PageContainer>
               <Routes>

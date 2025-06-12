@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import { Button } from '$shared/ui/components/button'
-import { MdWrapText } from 'react-icons/md'
+import MdWrapText from '$assets/icons/wrap-text.svg?react'
 import cx from 'classnames'
 import plural from 'plural-ru'
 import GraphemeSplitter from 'grapheme-splitter'

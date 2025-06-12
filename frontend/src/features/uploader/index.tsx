@@ -32,7 +32,7 @@ export function FilesUploader({
       <DragNDrop
         onChange={async (newEntries) => {
           if (newEntries && !isSubmitting) {
-            const newFiles = []
+            const newFiles: File[] = []
             for (const file of newEntries) {
               if (await isThisAFile(file)) {
                 newFiles.push(file)

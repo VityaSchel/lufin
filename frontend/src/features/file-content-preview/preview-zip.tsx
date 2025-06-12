@@ -15,7 +15,6 @@ import {
   IconButton,
   Typography
 } from '@mui/material'
-import JSZip from 'jszip'
 import TreeView from '@mui/lab/TreeView'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
@@ -31,6 +30,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { m } from '$m'
 import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
 import { getLocale } from '$paraglide/runtime'
+import type JSZip from 'jszip'
 
 type PreviewFileValue = null | JSObject
 const ZipPreviewContext = React.createContext<
@@ -50,7 +50,8 @@ export function PreviewZip({ zip }: { zip: File }) {
 
   const handleLoadZip = async () => {
     try {
-      const jszip = await JSZip.loadAsync(zip)
+      const { loadAsync } = await import('jszip')
+      const jszip = await loadAsync(zip)
       setZipContents(jszip)
     } catch (e) {
       if (typeof e === 'object' && e !== null) {
@@ -132,7 +133,7 @@ export function PreviewZip({ zip }: { zip: File }) {
   )
 }
 
-type JSObject = (typeof JSZip)['files'][string]
+type JSObject = JSZip['files'][string]
 interface NestedLevel {
   '0': JSObject
   [key: string]: NestedLevel | JSObject

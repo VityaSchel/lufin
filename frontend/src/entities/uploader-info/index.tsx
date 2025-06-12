@@ -1,7 +1,6 @@
 import { Headline } from '$entities/headline'
 import { m } from '$m'
 import { Link } from '$shared/ui/link'
-import Encryption from '$assets/encryption.svg'
 import React from 'react'
 import { CircularProgress } from '@mui/material'
 import { z } from 'zod'
@@ -85,7 +84,7 @@ export function UploaderInfo() {
         <p>{m.termsFooter_privacy_text2()}</p>
       </div>
       <div className="flex-[3] shrink-0">
-        <Encryption />
+        <img src="/encryption.svg" />
       </div>
     </div>
   )

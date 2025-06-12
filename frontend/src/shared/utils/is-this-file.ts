@@ -1,5 +1,5 @@
 export function isThisAFile(file: File) {
-  return new Promise((resolve, reject) => {
+  return new Promise<boolean>((resolve, reject) => {
     if (file.type !== '') { 
       return resolve(true) 
     }

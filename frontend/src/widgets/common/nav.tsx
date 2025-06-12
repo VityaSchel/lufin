@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import { LanguageSwitch } from '$features/language-switch'
 import Logo from '$assets/logo.svg'
-import { BiLogoGithub } from 'react-icons/bi'
+import BiLogoGithub from '$assets/icons/github-logo.svg'
 
 export function AppBar() {
   return (

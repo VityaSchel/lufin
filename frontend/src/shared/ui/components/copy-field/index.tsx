@@ -1,7 +1,8 @@
 import React from 'react'
 import copy from 'copy-to-clipboard'
 import styles from './styles.module.scss'
-import { IoCopyOutline, IoCheckmark } from 'react-icons/io5'
+import IoCopyOutline from '$assets/icons/copy-outline.svg?react'
+import IoCheckmark from '$assets/icons/check.svg?react'
 
 export function CopyField({ children }: { children: string }) {
   const [copied, setCopied] = React.useState(false)

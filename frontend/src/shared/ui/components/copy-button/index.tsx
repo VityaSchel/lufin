@@ -1,7 +1,8 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import copy from 'copy-to-clipboard'
-import { MdContentCopy, MdDone } from 'react-icons/md'
+import MdContentCopy from '$assets/icons/copy-content.svg?react'
+import MdDone from '$assets/icons/done.svg?react'
 import { Button } from '../button'
 import cx from 'classnames'
 

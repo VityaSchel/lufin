@@ -3,7 +3,6 @@ import { saveFilesPage as saveFilesPageToLocalStorage } from '$shared/storage'
 import { encryptFiles } from '$shared/utils/files-encryption'
 import { nmZipFilename } from '$shared/utils/zip-file-name'
 import type { Links } from '$widgets/upload-files-tab'
-import JSZip from 'jszip'
 
 type ValidatedValues = FilesUploaderFormValues & { files: File[]; checksum?: string }
 export function onSubmitForm({
@@ -28,6 +27,7 @@ export function onSubmitForm({
     )
     if (validatedValues.convertToZip) {
       try {
+        const JSZip = await import('jszip').then((m) => m.default)
         const zip = new JSZip()
         validatedValues.files.forEach((file) => zip.file(file.name || file.initialName, file.blob))
         const blobZip = await zip.generateAsync({ type: 'blob' })

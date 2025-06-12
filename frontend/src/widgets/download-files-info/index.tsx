@@ -15,7 +15,6 @@ import { useComplexState } from '$shared/utils/react-hooks/complex-state'
 import { DecryptionKeyContext } from '$shared/context/decryption-key'
 import { type SharedFileForDownload } from '$shared/model/shared-file'
 import { m } from '$m'
-import JSZip from 'jszip'
 import { useParams } from 'react-router'
 
 export function DownloadFilesInfo({
@@ -162,6 +161,7 @@ export function DownloadFilesInfo({
   }
 
   const handleSaveAll = async () => {
+    const JSZip = await import('jszip').then(m => m.default)
     const archive = new JSZip()
     for (let i = 0; i < files.length; i++) {
       const fileData = new File([fileContents[i]], files[i].name)
