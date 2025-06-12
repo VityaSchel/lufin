@@ -32,7 +32,7 @@ type SharedFile = {
 
 export function FilesList() {
   const [pages, setPages] = React.useState<null | SharedFile[]>(null)
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = !useMediaQuery('(min-width: 768px)')
 
   React.useEffect(() => {
     const handler = () => {

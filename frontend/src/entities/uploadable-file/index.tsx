@@ -34,7 +34,7 @@ export function UploadableFile({
   progress: number | null
 }) {
   const [previewOpen, setPreviewOpen] = React.useState(false)
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = !useMediaQuery('(min-width: 768px)')
 
   const fileType = React.useMemo(() => getFileType(file.type, file.name), [file])
   const icon = getSvgIconByFileType(fileType)

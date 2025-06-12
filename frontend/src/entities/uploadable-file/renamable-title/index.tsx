@@ -2,7 +2,12 @@ import React from 'react'
 import styles from './styles.module.scss'
 import { getRandomFileName, normalizeFilename } from '$shared/utils/normalize-file-name'
 
-export function RenamableTitle({ value, onChange, readonly, placeholder }: {
+export function RenamableTitle({
+  value,
+  onChange,
+  readonly,
+  placeholder
+}: {
   value: string
   onChange: (newValue: string) => any
   placeholder?: string
@@ -17,15 +22,25 @@ export function RenamableTitle({ value, onChange, readonly, placeholder }: {
     setInputValue(value)
   }, [value])
 
-  const recalculateWidth = () => {
+  const recalculateWidth = () =>
     setTimeout(() => {
       if (hiddenSpan.current) {
-        setInputWidth(hiddenSpan.current.offsetWidth + 10*2 + 30)
+        setInputWidth(hiddenSpan.current.offsetWidth + 10 * 2 + 30)
       }
     }, 1)
-  }
 
-  React.useEffect(() => { recalculateWidth() }, [inputValue])
+  React.useEffect(() => {
+    const timeout = recalculateWidth()
+    return () => clearTimeout(timeout)
+  }, [inputValue])
+
+  React.useEffect(() => {
+    if (hiddenSpan.current) {
+      const observer = new ResizeObserver(() => recalculateWidth())
+      observer.observe(hiddenSpan.current)
+      return () => observer.disconnect()
+    }
+  }, [hiddenSpan.current])
 
   const handleBlur = () => {
     const fn = inputValue === '' ? '' : normalizeFilename(inputValue)
@@ -36,17 +51,16 @@ export function RenamableTitle({ value, onChange, readonly, placeholder }: {
   }
 
   return (
-    <div className={styles.container} onClick={e => e.stopPropagation()}>
-      <span 
-        className={styles.hidden}
-        ref={hiddenSpan}
-      >{inputValue || placeholder}</span>
-      <input 
+    <div className={styles.container} onClick={(e) => e.stopPropagation()}>
+      <span className={styles.hidden} ref={hiddenSpan}>
+        {inputValue || placeholder}
+      </span>
+      <input
         // ref={inputRef}
-        type="text" 
-        value={inputValue} 
-        onBlur={handleBlur} 
-        onChange={e => setInputValue(e.target.value)}
+        type="text"
+        value={inputValue}
+        onBlur={handleBlur}
+        onChange={(e) => setInputValue(e.target.value)}
         // onInput={() => recalculateWidth()}
         className={styles.renamableTitle}
         style={{ width: `min(${inputWidth}px, 100%)` }}

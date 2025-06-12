@@ -34,7 +34,7 @@
       pointer-events: none;
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and not (min-width: 768px) {
       padding: 14px 38px;
       transition-duration: 100ms;
       font-size: 14px;
@@ -79,7 +79,7 @@
       color: #fff;
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and not (min-width: 768px) {
       padding: 14px 38px;
       transition-duration: 100ms;
 

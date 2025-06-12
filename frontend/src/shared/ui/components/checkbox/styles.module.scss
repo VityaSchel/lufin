@@ -6,11 +6,13 @@
   gap: 12px;
   align-items: center;
 
-  @media screen and (max-width: variables.$breakpoint-tablet) {
-    align-items: flex-start;
+  @media screen and not (min-width: variables.$breakpoint-tablet) {
+    // align-items: flex-start;
+    gap: 8px;
   }
 
-  &, label {
+  &,
+  label {
     cursor: pointer;
     user-select: none;
   }
@@ -66,11 +68,11 @@
       border-color: color.scale(variables.$accent, $saturation: -100%, $lightness: 10%);
     }
 
-    @media screen and (max-width: variables.$breakpoint-tablet) {
-      margin-top: 3px;
-      width: 24px;
-      height: 24px;
-      border-radius: 4px;
-    }
+    // @media screen and not (min-width: variables.$breakpoint-tablet) {
+    //   // margin-top: 3px;
+    //   width: 24px;
+    //   height: 24px;
+    //   border-radius: 4px;
+    // }
   }
 }

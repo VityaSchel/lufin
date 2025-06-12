@@ -29,7 +29,7 @@ export function UploadSuccessful({
   const downloadUrl = new URL(links.download)
   const downloadLink =
     downloadUrl.protocol + '//' + downloadUrl.host + downloadUrl.pathname + downloadUrl.hash
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = !useMediaQuery('(min-width: 768px)')
 
   return (
     <div className={styles.filesUploaded}>

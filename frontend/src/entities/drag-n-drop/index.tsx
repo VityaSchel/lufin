@@ -52,7 +52,9 @@ export function DragNDrop({
   return (
     <>
       <div
-        className={cx(styles.dragNDropZone, { [styles.active]: isActive && !disabled })}
+        className={cx(styles.dragNDropZone, {
+          [styles.active]: isActive && !disabled
+        })}
         ref={fileDropZoneRef as any}
       >
         <div className={styles.dragNDropContent}>
@@ -63,9 +65,7 @@ export function DragNDrop({
             <span>{m.uploadForm_dragNDrop()}</span>
             <span className={styles.or}>{m.uploadForm_or()}</span>
             <Button type="button" onClick={() => fileInputRef.current?.click()} disabled={disabled}>
-              {values.files?.length
-                ? m.uploadForm_addFiles()
-                : m.uploadForm_selectFiles()}
+              {values.files?.length ? m.uploadForm_addFiles() : m.uploadForm_selectFiles()}
               <UploadIcon />
             </Button>
           </div>

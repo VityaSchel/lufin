@@ -32,7 +32,7 @@
 }
 
 .content {
-  @media screen and (max-width: variables.$breakpoint-tablet) {
+  @media screen and not (min-width: variables.$breakpoint-tablet) {
     padding: 0 !important;
 
     > * {
@@ -45,15 +45,15 @@
   }
 }
 
-.fullScreen [class~=MuiPaper-root]:not([class~=MuiAppBar-root]) {
+.fullScreen [class~='MuiPaper-root']:not([class~='MuiAppBar-root']) {
   // width: 100%;
   height: 100%;
   max-width: 100%;
 
-  [class^=styles_preview] {
+  [class^='styles_preview'] {
     height: 100%;
 
-    [class^=styles_imagePreview] {
+    [class^='styles_imagePreview'] {
       // width: 100%;
 
       img {

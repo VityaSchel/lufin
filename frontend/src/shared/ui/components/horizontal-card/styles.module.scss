@@ -7,7 +7,7 @@
   gap: 15px;
   flex: 1;
 
-  @media screen and (max-width: variables.$breakpoint-tablet) {
+  @media screen and not (min-width: variables.$breakpoint-tablet) {
     gap: 10px;
   }
 
@@ -17,7 +17,7 @@
 
   .icon {
     color: variables.$accent;
-    background-color: var(--horizontal-card-icon-bg, #2A4259);
+    background-color: var(--horizontal-card-icon-bg, #2a4259);
     border-radius: 999px;
     width: 56px;
     height: 56px;
@@ -31,7 +31,7 @@
       height: 24px;
     }
 
-    @media screen and (max-width: variables.$breakpoint-tablet) {
+    @media screen and not (min-width: variables.$breakpoint-tablet) {
       width: 30px;
       height: 30px;
 
@@ -61,7 +61,7 @@
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
 
-      @media screen and (max-width: variables.$breakpoint-tablet) {
+      @media screen and not (min-width: variables.$breakpoint-tablet) {
         font-size: 16px;
       }
     }

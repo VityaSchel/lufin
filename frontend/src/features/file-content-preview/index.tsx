@@ -70,7 +70,7 @@ function Preview({
     onOpenNextPreview?: () => any
   }
 }): React.ReactElement {
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = !useMediaQuery('(min-width: 768px)')
 
   if (type === 'text') {
     return <PreviewText file={file} />

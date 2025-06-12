@@ -14,14 +14,14 @@
   .actions {
     display: flex;
     gap: 16px;
-    
+
     .copyButton {
       margin-left: auto;
     }
 
-    @media screen and (max-width: variables.$breakpoint-tablet) {
+    @media screen and not (min-width: variables.$breakpoint-tablet) {
       flex-direction: column;
-    
+
       .copyButton {
         margin-left: unset;
         order: -1;

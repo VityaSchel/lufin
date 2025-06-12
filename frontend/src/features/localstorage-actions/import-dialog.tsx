@@ -23,7 +23,7 @@ const importDataSchema = z.object({
 export function ImportDialog({ open, onClose }: { open: boolean; onClose: () => any }) {
   const [input, setInput] = React.useState('')
   const [success, setSuccess] = React.useState<false | number>(false)
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = !useMediaQuery('(min-width: 768px)')
 
   React.useEffect(() => {
     if (!open) {

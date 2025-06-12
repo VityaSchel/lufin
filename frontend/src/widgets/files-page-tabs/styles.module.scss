@@ -20,7 +20,7 @@
     font-family: 'Golos Text Variable', 'Golos Text', var(--default-fonts);
     font-weight: 500;
 
-    @media screen and (max-width: variables.$breakpoint-tablet) {
+    @media screen and not (min-width: variables.$breakpoint-tablet) {
       padding: 5px 10px;
       flex: 1;
       // width: 116px;
@@ -37,7 +37,7 @@
   background-color: #212932;
   border-radius: 0px 36px 36px 36px;
 
-  @media screen and (max-width: variables.$breakpoint-tablet) {
+  @media screen and not (min-width: variables.$breakpoint-tablet) {
     border-radius: 0px 0px 15px 15px;
   }
 }

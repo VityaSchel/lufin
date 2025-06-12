@@ -17,7 +17,7 @@
     background: rgba(42, 66, 89, 0.3);
   }
 
-  @media screen and (max-width: variables.$breakpoint-tablet) {
+  @media screen and not (min-width: variables.$breakpoint-tablet) {
     padding: 40px 27.5px;
     height: auto;
   }
@@ -34,7 +34,7 @@
       width: 230px;
       height: 157px;
 
-      @media screen and (max-width: variables.$breakpoint-tablet) {
+      @media screen and not (min-width: variables.$breakpoint-tablet) {
         width: inherit;
         height: inherit;
       }
@@ -47,7 +47,7 @@
     flex-direction: column;
     gap: 69px;
 
-    @media screen and (max-width: variables.$breakpoint-tablet) {
+    @media screen and not (min-width: variables.$breakpoint-tablet) {
       gap: 10px;
     }
 
@@ -57,7 +57,7 @@
       align-items: center;
       gap: 20px;
 
-      @media screen and (max-width: variables.$breakpoint-tablet) {
+      @media screen and not (min-width: variables.$breakpoint-tablet) {
         gap: 10px;
       }
 
@@ -76,7 +76,7 @@
           flex-shrink: 0;
         }
 
-        @media screen and (max-width: variables.$breakpoint-tablet) {
+        @media screen and not (min-width: variables.$breakpoint-tablet) {
           padding-left: 24px;
           padding-right: 24px;
           gap: 10px;

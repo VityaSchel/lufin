@@ -62,7 +62,7 @@ function ResponsiveDialog({
   open: boolean
   onClose: () => any
 } & Parameters<typeof ExpiryDatePicker>['0']) {
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = !useMediaQuery('(min-width: 768px)')
   const randomModalId = React.useRef<number | undefined>()
 
   React.useEffect(() => {

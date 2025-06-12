@@ -38,7 +38,7 @@
         color: #69727d;
       }
 
-      @media screen and (max-width: variables.$breakpoint-tablet) {
+      @media screen and not (min-width: variables.$breakpoint-tablet) {
         padding-left: 20px;
       }
     }
@@ -88,7 +88,7 @@
       color: var(--outlined-textfield-text, #fff);
       padding: 22px 24px;
 
-      @media screen and (max-width: variables.$breakpoint-tablet) {
+      @media screen and not (min-width: variables.$breakpoint-tablet) {
         padding: 15px;
       }
     }
@@ -96,7 +96,7 @@
     &.withLabel input {
       padding: #{22px + 10px} 24px #{22px - 10px} 24px;
 
-      @media screen and (max-width: variables.$breakpoint-tablet) {
+      @media screen and not (min-width: variables.$breakpoint-tablet) {
         padding: #{15px + 10px} 15px #{15px - 10px} 15px;
       }
     }
@@ -107,7 +107,7 @@
       justify-content: center;
       align-items: center;
 
-      @media screen and (max-width: variables.$breakpoint-tablet) {
+      @media screen and not (min-width: variables.$breakpoint-tablet) {
         margin-left: 14px;
       }
     }
@@ -124,7 +124,7 @@
       margin-left: 24px;
       margin-top: -18px;
 
-      @media screen and (max-width: variables.$breakpoint-tablet) {
+      @media screen and not (min-width: variables.$breakpoint-tablet) {
         margin-left: 16px;
       }
     }

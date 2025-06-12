@@ -5,7 +5,7 @@
   display: flex;
   gap: 30px;
 
-  @media screen and (max-width: variables.$breakpoint-tablet) {
+  @media screen and not (min-width: variables.$breakpoint-tablet) {
     gap: 10px;
     flex-direction: column;
   }
@@ -19,7 +19,7 @@
     font-weight: 600;
     line-height: 120%;
 
-    @media screen and (max-width: variables.$breakpoint-tablet) {
+    @media screen and not (min-width: variables.$breakpoint-tablet) {
       padding: 5px 15px !important;
     }
 
@@ -43,7 +43,7 @@
   max-height: 200px;
   overflow: auto !important;
 
-  @media screen and (max-width: variables.$breakpoint-tablet) {
+  @media screen and not (min-width: variables.$breakpoint-tablet) {
     flex: 1;
     max-height: unset;
   }
@@ -61,7 +61,7 @@
     flex-direction: column;
     gap: 10px;
 
-    @media screen and (max-width: variables.$breakpoint-tablet) {
+    @media screen and not (min-width: variables.$breakpoint-tablet) {
       padding: 15px;
     }
   }

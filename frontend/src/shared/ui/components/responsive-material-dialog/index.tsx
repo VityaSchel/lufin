@@ -19,7 +19,7 @@ export function ResponsiveMUIDialog({ open, onClose, title, className, actions, 
   actions?: React.ReactNode
   className?: string
 }>) {
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = !useMediaQuery('(min-width: 768px)')
 
   const randomModalId = React.useRef<number | undefined>()
 

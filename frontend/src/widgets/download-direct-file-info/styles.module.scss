@@ -18,10 +18,10 @@
     width: 100%;
     margin-top: 20px;
   }
-  
+
   .downloadAllButton {
     position: relative;
-    
+
     .spinner {
       position: absolute;
       left: 15px;
@@ -42,7 +42,7 @@
   width: 100%;
   max-width: 800px;
 
-  @media screen and (max-width: variables.$breakpoint-tablet) {
+  @media screen and not (min-width: variables.$breakpoint-tablet) {
     padding: 15px;
   }
 }

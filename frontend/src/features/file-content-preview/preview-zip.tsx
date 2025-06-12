@@ -41,7 +41,7 @@ export function PreviewZip({ zip }: { zip: File }) {
   const [alertOpened, setAlertOpened] = React.useState(false)
   const [errored, setErrored] = React.useState<false | string>(false)
   const [previewFile, setPreviewFile] = React.useState<PreviewFileValue>(null)
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = !useMediaQuery('(min-width: 768px)')
 
   const handleOpen = () => {
     setAlertOpened(true)
@@ -203,7 +203,7 @@ function PreviewFile({ zip }: { zip: JSZip }) {
   const contextValue = React.useContext(ZipPreviewContext)
   const [fileContents, setFileContents] = React.useState<null | File>(null)
   const [guessedMimeType, setGuessedMimeType] = React.useState<null | string>(null)
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = !useMediaQuery('(min-width: 768px)')
 
   React.useEffect(() => {
     loadFileContents()

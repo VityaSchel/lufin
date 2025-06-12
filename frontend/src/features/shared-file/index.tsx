@@ -276,7 +276,7 @@ function PreviewDialog({
   onOpenNextPreview?: () => any
 }) {
   const fileType = React.useMemo(() => getFileType(file.mimeType, file.name), [file])
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = !useMediaQuery('(min-width: 768px)')
   const delayedOpen = React.useRef<Promise<void> | false>(false)
 
   useHotkeys(

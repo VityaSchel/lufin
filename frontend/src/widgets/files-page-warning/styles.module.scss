@@ -5,7 +5,7 @@
   // justify-content: space-between;
   justify-content: flex-end;
 
-  @media screen and (max-width: variables.$breakpoint-tablet) {
+  @media screen and not (min-width: variables.$breakpoint-tablet) {
     flex-direction: column;
     gap: 10px;
   }
@@ -16,7 +16,7 @@
     text-align: right;
     color: #848484;
 
-    @media screen and (max-width: variables.$breakpoint-tablet) {
+    @media screen and not (min-width: variables.$breakpoint-tablet) {
       width: 100%;
       text-align: left;
     }

@@ -22,7 +22,7 @@ export function PasswordInputDialog(props: {
   onClose: () => any
   onSubmit: (password: string) => any
 }) {
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = !useMediaQuery('(min-width: 768px)')
   const randomModalId = React.useRef<number | undefined>()
 
   React.useEffect(() => {
