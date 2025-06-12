@@ -23,10 +23,8 @@ import MUIButton from '@mui/material/Button'
 import MdDone from '$assets/icons/done.svg?react'
 import MdLink from '$assets/icons/link.svg?react'
 import MdPreview from '$assets/icons/preview.svg?react'
-import {
-  FileContentPreview,
-  supportedMimeTypes as previewSupportedMimeTypes
-} from '$features/file-content-preview'
+import { FileContentPreview } from '$features/file-content-preview'
+import { supportedMimeTypes as previewSupportedMimeTypes } from '$features/file-content-preview/mime-types'
 import { InstantPreview, supportedInstantPreviews } from '$features/shared-file/instant-preview'
 import cx from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'

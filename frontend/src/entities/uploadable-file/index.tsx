@@ -6,10 +6,8 @@ import { HorizontalCard } from '$shared/ui/components/horizontal-card'
 import byteSize from 'byte-size'
 import MdClose from '$assets/icons/close.svg?react'
 import MdOutlineArrowForwardIos from '$assets/icons/chevron-right.svg?react'
-import {
-  FileContentPreview,
-  supportedMimeTypes as previewSupportedMimeTypes
-} from '$features/file-content-preview'
+import { FileContentPreview } from '$features/file-content-preview'
+import { supportedMimeTypes as previewSupportedMimeTypes } from '$features/file-content-preview/mime-types'
 import { getFileType } from '$shared/utils/get-file-type'
 import { getSvgIconByFileType } from '$shared/utils/get-svg-icon-by-filetype'
 import { RenamableTitle } from '$entities/uploadable-file/renamable-title'

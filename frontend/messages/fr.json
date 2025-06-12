@@ -22,7 +22,7 @@
   "download": "Télécharger",
   "downloadedFile": "Reçu",
   "downloadingFile": "Recherche de fichiers...",
-  "error": "Erreur !",
+  "error": "Erreur!",
   "expiration_dateOfExpiry": "Date de suppression du fichier",
   "expiration_dateOfExpiryInput": "Préciser la durée de conservation",
   "expiration_selectExpiryDateLabel": "Sélection de la durée de conservation des fichiers",

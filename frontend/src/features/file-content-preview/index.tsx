@@ -1,25 +1,17 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import { getFileType } from '$shared/utils/get-file-type'
-import { PreviewText } from '$features/file-content-preview/preview-text'
-import { PreviewZip } from '$features/file-content-preview/preview-zip'
-import { Button } from '$shared/ui/components/button'
-import BiLinkExternal from '$assets/icons/link-external.svg?react'
-import { IconButton, Tooltip, useMediaQuery } from '@mui/material'
-import { PreviewSpreadsheet } from '$features/file-content-preview/preview-spreadsheet'
 import { m } from '$m'
+import { getFileType } from '$shared/utils/get-file-type'
+import { Button } from '$shared/ui/components/button'
+import { IconButton, Tooltip, useMediaQuery } from '@mui/material'
+import BiLinkExternal from '$assets/icons/link-external.svg?react'
 import ArrowLeft from '$assets/icons/arrow-left.svg?react'
 import ArrowRight from '$assets/icons/arrow-right.svg?react'
+import { PreviewText } from './preview-text'
+import { PreviewZip } from './preview-zip'
+import { PreviewSpreadsheet } from './preview-spreadsheet'
+import { supportedMimeTypes } from './mime-types'
 
-export const supportedMimeTypes = [
-  'audio',
-  'image',
-  'video',
-  'pdf',
-  'text',
-  'archive',
-  'spreadsheet'
-] as const
 export function FileContentPreview({
   file,
   slider

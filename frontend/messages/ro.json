@@ -22,7 +22,7 @@
   "download": "Descărcare",
   "downloadedFile": "Primit",
   "downloadingFile": "Recuperarea fișierelor...",
-  "error": "Greșeală!",
+  "error": "Eroare!",
   "expiration_dateOfExpiry": "Data ștergerii fișierului",
   "expiration_dateOfExpiryInput": "Specificați termenul de valabilitate",
   "expiration_selectExpiryDateLabel": "Selectarea perioadei de păstrare a fișierelor",

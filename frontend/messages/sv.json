@@ -22,7 +22,7 @@
   "download": "Nedladdningar",
   "downloadedFile": "Mottagna",
   "downloadingFile": "Filhämtning...",
-  "error": "Misstag!",
+  "error": "Fel!",
   "expiration_dateOfExpiry": "Datum för radering av filen",
   "expiration_dateOfExpiryInput": "Ange hållbarhetstid",
   "expiration_selectExpiryDateLabel": "Välja period för lagring av filer",

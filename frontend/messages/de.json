@@ -22,7 +22,7 @@
   "download": "Herunterladen",
   "downloadedFile": "Empfangen",
   "downloadingFile": "Abrufen von Dateien...",
-  "error": "Irrtum!",
+  "error": "Fehler!",
   "expiration_dateOfExpiry": "Datum der Dateilöschung",
   "expiration_dateOfExpiryInput": "Geben Sie die Haltbarkeitsdauer an",
   "expiration_selectExpiryDateLabel": "Auswahl der Aufbewahrungsfrist für Dateien",
