@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import { getRandomFileName, normalizeFilename } from '$shared/utils/normalize-file-name'
+import { normalizeFilename } from '$shared/utils/normalize-file-name'
 
 export function RenamableTitle({
   value,
@@ -14,7 +14,6 @@ export function RenamableTitle({
   readonly: boolean
 }) {
   const [inputValue, setInputValue] = React.useState('')
-  // const inputRef = React.useRef<HTMLInputElement>(null)
   const hiddenSpan = React.useRef<HTMLSpanElement>(null)
   const [inputWidth, setInputWidth] = React.useState(250)
 
@@ -56,12 +55,10 @@ export function RenamableTitle({
         {inputValue || placeholder}
       </span>
       <input
-        // ref={inputRef}
         type="text"
         value={inputValue}
         onBlur={handleBlur}
         onChange={(e) => setInputValue(e.target.value)}
-        // onInput={() => recalculateWidth()}
         className={styles.renamableTitle}
         style={{ width: `min(${inputWidth}px, 100%)` }}
         maxLength={100}

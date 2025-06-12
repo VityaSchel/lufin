@@ -7,7 +7,7 @@ export function DecryptionKeyError() {
   return (
     <section className={styles.error}>
       <span className={styles.icon}>
-        <LockQuestion />
+        <LockQuestion width={64} height={64} />
       </span>
       <Headline variant="h2">{m.decryption_keyInvalid()}</Headline>
       <p dangerouslySetInnerHTML={{ __html: m.decryption_keyInvalidHint1() }} />

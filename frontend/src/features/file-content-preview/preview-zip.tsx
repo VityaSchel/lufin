@@ -166,7 +166,7 @@ function RecursiveTreeItem({ item }: { item: NestedLevel }) {
     <>
       {Object.entries(item)
         .filter(([key, _]) => key !== '0')
-        .map(([key, value], i) => {
+        .map(([key, value]) => {
           const isValueJsObject = 'dir' in value && value.dir === false
           if (isValueJsObject) {
             const file = value as JSObject

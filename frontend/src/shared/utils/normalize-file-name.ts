@@ -10,8 +10,7 @@ export function normalizeFileFilename(file: File): File {
 }
 
 export function normalizeFilename(filename: string): string {
-  const конченаябуквайизмакос = 'й' //это вообще что? й? и+кратка?
-  const diactricSignsRegex = '\u0300-\u036f\u1dc0-\u1dff\u20d0-\u20ff\ufe20-\ufe2f'//'À-ÖØ-öø-įĴ-őŔ-žǍ-ǰǴ-ǵǸ-țȞ-ȟȤ-ȳɃɆ-ɏḀ-ẞƀ-ƓƗ-ƚƝ-ơƤ-ƥƫ-ưƲ-ƶẠ-ỿ'
+  const diactricSignsRegex = '\u0300-\u036f\u1dc0-\u1dff\u20d0-\u20ff\ufe20-\ufe2f' //'À-ÖØ-öø-įĴ-őŔ-žǍ-ǰǴ-ǵǸ-țȞ-ȟȤ-ȳɃɆ-ɏḀ-ẞƀ-ƓƗ-ƚƝ-ơƤ-ƥƫ-ưƲ-ƶẠ-ỿ'
   filename = filename.replaceAll(new RegExp(`[^A-zА-яёЁ0-9_\\. ()${diactricSignsRegex}]`,'gu'), '')
   filename = filename || 'File'
   return filename
