@@ -43,10 +43,6 @@ function App() {
             <div id="modal" />
           </LocalizationProvider>
         </ThemeProvider>
-        <noscript>
-          This app requires JavaScript for client-side encryption and decryption of files. Please
-          enable JavaScript in your browser settings.
-        </noscript>
       </HelmetProvider>
     </BrowserRouter>
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 import { IconButton } from '@mui/material'
 import copy from 'copy-to-clipboard'
-import MdContentCopy from '$assets/icons/copy-content.svg?react'
+import MdContentCopy from '$assets/icons/copy-outline.svg?react'
 import MdDone from '$assets/icons/done.svg?react'
 
 export function CopyIconButton({ content }: { content: string }) {
@@ -15,7 +15,7 @@ export function CopyIconButton({ content }: { content: string }) {
       }}
       onPointerLeave={() => setIsCopied(false)}
     >
-      {isCopied ? <MdDone /> : <MdContentCopy />}
+      {isCopied ? <MdDone width={28} height={28} /> : <MdContentCopy width={28} height={28} />}
     </IconButton>
   )
 }

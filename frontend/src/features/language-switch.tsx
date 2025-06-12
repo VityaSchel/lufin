@@ -47,7 +47,7 @@ export function LanguageSwitch() {
                     const { default: FlagIcon } = await flag()
                     return { default: FlagIcon }
                   })
-                  return <LazyFlag />
+                  return <LazyFlag width={20} height={20} />
                 })()}
               </React.Suspense>
             </span>

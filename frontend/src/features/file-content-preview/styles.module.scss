@@ -112,7 +112,7 @@
         width: max-content;
         white-space: pre-wrap;
         word-break: keep-all;
-        font-family: 'Roboto Mono', monospace;
+        font-family: var(--default-mono-fonts);
 
         &.wrap {
           width: calc(100% - 40px);

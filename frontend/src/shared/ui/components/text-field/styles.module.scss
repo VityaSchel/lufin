@@ -7,11 +7,11 @@
   align-items: center;
   $defaultTransition: background-color 50ms ease-in-out;
   transition: $defaultTransition;
-  
+
   &.default {
     $defaultBgColor: #212932;
     background-color: $defaultBgColor;
-    
+
     &.disabled {
       background-color: color.scale($defaultBgColor, $lightness: 10%);
     }
@@ -35,7 +35,7 @@
       width: 100%;
 
       &::placeholder {
-        color: #69727D;
+        color: #69727d;
       }
 
       @media screen and (max-width: variables.$breakpoint-tablet) {
@@ -53,7 +53,9 @@
       align-self: stretch;
       opacity: 1;
       pointer-events: unset;
-      transition: opacity 120ms ease-in-out, width 0s;
+      transition:
+        opacity 120ms ease-in-out,
+        width 0s;
       width: 25px;
     }
 
@@ -70,12 +72,17 @@
     background-color: var(--outlined-textfield-bg, #2d3845);
     position: relative;
     border: 2px solid var(--outlined-textfield-border, transparent);
-    transition: #{$defaultTransition}, border-color 100ms ease-in-out;
+    transition:
+      #{$defaultTransition},
+      border-color 100ms ease-in-out;
 
     &.disabled {
-      background-color: var(--outlined-textfield-disabled-bg, color.scale($defaultBgColor, $lightness: 5%, $saturation: -100%));
+      background-color: var(
+        --outlined-textfield-disabled-bg,
+        color.scale($defaultBgColor, $lightness: 5%, $saturation: -100%)
+      );
     }
-    
+
     input {
       outline: none;
       color: var(--outlined-textfield-text, #fff);
@@ -95,7 +102,7 @@
     }
 
     .leftAdornment {
-      margin-left: 24px; 
+      margin-left: 24px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -107,7 +114,7 @@
 
     .label {
       color: variables.$text-gray;
-      font-family: 'Golos Text', sans-serif;
+      font-family: 'Golos Text Variable', 'Golos Text', var(--default-fonts);
       font-size: 13px;
       font-weight: 500;
       line-height: 24px;
@@ -128,7 +135,7 @@
     }
 
     &.focused:not(.disabled) {
-      border: 2px solid #248BDA;
+      border: 2px solid #248bda;
     }
   }
 }

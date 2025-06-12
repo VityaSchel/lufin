@@ -49,9 +49,14 @@ export function UploadSuccessful({
           rightAdornment={
             <div className={styles.flex}>
               {!isMobile && (
-                <Link to={downloadLink} target="_blank" rel="nofollow noreferrer">
-                  <IconButton>
-                    <BiLinkExternal />
+                <Link
+                  to={downloadLink}
+                  target="_blank"
+                  rel="nofollow noreferrer"
+                  className="flex items-center justify-center"
+                >
+                  <IconButton className="flex items-center justify-center">
+                    <BiLinkExternal width={28} height={28} />
                   </IconButton>
                 </Link>
               )}

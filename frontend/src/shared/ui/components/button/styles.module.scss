@@ -1,5 +1,5 @@
 .button {
-  font-family: 'Golos Text';
+  font-family: 'Golos Text Variable', 'Golos Text', var(--default-fonts);
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -16,7 +16,9 @@
     border-radius: 7px;
     border: 0;
 
-    transition: background-color 120ms ease-in-out, color 120ms ease-in-out;
+    transition:
+      background-color 120ms ease-in-out,
+      color 120ms ease-in-out;
 
     &:hover {
       background-color: var(--contained-button-bg-hover, #4fa2e2);
@@ -27,7 +29,7 @@
     }
 
     &[disabled] {
-      background-color: var(--contained-button-bg-disabled, #2D3845);
+      background-color: var(--contained-button-bg-disabled, #2d3845);
       cursor: auto;
       pointer-events: none;
     }
@@ -53,12 +55,14 @@
 
   &.dimmed {
     padding: 18px 64px;
-    background-color: var(--dimmed-button-bg, #21364A);
+    background-color: var(--dimmed-button-bg, #21364a);
     color: var(--dimmed-button-text, #248bda);
     border-radius: 7px;
     border: 0;
 
-    transition: background-color 120ms ease-in-out, color 120ms ease-in-out;
+    transition:
+      background-color 120ms ease-in-out,
+      color 120ms ease-in-out;
 
     &:hover {
       background-color: var(--dimmed-button-bg-hover, #406991);
@@ -69,7 +73,7 @@
     }
 
     &[disabled] {
-      background-color: var(--dimmed-button-bg-disabled, #98A3B0);
+      background-color: var(--dimmed-button-bg-disabled, #98a3b0);
       cursor: auto;
       pointer-events: none;
       color: #fff;
@@ -95,14 +99,14 @@
 
   &.dimmed.blueAccent {
     &[disabled] {
-      background-color: var(--dimmed-button-bg-disabled, #2D3845);
+      background-color: var(--dimmed-button-bg-disabled, #2d3845);
       color: rgba(114, 131, 151, 1);
     }
   }
 
   &.dimmed.greenAccent {
     background-color: var(--dimmed-button-bg-green, #28443d);
-    color: var(--dimmed-button-text-green, #41E77A);
+    color: var(--dimmed-button-text-green, #41e77a);
 
     &:hover {
       background-color: var(--dimmed-button-bg-hover-green, #4e8477);
@@ -113,7 +117,7 @@
     }
 
     &[disabled] {
-      background-color: var(--dimmed-button-bg-disabled-green, #2D3845);
+      background-color: var(--dimmed-button-bg-disabled-green, #2d3845);
       color: var(--dimmer-button-text-disabled-green, #728397);
     }
   }
@@ -131,7 +135,7 @@
     }
 
     &[disabled] {
-      background-color: var(--dimmed-button-bg-disabled-red, #2D3845);
+      background-color: var(--dimmed-button-bg-disabled-red, #2d3845);
       color: var(--dimmed-button-text-disabled-red, #728397);
     }
   }

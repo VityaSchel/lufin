@@ -55,7 +55,7 @@ function Footer() {
         className="h-16 w-full flex items-center justify-between bg-[#272727] text-white px-6 shadow-md shadow-[linear-gradient(rgba(255,255,255,0.092),rgba(255,255,255,0.092))] shrink-0 text-left"
         onClick={() => setExpanded(!expanded)}
       >
-        <span className="font-medium font-[Roboto,sans-serif] text-base md:text-xl">
+        <span className="font-medium font-default text-base md:text-xl">
           {m.termsFooter_title()}
         </span>
         <span

@@ -8,13 +8,13 @@
   align-items: center;
   gap: 10px;
   border-radius: 10px;
-  border: 1px dashed #67798C;
+  border: 1px dashed #67798c;
   background: #212932;
   flex: 1;
 
   &.active {
-    border: 1px dashed #248BDA;
-    background: rgba(42, 66, 89, 0.30);
+    border: 1px dashed #248bda;
+    background: rgba(42, 66, 89, 0.3);
   }
 
   @media screen and (max-width: variables.$breakpoint-tablet) {
@@ -33,7 +33,7 @@
       overflow: visible;
       width: 230px;
       height: 157px;
-      
+
       @media screen and (max-width: variables.$breakpoint-tablet) {
         width: inherit;
         height: inherit;
@@ -64,7 +64,7 @@
       > span {
         text-align: center;
         font-size: 18px;
-        font-family: 'Golos Text', sans-serif;
+        font-family: 'Golos Text Variable', 'Golos Text', var(--default-fonts);
         font-weight: 500;
       }
 

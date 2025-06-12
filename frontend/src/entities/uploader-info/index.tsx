@@ -3,7 +3,6 @@ import { m } from '$m'
 import { Link } from '$shared/ui/link'
 import React from 'react'
 import { CircularProgress } from '@mui/material'
-import { z } from 'zod'
 import { filesize } from 'filesize'
 import { getLocale } from '$paraglide/runtime'
 import { formatDistanceStrict } from 'date-fns'
@@ -62,24 +61,46 @@ export function UploaderInfo() {
         </Headline>
         <p className="inline">
           {m.termsFooter_privacy_text().split(' $0 ')[0]}{' '}
-          <Link variant="highlighted" href="https://en.wikipedia.org/wiki/Web_Cryptography_API">
+          <Link
+            variant="highlighted"
+            href="https://en.wikipedia.org/wiki/Web_Cryptography_API"
+            className="font-medium"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
             WebCrypto
           </Link>{' '}
           {m.termsFooter_privacy_text().split(' $0 ')[1]}{' '}
           <Link
             variant="highlighted"
             href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard"
+            className="font-medium"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
           >
             AES-CBC
           </Link>{' '}
-          {m.termsFooter_privacy_text().split(' $0 ')[2]}{' '}
-          <Link variant="highlighted" href="https://en.wikipedia.org/wiki/URI_fragment">
+          {m.termsFooter_privacy_text().split('$0')[2]}
+          <Link
+            variant="highlighted"
+            href="https://en.wikipedia.org/wiki/URI_fragment"
+            className="font-medium"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
             hash
-          </Link>{' '}
-          {m.termsFooter_privacy_text().split(' $0 ')[3]}{' '}
-          <Link variant="highlighted" href="https://en.wikipedia.org/wiki/Web_development_tools">
+          </Link>
+          {m.termsFooter_privacy_text().split('$0')[3]}
+          <Link
+            variant="highlighted"
+            href="https://en.wikipedia.org/wiki/Web_development_tools"
+            className="font-medium"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
             DevTools
           </Link>
+          {m.termsFooter_privacy_text().split('$0')[4]}
         </p>
         <p>{m.termsFooter_privacy_text2()}</p>
       </div>

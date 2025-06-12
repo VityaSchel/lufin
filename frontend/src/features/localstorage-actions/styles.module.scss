@@ -39,7 +39,7 @@
   transition: border-color 200ms ease-out;
   outline: none;
   width: 100%;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--default-mono-fonts);
   max-height: 200px;
   overflow: auto !important;
 
