@@ -153,5 +153,10 @@
   "embedLinksNames_websiteHotlink": "Lien direct pour le site web",
   "embedLinksNames_websiteThumbnail": "Aperçus pour le site web",
   "embedLinksSection": "Intégrer des liens",
-  "pageNotFound": "Page non trouvée"
+  "pageNotFound": "Page non trouvée",
+  "sizeUnits_B": "o",
+  "sizeUnits_kB": "Ko",
+  "sizeUnits_MB": "Mo",
+  "sizeUnits_GB": "Go",
+  "sizeUnits_TB": "To"
 }

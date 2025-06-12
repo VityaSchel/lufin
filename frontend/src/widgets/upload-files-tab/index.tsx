@@ -11,11 +11,9 @@ import { onSubmitForm } from '$widgets/upload-files-tab/proc/upload'
 import { useComplexState } from '$shared/utils/react-hooks/complex-state'
 import { StylesSuspense } from '$shared/ui/styles-suspense'
 import { m } from '$m'
+import { UploadFilesContext } from '$widgets/upload-files-tab/context'
 
 export type Links = { download: string; delete: string }
-export const UploadFilesContext = React.createContext<
-  { uploadedFiles: boolean[]; uploadRequestProgress: number[] } | undefined
->(undefined)
 
 export function UploadFilesTab({
   uploadStrategy,

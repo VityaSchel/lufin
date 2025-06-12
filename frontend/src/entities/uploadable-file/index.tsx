@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import cx from 'classnames'
-import { Collapse, Fade, IconButton, useMediaQuery } from '@mui/material'
+import { CircularProgress, Collapse, Fade, IconButton, Radio, useMediaQuery } from '@mui/material'
 import { HorizontalCard } from '$shared/ui/components/horizontal-card'
 import byteSize from 'byte-size'
 import MdClose from '$assets/icons/close.svg?react'
@@ -94,20 +94,27 @@ export function UploadableFile({
               )}
             </div>
             {previewAvailable && (
-              <div
-                className={cx(styles.preview, {
-                  [styles.smallPreview]: ['audio', 'archive'].includes(
-                    fileType as (typeof previewSupportedMimeTypes)[number]
-                  ),
-                  [styles.open]: previewOpen
-                })}
-              >
-                {fileType === 'image' &&
-                  file.type !== 'image/gif' &&
-                  file.type !== 'image/webp' && (
-                    <UploadableImageCompressedPreview file={file} setFile={setFile} />
-                  )}
-                <FileContentPreview file={new File([file.blob], file.name, { type: file.type })} />
+              <div className={styles.preview}>
+                <Collapse orientation="vertical" in={previewOpen}>
+                  <div
+                    className={cx('mt-4 h-full', {
+                      [styles.smallPreview]: ['audio', 'archive'].includes(
+                        fileType as (typeof previewSupportedMimeTypes)[number]
+                      )
+                    })}
+                  >
+                    {fileType === 'image' &&
+                    file.type !== 'image/gif' &&
+                    file.type !== 'image/webp' &&
+                    file.altBlob ? (
+                      <UploadableImageCompressedPreview file={file} setFile={setFile} />
+                    ) : (
+                      <FileContentPreview
+                        file={new File([file.blob], file.name, { type: file.type })}
+                      />
+                    )}
+                  </div>
+                </Collapse>
               </div>
             )}
             <Progress progress={progress} />
@@ -161,36 +168,57 @@ function UploadableImageCompressedPreview({
   }
 
   return (
-    <div className="w-full h-auto flex gap-2">
+    <div className="w-full h-auto flex flex-col gap-4">
       <div className="h-full flex flex-col flex-1 items-center justify-center gap-2 relative">
-        {/* <div className='absolute top-0 left-2'>
-          <Radio checked={!file.isCompressedVersion} onChange={(_, checked) => checked && setIsUsingCompressed(false)} />
-        </div> */}
-        <img
-          src={originalUrl}
-          className="min-h-0 w-full object-contain" // cursor-pointer'
-          // onClick={() => setIsUsingCompressed(false)}
-        />
+        <div className="absolute top-0 left-0">
+          <Radio
+            checked={!file.isCompressedVersion}
+            onChange={(_, checked) => checked && setIsUsingCompressed(false)}
+          />
+        </div>
+        <button
+          type="button"
+          className="cursor-pointer max-h-[300px]"
+          onClick={() => setIsUsingCompressed(false)}
+        >
+          <img src={originalUrl} className="min-h-0 w-full object-contain max-h-[300px]" />
+        </button>
         <span className="shrink-0 text-muted">
           {originalSize !== undefined && filesize(originalSize, { locale: getLocale() })}
         </span>
       </div>
-      {/* {(compressedUrl !== null && compressedSize !== null) ? (
-        <div className='h-full flex flex-col flex-1 items-center justify-center gap-2 relative'>
-          <div className='absolute top-0 left-2'>
-            <Radio checked={file.isCompressedVersion} onChange={(_, checked) => checked && setIsUsingCompressed(true)} />
+      {compressedUrl !== null && compressedSize !== null ? (
+        <div className="h-full flex flex-col flex-1 items-center justify-center gap-2 relative">
+          <div className="absolute top-0 left-0">
+            <Radio
+              checked={file.isCompressedVersion}
+              onChange={(_, checked) => checked && setIsUsingCompressed(true)}
+            />
           </div>
-          <img src={compressedUrl} className='min-h-0 w-full object-contain cursor-pointer' onClick={() => setIsUsingCompressed(true)} />
-          <span className='shrink-0 text-muted'>{filesize(compressedSize, ruLocale)} (-{(((originalSize as number - compressedSize) / (originalSize as number)) * 100).toFixed(2)}%)</span>
+          <button
+            type="button"
+            className="cursor-pointer max-h-[300px]"
+            onClick={() => setIsUsingCompressed(true)}
+          >
+            <img src={compressedUrl} className="min-h-0 w-full object-contain max-h-[300px]" />
+          </button>
+          <span className="shrink-0 text-muted">
+            {filesize(compressedSize, { locale: getLocale() })} (-
+            {(
+              (((originalSize as number) - compressedSize) / (originalSize as number)) *
+              100
+            ).toFixed(2)}
+            %)
+          </span>
         </div>
       ) : (
-        <div className='h-full flex-1 flex flex-col items-center justify-center gap-2'>
-          <div className='flex items-center justify-center flex-1 w-full h-full bg-background-darken'>
+        <div className="h-full flex-1 flex flex-col items-center justify-center gap-2">
+          <div className="flex items-center justify-center flex-1 w-full aspect-square h-auto bg-background-darken">
             <CircularProgress />
           </div>
-          <span className='text-muted'>Сжатие изображения...</span>
+          <span className="text-muted">Сжатие изображения...</span>
         </div>
-      )} */}
+      )}
     </div>
   )
 }
