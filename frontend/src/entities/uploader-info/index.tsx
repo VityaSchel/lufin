@@ -22,7 +22,7 @@ export function UploaderInfo() {
 
   return (
     <div className="flex flex-col lg:flex-row gap-16 text-neutral-200 whitespace-pre-wrap [&_p]:leading-[160%] [&_p]:my-2">
-      <div className="flex-[4]">
+      <div className="flex-4">
         <Headline variant="h4" className="mb-2">
           {m.termsFooter_expiration()}
         </Headline>
@@ -104,7 +104,7 @@ export function UploaderInfo() {
         </p>
         <p>{m.termsFooter_privacy_text2()}</p>
       </div>
-      <div className="flex-[3] shrink-0">
+      <div className="flex-3 shrink-0">
         <img src="/encryption.svg" />
       </div>
     </div>

@@ -3,19 +3,21 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
 // import { analyzer } from 'vite-bundle-analyzer'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     svgr({
-      include: ['**/*.svg', '**/*.svg?react'],
+      include: ['**/*.svg', '**/*.svg?react']
     }),
     paraglideVitePlugin({
       project: './project.inlang',
       outdir: './src/paraglide',
       strategy: ['cookie', 'preferredLanguage', 'baseLocale']
     }),
-    react(),
+    tailwindcss(),
+    react()
     // analyzer()
   ],
   resolve: {

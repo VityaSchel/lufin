@@ -34,7 +34,7 @@ export function SubmitFilesButton() {
         isSubmitting ||
         Object.values(errors).length > 0
       }
-      className="w-full !rounded-[10px]"
+      className="w-full rounded-[10px]!"
     >
       <span className="flex items-center gap-2">
         {m.uploadForm_finishUploadButton()}{' '}

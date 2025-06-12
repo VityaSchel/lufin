@@ -8,7 +8,7 @@ import { m } from '$m'
 export function AppBar() {
   return (
     <header className="w-full flex justify-center items-center h-[60px] md:h-[72px] bg-[#212932] px-[15px]">
-      <nav className="max-w-[var(--max-width)] w-full flex justify-between items-center">
+      <nav className="max-w-(--max-width) w-full flex justify-between items-center">
         <div className="flex items-center gap-4 px450:gap-8">
           <div className="flex flex-col items-center">
             <ReactRouterLink
