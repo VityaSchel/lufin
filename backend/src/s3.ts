@@ -21,6 +21,7 @@ if (
 }
 
 const s3 = new S3Client({
+  region: process.env.S3_REGION || undefined,
   endpoint: process.env.S3_ENDPOINT,
   credentials: {
     accessKeyId: process.env.S3_ACCESS_KEY,

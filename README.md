@@ -47,7 +47,7 @@ Follow these instructions to install lufin to your server:
       - **CORS does not prevent abusers from uploading files to your server!** It only prevents people hosting lufin on their own server from using your API. **Even with CORS_ORIGIN enabled anyone can still upload files from anywhere**. If you still have questions about what is CORS, please consult the internet. 
     - S3_ prefixed settings are self-explanatory and mandatory
     - `S3_BUCKET` must be exactly what you have named the bucket in your S3 cloud provider, it doesn’t have to be `lufin`, but it’s concise and good name for a bucket for this project
-    - Specifying S3 region is not supported at the moment
+    - You can specify S3 region using `S3_REGION`
 11. Run `cp data-retention.config.example.json data-retention.config.json` and open data-retention.config.json file in your preferred code editor
 12. This file defines data retention settings for your lufin instance
     - `seconds` is maximum time the file up to `limit` megabytes (1000 * 1000 bytes) can be stored on the server 
