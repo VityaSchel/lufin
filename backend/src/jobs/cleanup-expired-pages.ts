@@ -2,11 +2,11 @@ import getDB, { close as closeDb } from '../db'
 import type { PageDocument } from '../db/schema/file'
 import { deleteFile } from '../s3'
 
+const gracePeriod = process.env.GRACE_PERIOD ? parseInt(process.env.GRACE_PERIOD, 10) : 7200
+
 export async function cleanup() {
   const db = await getDB()
-  const hour = 1000 * 60 * 60
-  const gracePeriod = 2 * hour
-  const expirationTime = Date.now() - gracePeriod
+  const expirationTime = Date.now() - (gracePeriod * 1000)
 
   const pages = await db
     .collection<PageDocument>('files')

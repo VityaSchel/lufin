@@ -40,7 +40,7 @@ export function LanguageSwitch() {
       {languagesMap.map(({ code, flag, name }) => (
         <MenuItem value={code} key={code}>
           <div className="flex gap-2 items-center">
-            <span className="inline-block w-5 h-5">
+            <span className="flex justify-center items-center w-5 h-5">
               <React.Suspense fallback={<></>}>
                 {(() => {
                   const LazyFlag = React.lazy(async () => {

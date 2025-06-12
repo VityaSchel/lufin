@@ -68,8 +68,7 @@ Follow these instructions to install lufin to your server:
       - Something about websockets connection: your proxy blocks websocket connections, check cloudflare, reverse proxy settings
       - Websockets timeout: I doubt anyone will get this, but in case you do, it probably means your server is very slowly uploading file to the S3 cloud, so you need to configure your reverse proxy not to drop websocket connection for idle
 15. We’re not done yet! There is one more thing... someone needs to cleanup expired pages and remove old files — that’s what backend/src/jobs/cleanup-expired-pages.ts script does. You can run it anytime with `bun ./backend/src/jobs/cleanup-expired-pages.ts` (path must be relative to your terminal working directory)
-    - But ideally you want to add it to crontasks with something like `0 * * * * /home/youruser/.bun/bin/bun /src/backend/src/jobs/cleanup-expired-pages.ts` — this is just an example, you can change frequency from every hour to anything you like (hint: use [crontab.guru](https://crontab.guru/#0_*_*_*_*)), you need to adjust path to the bun executable (use `which bun`) and path to the cleanup-expired-pages script. 
-    - Also not sure if this will read the correct .env file so maybe specify working directory too.
+    - But ideally you want to add it to crontasks with something like `0 * * * * /home/youruser/.bun/bin/bun --env-file=/var/www/lufin/backend/.env /var/www/lufin/backend/src/jobs/cleanup-expired-pages.ts` — this is just an example, you can change frequency from every hour to anything you like (hint: use [crontab.guru](https://crontab.guru/#0_*_*_*_*)), you need to adjust path to the bun executable (use `which bun`) and path to the cleanup-expired-pages script
 
 *(Optional)* you might want to compile backend into a binary file so that it runs faster and has smaller memory footprint. You should be able to do that by running the command below in backend subdirectory
 ```bash
@@ -82,6 +81,10 @@ bun build \
 	./src/index.ts
 ```
 And then run `./server` instead of `bun start`
+
+## Nginx example configuration
+
+For your reference, there is a [contrib/nginx.conf] config with recommended directives for lufin to work on a single domain behind a reverse proxy.
 
 ## Why not docker?
 
