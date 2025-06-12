@@ -46,7 +46,7 @@
   "download": "Download",
   "downloadedFile": "Received",
   "downloadingFile": "File retrieval...",
-  "error": "Mistake!",
+  "error": "Error!",
   "expiration_dateOfExpiry": "Date of file deletion",
   "expiration_dateOfExpiryInput": "Specify the shelf life",
   "expiration_selectExpiryDateLabel": "Selecting the file retention period",

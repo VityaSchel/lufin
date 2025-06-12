@@ -9,14 +9,13 @@ import { m } from '$m'
 
 export function PageContainer({ children }: React.PropsWithChildren) {
   return (
-    <div className="w-full flex flex-col items-center gap-[30px]">
+    <div className="w-full flex flex-col items-center gap-[30px]" id="container">
       <Helmet>
         <title>Lufin {m.title()}</title>
         <meta rel="description" content={m.description()} />
       </Helmet>
       <AppBar />
       <main className="w-[1200px] max-w-full px-[15px] pb-24 flex flex-col gap-[30px]">
-        <h1>{m.title()}</h1>
         {children}
       </main>
       <Footer />

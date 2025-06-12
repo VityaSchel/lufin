@@ -41,17 +41,6 @@ a {
   text-decoration: none;
 }
 
-#__next {
-  min-height: 100vh;
-
-  @supports (min-height: 100lvh) {
-    min-height: 100lvh;
-  }
-
-  display: flex;
-  flex-direction: column;
-}
-
 h1 {
   font-size: 30px;
 }
@@ -221,4 +210,23 @@ html[class*='scroll-lock'] {
 
 [class~='MuiDialog-container'] {
   z-index: 100;
+}
+
+html,
+body,
+#root,
+#container {
+  min-height: 100vh;
+}
+@supports (min-height: 100dvh) {
+  html,
+  body,
+  #root,
+  #container {
+    min-height: 100dvh;
+  }
+}
+
+main {
+  flex: 1;
 }

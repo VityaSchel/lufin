@@ -37,14 +37,5 @@
   },
   "editor.quickSuggestions": {
     "strings": "on"
-  },
-  "i18n-ally.sourceLanguage": "ru",
-  "i18n-ally.localesPaths": ["public/locales"],
-  "i18n-ally.namespace": true,
-  "i18n-ally.pathMatcher": "{locale}/{namespace}.{ext}",
-  "i18n-ally.keystyle": "nested",
-  "i18n-ally.extract.autoDetect": false,
-  "i18n-ally.enabledFrameworks": ["i18next", "react", "react-i18next"],
-  "i18n-ally.translate.engines": ["deepl"],
-  "i18n-ally.extract.ignored": ["nofollow noreferrer", "nofollow noreferrer"]
+  }
 }
