@@ -12,7 +12,7 @@ import { getFileType } from '$shared/utils/get-file-type'
 import { getSvgIconByFileType } from '$shared/utils/get-svg-icon-by-filetype'
 import { RenamableTitle } from '$entities/uploadable-file/renamable-title'
 import { Progress } from '$shared/ui/progress'
-import { filesize } from 'filesize'
+import filesize from 'byte-size'
 import type { UploadableFile as UploadableFileType } from '$shared/uploadable-file'
 import { produce } from 'immer'
 import { m } from '$m'
@@ -184,7 +184,7 @@ function UploadableImageCompressedPreview({
           <img src={originalUrl} className="min-h-0 w-full object-contain max-h-[300px]" />
         </button>
         <span className="shrink-0 text-muted">
-          {originalSize !== undefined && filesize(originalSize, { locale: getLocale() })}
+          {originalSize !== undefined && filesize(originalSize, { locale: getLocale() }).toString()}
         </span>
       </div>
       {compressedUrl !== null && compressedSize !== null ? (
@@ -203,7 +203,7 @@ function UploadableImageCompressedPreview({
             <img src={compressedUrl} className="min-h-0 w-full object-contain max-h-[300px]" />
           </button>
           <span className="shrink-0 text-muted">
-            {filesize(compressedSize, { locale: getLocale() })} (-
+            {filesize(compressedSize, { locale: getLocale() }).toString()} (-
             {(
               (((originalSize as number) - compressedSize) / (originalSize as number)) *
               100

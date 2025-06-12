@@ -1,7 +1,6 @@
 import { createTheme } from '@mui/material/styles'
 import { red } from '@mui/material/colors'
 import { enUS as muiMaterialEnLocale } from '@mui/material/locale'
-import { enUS as muiDatePickersEnLocale } from '@mui/x-date-pickers/locales'
 
 const theme = createTheme({
   palette: {
@@ -16,6 +15,6 @@ const theme = createTheme({
       main: red.A400,
     },
   }
-}, muiMaterialEnLocale, muiDatePickersEnLocale)
+}, muiMaterialEnLocale)
 
 export default theme

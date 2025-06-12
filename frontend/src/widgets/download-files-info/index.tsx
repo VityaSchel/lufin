@@ -5,7 +5,7 @@ import plural from 'plural-ru'
 import byteSize from 'byte-size'
 import { SharedFile } from '$features/shared-file'
 import { Button } from '$shared/ui/components/button'
-import clone from 'just-clone'
+import { produce } from 'immer'
 import { CircularProgress } from '@mui/material'
 import saveAs from 'file-saver'
 import { type DecryptionKey, decryptFile } from '$shared/utils/files-encryption'
@@ -48,18 +48,21 @@ export function DownloadFilesInfo({
   const isDownloadedAll = files.length - downloadedFilesNum === 0
 
   const handleDownloadProgress = (i: number, progress: number) => {
-    const dlProgress = clone(fileIndexesDlProgress_.current)
-    dlProgress[i] = progress
+    const dlProgress = produce(fileIndexesDlProgress_.current, (draft) => {
+      draft[i] = progress
+    })
     setFileIndexesDlProgress(dlProgress)
   }
 
   const handleStartDownloading = async (fileName: string, i: number) => {
-    const dlStatus = clone(fileIndexesDlProgress_.current)
-    dlStatus[i] = 0
+    const dlStatus = produce(fileIndexesDlProgress_.current, (draft) => {
+      draft[i] = 0
+    })
     setFileIndexesDlProgress(dlStatus)
 
-    const errored = clone(erroredIndexes_.current)
-    errored[i] = false
+    const errored = produce(erroredIndexes_.current, (draft) => {
+      draft[i] = false
+    })
     setErroredIndexes(errored)
 
     const downloadStart = Date.now()
@@ -77,8 +80,9 @@ export function DownloadFilesInfo({
     } catch (e) {
       console.error('Error while downloading file', e)
 
-      const erroredIndexes = clone(erroredIndexes_.current)
-      erroredIndexes[i] = true
+      const erroredIndexes = produce(erroredIndexes_.current, (draft) => {
+        draft[i] = true
+      })
       setErroredIndexes(erroredIndexes)
 
       setTimeout(
@@ -130,13 +134,15 @@ export function DownloadFilesInfo({
       } else {
         resultingFile = new Blob([content], { type: files[i].mimeType })
       }
-      const contents = clone(fileContents_.current)
-      contents[i] = resultingFile
+      const contents = produce(fileContents_.current, (draft) => {
+        draft[i] = resultingFile
+      })
       setFileContents(contents)
       return resultingFile
     } catch (e) {
-      const erroredIndexes = clone(erroredIndexes_.current)
-      erroredIndexes[i] = true
+      const erroredIndexes = produce(erroredIndexes_.current, (draft) => {
+        draft[i] = true
+      })
       setErroredIndexes(erroredIndexes)
       console.error(e)
       onAbort()
@@ -161,7 +167,7 @@ export function DownloadFilesInfo({
   }
 
   const handleSaveAll = async () => {
-    const JSZip = await import('jszip').then(m => m.default)
+    const JSZip = await import('jszip').then((mod) => mod.default)
     const archive = new JSZip()
     for (let i = 0; i < files.length; i++) {
       const fileData = new File([fileContents[i]], files[i].name)

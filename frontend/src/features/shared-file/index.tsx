@@ -280,7 +280,7 @@ function PreviewDialog({
   const delayedOpen = React.useRef<Promise<void> | false>(false)
 
   useHotkeys(
-    [Key.ArrowRight, Key.ArrowLeft],
+    ['ArrowRight', 'ArrowLeft'],
     async (_, e) => {
       if (
         delayedOpen.current !== false &&

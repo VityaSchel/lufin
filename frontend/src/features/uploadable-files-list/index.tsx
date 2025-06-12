@@ -9,7 +9,7 @@ import { UploadFilesContext } from '$shared/upload-context'
 import { produce } from 'immer'
 import type { UploadableFile as UploadableFileType } from '$shared/uploadable-file'
 import { m } from '$m'
-import { filesize } from 'filesize'
+import filesize from 'byte-size'
 import { getLocale } from '$paraglide/runtime'
 import * as API from '$app/api'
 
@@ -90,7 +90,7 @@ export function UploadableFilesList() {
             <span className={styles.hint}>
               {sumSizeExceededLimit
                 ? m.uploadForm_limitExceeded({
-                    maxSize: filesize(fileSizeLimit, { locale: getLocale() })
+                    maxSize: filesize(fileSizeLimit, { locale: getLocale() }).toString()
                   })
                 : m.uploadForm_dragHere()}
             </span>

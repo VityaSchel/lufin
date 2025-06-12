@@ -3,7 +3,7 @@ import { m } from '$m'
 import { Link } from '$shared/ui/components/link'
 import React from 'react'
 import { CircularProgress } from '@mui/material'
-import { filesize } from 'filesize'
+import filesize from 'byte-size'
 import { getLocale } from '$paraglide/runtime'
 import { formatDistanceStrict } from 'date-fns'
 import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
@@ -38,14 +38,17 @@ export function UploaderInfo() {
             <ul className="">
               {limits.map(({ limit, seconds }, i) => (
                 <li key={i}>
-                  &lt;= {filesize(limit * 1000 * 1000, { locale: getLocale() })}:{' '}
+                  &lt;= {filesize(limit * 1000 * 1000, { locale: getLocale() }).toString()}:{' '}
                   {formatDistanceStrict(seconds * 1000, 0, {
                     locale: getDateFnsLocale(getLocale())
                   })}
                 </li>
               ))}
               {maxUploadSize !== undefined && maxUploadSize !== Infinity && (
-                <li>&gt;{filesize(maxUploadSize * 1000 * 1000, { locale: getLocale() })}: 🚫</li>
+                <li>
+                  &gt;{filesize(maxUploadSize * 1000 * 1000, { locale: getLocale() }).toString()}:
+                  🚫
+                </li>
               )}
             </ul>
           )}
