@@ -2,7 +2,7 @@ import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
-import { analyzer } from 'vite-bundle-analyzer'
+// import { analyzer } from 'vite-bundle-analyzer'
 
 // https://vite.dev/config/
 export default defineConfig({
