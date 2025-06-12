@@ -89,8 +89,6 @@
   "localstorage_exportButton": "EKSPORTER DATA FRA LOCALSTORAGE",
   "localstorage_importButton": "IMPORTER LOCALSTORAGE-DATA",
   "myFiles": "Mine filer",
-  "nav_myFiles": "Mine filer",
-  "nav_uploadTab": "Last opp filer",
   "networkError": "Feil ved nedlasting av filen!",
   "okButton": "OK",
   "optional": "Valgfritt",

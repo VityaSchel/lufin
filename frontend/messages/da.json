@@ -65,8 +65,6 @@
   "localstorage_linesImported_many": "Importeret",
   "localstorage_linesImported_one": "Importeret",
   "myFiles": "Mine filer",
-  "nav_myFiles": "Mine filer",
-  "nav_uploadTab": "Download filer",
   "networkError": "Fejl ved download af filen!",
   "okButton": "OK",
   "optional": "Valgfrit",

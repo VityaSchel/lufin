@@ -1,7 +1,6 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import { type FormikProps, useFormikContext } from 'formik'
-import cx from 'classnames'
 import { Checkbox } from '$shared/ui/components/checkbox'
 import { TextField } from '$shared/ui/components/text-field'
 import { DragNDrop } from '$entities/drag-n-drop'
@@ -21,16 +20,18 @@ import ImageCompressor from 'compressorjs'
 import { produce } from 'immer'
 
 export function FilesUploader({
+  onSubmit,
   formikRef
 }: {
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
   formikRef: React.MutableRefObject<FormikProps<FilesUploaderFormValues>>
 }) {
   const { values, errors, touched, setFieldValue, isSubmitting } =
     useFormikContext<FilesUploaderFormValues>()
 
   return (
-    <div className={styles.uploader}>
-      <div className="flex flex-col md:self-start top-[26px] md:sticky gap-4 h-all flex-1">
+    <form onSubmit={onSubmit} className={styles.uploader}>
+      <div className="flex flex-col top-[26px] md:sticky gap-4 flex-1">
         <DragNDrop
           onChange={async (newEntries) => {
             if (newEntries && !isSubmitting) {
@@ -190,6 +191,6 @@ export function FilesUploader({
           <SubmitFilesButton />
         </div>
       </div>
-    </div>
+    </form>
   )
 }

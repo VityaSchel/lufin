@@ -1,9 +1,0 @@
-@use '$shared/styles/variables.scss' as variables;
-
-.uploadFiles {
-  padding: 26px;
-
-  @media screen and not (min-width: variables.$breakpoint-tablet) {
-    padding: 20px 15px;
-  }
-}

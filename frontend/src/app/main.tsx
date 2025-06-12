@@ -18,6 +18,7 @@ import DeleteFilesPage from '$pages/delete/[deletePageToken]'
 import FilePage from '$pages/[pageId]'
 import DirectLinkFilePage from '$pages/[pageId]/[file]'
 import PageNotFound from '$pages/404'
+import { UploadsPage } from '$pages/uploads'
 import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
 import { getLocale } from '$paraglide/runtime'
 
@@ -34,6 +35,7 @@ function App() {
             <PageContainer>
               <Routes>
                 <Route path="/" element={<FilesPage />} />
+                <Route path="/uploads" element={<UploadsPage />} />
                 <Route path="/delete/:deletePageToken" element={<DeleteFilesPage />} />
                 <Route path="/:pageId/:file" element={<DirectLinkFilePage />} />
                 <Route path="/:pageId" element={<FilePage />} />

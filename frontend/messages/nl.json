@@ -65,8 +65,6 @@
   "localstorage_linesImported_many": "Geïmporteerd",
   "localstorage_linesImported_one": "Geïmporteerd",
   "myFiles": "Mijn bestanden",
-  "nav_myFiles": "Mijn bestanden",
-  "nav_uploadTab": "Bestanden downloaden",
   "networkError": "Fout bij het downloaden van het bestand!",
   "okButton": "OK",
   "optional": "Optioneel",

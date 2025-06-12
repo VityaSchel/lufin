@@ -2,9 +2,9 @@ import type { FilesUploaderFormValues } from '$shared/model/files-uploader-value
 import { saveFilesPage as saveFilesPageToLocalStorage } from '$shared/storage'
 import { encryptFiles } from '$shared/utils/files-encryption'
 import { nmZipFilename } from '$shared/utils/zip-file-name'
-import type { Links } from '$widgets/upload-files-tab'
 
 type ValidatedValues = FilesUploaderFormValues & { files: File[]; checksum?: string }
+
 export function onSubmitForm({
   values,
   uploadStrategy,
@@ -101,9 +101,8 @@ export function onSubmitForm({
       subscribeToWebSocket(wsChannelId, callbacks.onFileUploaded, onUploadSuccess, resolve)
 
       callbacks.setUploadRequestProgressForAll(0, values.files?.length)
-      let request: { success: boolean; status: number; response: string }
       if (uploadStrategy === 'parallel') {
-        request = await xmlRequest(
+        await xmlRequest(
           `${import.meta.env.VITE_API_URL}/upload/${tmpUploadId}`,
           { method: 'POST', body: bodies.uploadBody },
           (progress: number) => {
@@ -115,7 +114,7 @@ export function onSubmitForm({
           const body = new FormData()
           const keys = [`file${i}`, `file${i}_type`]
           keys.forEach((key) => body.append(key, bodies.uploadBody.get(key)!))
-          request = await xmlRequest(
+          await xmlRequest(
             `${import.meta.env.VITE_API_URL}/upload/${tmpUploadId}`,
             { method: 'POST', body },
             (progress: number) => {
@@ -264,3 +263,5 @@ function xmlRequest(
     xhr.send(options.body)
   })
 }
+
+export type Links = { download: string; delete: string }

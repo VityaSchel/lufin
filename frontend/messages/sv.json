@@ -65,8 +65,6 @@
   "localstorage_linesImported_many": "Importerad",
   "localstorage_linesImported_one": "Importerad",
   "myFiles": "Mina filer",
-  "nav_myFiles": "Mina filer",
-  "nav_uploadTab": "Ladda ner filer",
   "networkError": "Fel vid nedladdning av filen!",
   "okButton": "OK",
   "optional": "Valfritt",

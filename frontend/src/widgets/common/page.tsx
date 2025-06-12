@@ -9,15 +9,13 @@ import { m } from '$m'
 
 export function PageContainer({ children }: React.PropsWithChildren) {
   return (
-    <div className="w-full flex flex-col items-center gap-[30px]" id="container">
+    <div className="w-full flex flex-col items-center" id="container">
       <Helmet>
         <title>Lufin {m.title()}</title>
         <meta rel="description" content={m.description()} />
       </Helmet>
       <AppBar />
-      <main className="w-[1200px] max-w-full px-[15px] pb-24 flex flex-col gap-[30px]">
-        {children}
-      </main>
+      <main className="w-[1200px] max-w-full px-[15px] py-[26px] flex flex-col gap-[30px]">{children}</main>
       <Footer />
     </div>
   )
@@ -41,35 +39,38 @@ function Footer() {
   }, [expanded])
 
   return (
-    <footer
-      className={cx(
-        'fixed bottom-0 w-full left-0 bg-[#393939] shadow-[0px_-1px_5px_0px_rgba(18,18,18,0.3)] transition-all max-h-screen flex flex-col',
-        {
-          'h-full': expanded,
-          'h-[64px]': !expanded
-        }
-      )}
-    >
-      <button
-        className="h-16 w-full flex items-center justify-between bg-[#272727] text-white px-6 shadow-md shadow-[linear-gradient(rgba(255,255,255,0.092),rgba(255,255,255,0.092))] shrink-0 text-left"
-        onClick={() => setExpanded(!expanded)}
+    <>
+      <div className="h-16 shrink-0"></div>
+      <footer
+        className={cx(
+          'fixed bottom-0 w-full left-0 bg-[#393939] shadow-[0px_-1px_5px_0px_rgba(18,18,18,0.3)] transition-all max-h-screen flex flex-col',
+          {
+            'h-full': expanded,
+            'h-16': !expanded
+          }
+        )}
       >
-        <span className="font-medium font-default text-base md:text-xl">
-          {m.termsFooter_title()}
-        </span>
-        <span
-          className={cx('transition-transform', {
-            'transform rotate-180': expanded,
-            'transform rotate-0': !expanded
-          })}
+        <button
+          className="h-16 w-full flex items-center justify-between bg-[#272727] text-white px-6 shadow-md shadow-[linear-gradient(rgba(255,255,255,0.092),rgba(255,255,255,0.092))] shrink-0 text-left"
+          onClick={() => setExpanded(!expanded)}
         >
-          <KeyboardArrowUpIcon fontSize="large" />
-        </span>
-      </button>
-      <div className="p-6 md:p-12 overflow-auto flex-1">
-        <UploaderInfo />
-        <FilesPageWarning />
-      </div>
-    </footer>
+          <span className="font-medium font-default text-base md:text-xl">
+            {m.termsFooter_title()}
+          </span>
+          <span
+            className={cx('transition-transform', {
+              'transform rotate-180': expanded,
+              'transform rotate-0': !expanded
+            })}
+          >
+            <KeyboardArrowUpIcon fontSize="large" />
+          </span>
+        </button>
+        <div className="p-6 md:p-12 overflow-auto flex-1">
+          <UploaderInfo />
+          <FilesPageWarning />
+        </div>
+      </footer>
+    </>
   )
 }

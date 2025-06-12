@@ -7,8 +7,8 @@ import { Button } from '$shared/ui/components/button'
 // import { Checkbox } from '$shared/ui/components/checkbox'
 import DownloadIcon from './icons/download.svg'
 import DeleteIcon from './icons/delete.svg'
-// import TrueIcon from './icons/true.svg'
-// import FalseIcon from './icons/false.svg'
+import TrueIcon from './icons/true.svg'
+import FalseIcon from './icons/false.svg'
 import { loadFilesPages, markFilesPageDeleted, updateFilePage } from '$shared/storage'
 import { Link } from 'react-router'
 import { useMediaQuery } from '@mui/material'
@@ -21,8 +21,8 @@ type SharedFile = {
   filesNames: string
   downloadLink: string
   deleteToken: string
-  // viewCount: number
-  // deleteAfterFirstDownload: boolean
+  viewCount: number
+  deleteAfterFirstDownload: boolean
   uploadDate: Date
   expiresAt: Date
   deleteLink: string
@@ -51,6 +51,8 @@ export function FilesList() {
           pageId: page.pageId,
           filesNames: page.files.map((f) => f.name).join(', '),
           downloadLink: `${window.location.origin}/${page.pageId}#${page.decryptionToken}`,
+          viewCount: page.viewCount,
+          deleteAfterFirstDownload: page.deleteAfterFirstDownload,
           uploadDate: new Date(page.createdAt),
           expiresAt: new Date(page.expiresAt),
           deleteLink: `${window.location.origin}/delete/${page.deleteToken}`,
@@ -74,7 +76,7 @@ export function FilesList() {
         { label: m.filesList_columns_name() },
         { label: m.filesList_columns_downloadLink() },
         { label: m.filesList_columns_downloads() },
-        // { label: 'Удалить при\nпервом скачивании?' },
+        { label: m.uploadForm_deleteAfterFirstDownloadCheckbox() },
         { label: m.filesList_columns_uploadedAt() },
         { label: m.filesList_columns_expiresAt() },
         { label: m.filesList_columns_deleteLink() }
@@ -130,7 +132,10 @@ function StandaloneTableRow({ row }: { row: SharedFile }) {
       if (cachedResponsePageId.current !== row.pageId) {
         cachedResponsePageId.current = row.pageId
         fetchInfo(row, {
-          setDownloadsCount,
+          setDownloadsCount: (dc: number) => {
+            setDownloadsCount(dc)
+            updateFilePage(row.pageId, { viewCount: dc })
+          },
           setIsDeleted,
           setExpiresAt: (at: number) => {
             setExpiresAt(new Date(at))
@@ -181,7 +186,7 @@ function StandaloneTableRow({ row }: { row: SharedFile }) {
         </div>
       </td>
       <td>{downloadsCount}</td>
-      {/*<td>{row.deleteAfterFirstDownload ? <TrueIcon /> : <FalseIcon />}</td> */}
+      <td>{row.deleteAfterFirstDownload ? <TrueIcon /> : <FalseIcon />}</td>
       <td>{formatDate(row.uploadDate, getLocale())}</td>
       <td>{formatDate(expiresAt, getLocale())}</td>
       <td>
@@ -218,7 +223,10 @@ function MobileTableRow({ row }: { row: SharedFile }) {
       if (cachedResponsePageId.current !== row.pageId) {
         cachedResponsePageId.current = row.pageId
         fetchInfo(row, {
-          setDownloadsCount,
+          setDownloadsCount: (dc: number) => {
+            setDownloadsCount(dc)
+            updateFilePage(row.pageId, { viewCount: dc })
+          },
           setIsDeleted,
           setExpiresAt: (at: number) => {
             setExpiresAt(new Date(at))
@@ -243,7 +251,7 @@ function MobileTableRow({ row }: { row: SharedFile }) {
           {downloadsCount}
         </div>
       )}
-      {/*<div>{row.deleteAfterFirstDownload ? <TrueIcon /> : <FalseIcon />}</div> */}
+      <div>{row.deleteAfterFirstDownload ? <TrueIcon /> : <FalseIcon />}</div>
       <div>
         <span>{m.filesList_columns_uploadedAt()}</span>
         {formatDate(row.uploadDate, getLocale())}

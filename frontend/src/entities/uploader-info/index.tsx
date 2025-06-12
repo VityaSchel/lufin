@@ -1,6 +1,6 @@
 import { Headline } from '$entities/headline'
 import { m } from '$m'
-import { Link } from '$shared/ui/link'
+import { Link } from '$shared/ui/components/link'
 import React from 'react'
 import { CircularProgress } from '@mui/material'
 import { filesize } from 'filesize'

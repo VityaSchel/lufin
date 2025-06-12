@@ -26,11 +26,8 @@ export default function DirectFilePage() {
   const pageId = params.pageId
   const fileNameOrIndex = params.file
 
-  if (!pageId || !fileNameOrIndex || pageNotFound) {
-    return <PageNotFound />
-  }
-
   React.useEffect(() => {
+    if (!pageId) return
     setPasswordSubmitting(true)
     API.getFilesPage(pageId, password)
       .then((response) => {
@@ -91,6 +88,10 @@ export default function DirectFilePage() {
       window.removeEventListener('hashchange', onHashChange)
     }
   }, [checksum])
+
+  if (!pageId || !fileNameOrIndex || pageNotFound) {
+    return <PageNotFound />
+  }
 
   return (
     <DecryptionKeyContext.Provider value={decryptionKey}>

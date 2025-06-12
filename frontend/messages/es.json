@@ -65,8 +65,6 @@
   "localstorage_linesImported_many": "Importado",
   "localstorage_linesImported_one": "Importado",
   "myFiles": "Mis archivos",
-  "nav_myFiles": "Mis archivos",
-  "nav_uploadTab": "Descargar archivos",
   "networkError": "Error al descargar el archivo.",
   "okButton": "OK",
   "optional": "Opcional",

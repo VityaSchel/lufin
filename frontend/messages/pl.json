@@ -65,8 +65,6 @@
   "localstorage_linesImported_many": "Importowane",
   "localstorage_linesImported_one": "Importowane",
   "myFiles": "Moje pliki",
-  "nav_myFiles": "Moje pliki",
-  "nav_uploadTab": "Pobieranie plików",
   "networkError": "Błąd pobierania pliku!",
   "okButton": "OK",
   "optional": "Opcjonalnie",

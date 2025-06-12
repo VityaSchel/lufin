@@ -18,7 +18,7 @@ export function UploadableGroupTitle({ disabled }: { disabled: boolean }) {
 
   return (
     <>
-      <Fade in={!isZip} unmountOnExit>
+      <Fade appear={false} in={!isZip} unmountOnExit>
         <div style={{ position: 'absolute' }}>
           <HorizontalCard
             icon={<FilesIcon />}

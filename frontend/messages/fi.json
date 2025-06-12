@@ -65,8 +65,6 @@
   "localstorage_linesImported_many": "Maahantuotu",
   "localstorage_linesImported_one": "Maahantuotu",
   "myFiles": "Omat tiedostot",
-  "nav_myFiles": "Omat tiedostot",
-  "nav_uploadTab": "Lataa tiedostoja",
   "networkError": "Virhe tiedoston lataamisessa!",
   "okButton": "OK",
   "optional": "Valinnainen",

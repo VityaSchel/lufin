@@ -6,6 +6,7 @@ export type FilesPageLocalStorage = {
   decryptionToken: string
   createdAt: number
   expiresAt: number
+  viewCount: number
   deleteAfterFirstDownload: boolean
   deleteToken: string
   deleted: boolean
@@ -15,6 +16,7 @@ export type FilesPageLocalStorage = {
 export const schema = z.object({
   files: z.array(z.object({ name: z.string().min(1), type: z.string() })).min(1),
   decryptionToken: z.string(),
+  viewCount: z.number().int().positive(),
   createdAt: z.number().int().positive(),
   expiresAt: z.number().int().positive(),
   deleteAfterFirstDownload: z.boolean(),
@@ -38,6 +40,7 @@ export function saveFilesPage(page: {
       files: page.files,
       decryptionToken: page.decryptionToken,
       createdAt: Date.now(),
+      viewCount: 0,
       expiresAt: page.expiresAt.getTime(),
       deleteAfterFirstDownload: page.deleteAfterFirstDownload,
       deleteToken: page.deleteToken,

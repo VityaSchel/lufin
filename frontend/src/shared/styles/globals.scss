@@ -229,13 +229,3 @@ body,
 main {
   flex: 1;
 }
-
-.h-all {
-  height: calc(100vh - 120px);
-}
-
-@supports (height: 100dvh) {
-  .h-all {
-    height: calc(100dvh - 120px);
-  }
-}
