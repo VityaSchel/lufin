@@ -12,7 +12,7 @@ Features:
 - Translated to 24 languages: English, Русский, Български, Čeština, Dansk, Nederlands, Eesti, Suomi, Français, Deutsch, Ελληνικά, Magyar, Italiano, Latviešu, Lietuvių, Norsk, Polski, Português, Română, Slovenčina, Slovenščina, Español, Svenska, Türkçe. See [TRANSLATION.md](./TRANSLATION.md) for more information on how to contibute support for a language.
 - Metadata stripping such as EXIF from images
 - Configurable data retention settings based on files size
-- Optional end-to-end encryption allowing user to opt-out to use files in hotlinks
+- Optional end-to-end encryption using AES-GCM allowing user to opt-out to use files in hotlinks
 - Password protection
 - Delete at first downlaod
 - Client-side archive generation before uploading

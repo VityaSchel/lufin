@@ -81,7 +81,17 @@ export function UploaderInfo() {
             target="_blank"
             rel="noopener noreferrer nofollow"
           >
-            AES-CBC
+            AES
+          </Link>
+          {'-'}
+          <Link
+            variant="highlighted"
+            href="https://en.wikipedia.org/wiki/Galois/Counter_Mode"
+            className="font-medium"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
+            GCM
           </Link>{' '}
           {m.termsFooter_privacy_text().split('$0')[2]}
           <Link

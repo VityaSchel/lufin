@@ -1,8 +1,8 @@
-import { base64toUint8, uint8ToBase64Fast } from '$shared/utils/encodings'
+import { base64ToUint8, uint8ToBase64Fast } from '$shared/utils/encodings'
 
 async function calculateChecksum({ iv, key }: DecryptionKey) {
   const encoded = await crypto.subtle.encrypt(
-    { name: 'AES-CBC', iv },
+    { name: 'AES-GCM', iv },
     key,
     new TextEncoder().encode('hloth')
   )
@@ -18,8 +18,8 @@ export async function encryptFiles(
 ): Promise<{ result: { files: File[]; privateDecryptionKey: string }; checksum: string }> {
   const encryptedBuffers: ArrayBuffer[] = []
 
-  const iv = crypto.getRandomValues(new Uint8Array(16))
-  const key = await crypto.subtle.generateKey({ name: 'AES-CBC', length: 128 }, true, [
+  const iv = crypto.getRandomValues(new Uint8Array(12))
+  const key = await crypto.subtle.generateKey({ name: 'AES-GCM', length: 128 }, true, [
     'encrypt',
     'decrypt'
   ])
@@ -55,7 +55,7 @@ function encryptFile(file: File, iv: Uint8Array, key: CryptoKey) {
 
     fileReader.addEventListener('load', async (e) => {
       const data = e.target!.result as ArrayBuffer
-      const encrypted = await crypto.subtle.encrypt({ name: 'AES-CBC', iv }, key, data)
+      const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, data)
       resolve(encrypted)
     })
 
@@ -77,7 +77,7 @@ export function decryptFile(decryptionKey: DecryptionKey, content: Blob) {
       const data = e.target!.result as ArrayBuffer
       try {
         const decrypted = await crypto.subtle.decrypt(
-          { name: 'AES-CBC', iv: decryptionKey.iv },
+          { name: 'AES-GCM', iv: decryptionKey.iv },
           decryptionKey.key,
           data
         )
@@ -92,17 +92,17 @@ export function decryptFile(decryptionKey: DecryptionKey, content: Blob) {
 }
 
 export async function getDecryptionKey(encodedKey: string): Promise<DecryptionKey> {
-  const uint8array = base64toUint8(encodedKey, 0)
-  if (uint8array.length !== 33) {
+  const uint8array = base64ToUint8(encodedKey)
+  if (uint8array.length !== 28) {
     throw new Error(
-      'Invalid decryption key length. Expected 32 bytes. Found ' +
-        (uint8array.length - 1) +
+      'Invalid decryption key length. Expected 28 bytes (12 IV + 16 key). Found ' +
+        uint8array.length +
         ' bytes.'
     )
   }
-  const iv = uint8array.slice(0, 16)
-  const keyUint = uint8array.slice(16, 32)
-  const key = await crypto.subtle.importKey('raw', keyUint, { name: 'AES-CBC' }, true, [
+  const iv = uint8array.slice(0, 12)
+  const keyUint = uint8array.slice(12, 28)
+  const key = await crypto.subtle.importKey('raw', keyUint, { name: 'AES-GCM' }, true, [
     'encrypt',
     'decrypt'
   ])
