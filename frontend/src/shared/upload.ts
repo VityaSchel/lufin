@@ -2,6 +2,7 @@ import type { FilesUploaderFormValues } from '$shared/model/files-uploader-value
 import { saveFilesPage as saveFilesPageToLocalStorage } from '$shared/storage'
 import { encryptFiles } from '$shared/utils/files-encryption'
 import { nmZipFilename } from '$shared/utils/zip-file-name'
+import { apiUrl } from '$app/api'
 
 type ValidatedValues = FilesUploaderFormValues & { files: File[]; checksum?: string }
 
@@ -63,7 +64,7 @@ export function onSubmitForm({
     try {
       const bodies = generateUploadBody(files, validatedValues)
 
-      const startUploadRequest = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
+      const startUploadRequest = await fetch(new URL('/upload', apiUrl), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bodies.startUploadBody)
@@ -103,7 +104,7 @@ export function onSubmitForm({
       callbacks.setUploadRequestProgressForAll(0, values.files?.length)
       if (uploadStrategy === 'parallel') {
         await xmlRequest(
-          `${import.meta.env.VITE_API_URL}/upload/${tmpUploadId}`,
+          new URL(`/upload/${tmpUploadId}`, apiUrl),
           { method: 'POST', body: bodies.uploadBody },
           (progress: number) => {
             callbacks.setUploadRequestProgressForAll(progress, values.files?.length)
@@ -115,7 +116,7 @@ export function onSubmitForm({
           const keys = [`file${i}`, `file${i}_type`]
           keys.forEach((key) => body.append(key, bodies.uploadBody.get(key)!))
           await xmlRequest(
-            `${import.meta.env.VITE_API_URL}/upload/${tmpUploadId}`,
+            new URL(`/upload/${tmpUploadId}`, apiUrl),
             { method: 'POST', body },
             (progress: number) => {
               if (values.convertToZip) {
@@ -128,13 +129,10 @@ export function onSubmitForm({
         }
       }
 
-      const finishUploadRequest = await fetch(
-        `${import.meta.env.VITE_API_URL}/upload/${tmpUploadId}/finish`,
-        {
-          method: 'POST',
-          body: ''
-        }
-      )
+      const finishUploadRequest = await fetch(new URL(`/upload/${tmpUploadId}/finish`, apiUrl), {
+        method: 'POST',
+        body: ''
+      })
       if (finishUploadRequest.status !== 200) {
         throw new Error(
           'Error while finishing files uploading ' + (await finishUploadRequest.text())
@@ -184,7 +182,7 @@ function subscribeToWebSocket(
   onUploadSuccess: (data: { links: Links; authorToken: string; expiresAt: number }) => any,
   resolve: () => any
 ) {
-  const url = new URL(`${import.meta.env.VITE_API_URL}/updates/${channelId}`)
+  const url = new URL(`/updates/${channelId}`, apiUrl)
   let lastMessage = {}
   url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:'
   const ws = new WebSocket(url)
@@ -239,7 +237,7 @@ function subscribeToWebSocket(
 }
 
 function xmlRequest(
-  url: string,
+  url: URL,
   options: { method: string; body: FormData },
   onProgress: (progress: number) => any
 ) {

@@ -71,7 +71,6 @@ export function markFilesPageDeleted(deletePageToken: string) {
 
 export function getItem(key: string) {
   const rawData = window.localStorage.getItem(key)
-  console.log(rawData)
   if (rawData === null) return null
   let parsedData
   try {

@@ -1,3 +1,5 @@
+import { apiUrl } from '$app/api'
+
 export const embedLinkNames = [
   'direct_link',
   'markdown_link',
@@ -15,7 +17,7 @@ export function getEmbedLinks(
   file: string
 ): { name: EmbedLinkName; text: string }[] {
   const pageURL = `${window.location.origin}/${pageId}/${encodeURIComponent(file)}`
-  const directURL = `${import.meta.env.VITE_API_URL}/page/${pageId}/${encodeURIComponent(file)}`
+  const directURL = new URL(`/page/${pageId}/${encodeURIComponent(file)}`, apiUrl).toString()
 
   return [
     { name: 'direct_link', text: directURL },

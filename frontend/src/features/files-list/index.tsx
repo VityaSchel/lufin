@@ -15,6 +15,7 @@ import { useMediaQuery } from '@mui/material'
 import { m } from '$m'
 import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
 import { getLocale } from '$paraglide/runtime'
+import { apiUrl } from '$app/api'
 
 type UploadEntry = {
   pageId: string
@@ -120,7 +121,7 @@ const fetchInfo = async (
     setExpiresAt: (ea: number) => any
   }
 ) => {
-  const infoRequest = await fetch(`${import.meta.env.VITE_API_URL}/page/${row.pageId}/info`, {
+  const infoRequest = await fetch(new URL(`/page/${row.pageId}/info`, apiUrl), {
     headers: {
       Authorization: row.authorToken
     }

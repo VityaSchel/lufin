@@ -1,7 +1,9 @@
 import { z } from 'zod'
 
+export const apiUrl = new URL(import.meta.env.VITE_API_URL)
+
 export async function getFilesPage(pageId: string, password?: string) {
-  const filesRequest = await fetch(import.meta.env.VITE_API_URL + '/page/' + pageId, {
+  const filesRequest = await fetch(new URL('/page/' + pageId, apiUrl), {
     method: 'GET',
     headers: {
       ...(password && { Authorization: password })
@@ -26,7 +28,7 @@ export async function getFileDownloadableStream(
   | { success: true; filesizeInBytes: number; fileStream: ReadableStream<Uint8Array> }
   | { success: false; error: string }
 > {
-  const filesRequest = await fetch(import.meta.env.VITE_API_URL + `/page/${pageId}/${fileIndex}`, {
+  const filesRequest = await fetch(new URL(`/page/${pageId}/${fileIndex}`, apiUrl), {
     method: 'GET',
     headers: {
       ...(password && { Authorization: password })
@@ -50,7 +52,7 @@ export async function getFileDownloadableStream(
 }
 
 export async function deleteFilesPage(deleteToken: string) {
-  const response = await fetch(import.meta.env.VITE_API_URL + '/page', {
+  const response = await fetch(new URL('/page', apiUrl), {
     method: 'DELETE',
     headers: {
       Authorization: deleteToken
@@ -79,7 +81,7 @@ export async function getLimits() {
   if (!getLimitsLock) {
     getLimitsLock = new Promise(async (resolve) => {
       try {
-        const response = await fetch(import.meta.env.VITE_API_URL + '/limits')
+        const response = await fetch(new URL('/limits', apiUrl))
         if (!response.ok) {
           throw new Error('Network response was not ok')
         }
