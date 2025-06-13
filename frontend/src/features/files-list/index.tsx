@@ -36,12 +36,9 @@ export function FilesList() {
   const isMobile = !useMediaQuery('(min-width: 768px)')
 
   React.useEffect(() => {
-    const handler = () => {
-      loadEntries()
-    }
-    window.addEventListener('storage', handler)
-    handler()
-    return () => window.removeEventListener('storage', handler)
+    window.addEventListener('storage', loadEntries)
+    loadEntries()
+    return () => window.removeEventListener('storage', loadEntries)
   }, [])
 
   const loadEntries = () => {
@@ -196,7 +193,7 @@ function StandaloneTableRow({ row }: { row: UploadEntry }) {
           </svg>
         )}
       </td>
-      <td className='break-all lg:break-words'>{row.filesNames}</td>
+      <td className="break-all lg:break-words">{row.filesNames}</td>
       <td>
         <div className={styles.flexCenter}>
           <DownloadButton disabled={disabled} link={row.downloadLink} />

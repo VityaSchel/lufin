@@ -2,6 +2,7 @@
 
 .uploader {
   display: flex;
+  align-items: flex-start;
   gap: 26px;
   width: 100%;
   flex: 1;
@@ -9,6 +10,7 @@
 
   @media screen and not (min-width: variables.$breakpoint-tablet) {
     flex-direction: column;
+    align-items: stretch;
     gap: 20px;
   }
 

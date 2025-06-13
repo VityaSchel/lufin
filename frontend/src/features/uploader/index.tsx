@@ -31,7 +31,7 @@ export function FilesUploader({
 
   return (
     <form onSubmit={onSubmit} className={styles.uploader}>
-      <div className="flex flex-col top-[26px] md:sticky gap-4 flex-1">
+      <div className="flex flex-col top-[98px] md:sticky gap-4 flex-1 h-[calc(100vh-188px)]">
         <DragNDrop
           onChange={async (newEntries) => {
             if (newEntries && !isSubmitting) {
