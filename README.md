@@ -29,7 +29,15 @@ Please keep in mind that this is a demo website — the filesize limit is very l
 
 [lufin.hloth.dev](https://lufin.hloth.dev)
 
-## Usage
+## Screenshoter browser extension
+
+Lufin comes with a handy Firefox-based browsers extension allowing you to screenshot page fully, partially or partially with scrolling, edit it with a rich image editing tools and instantly upload to your choosed lufin instance. All for free, with no ads and no signup!
+
+<img width="1505" alt="Screenshoter editor" src="https://github.com/user-attachments/assets/89d9ac3a-cf86-480e-bb21-b8edb08bd069" />
+
+[Visit screenshoter repository](https://github.com/VityaSchel/lufin-screnshoter)
+
+## Self-host installation
 
 Before starting, please ensure you understand and meet all of the requirements:
 
