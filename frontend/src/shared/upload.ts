@@ -185,16 +185,15 @@ function subscribeToWebSocket(
   resolve: () => any
 ) {
   const url = new URL(`${import.meta.env.VITE_API_URL}/updates/${channelId}`)
-  url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:'
-  const socket = new WebSocket(url)
   let lastMessage = {}
-  socket.addEventListener('message', (event) => {
-    if (event.origin !== url.origin) {
-      console.warn('Received message from unknown origin:', event.origin)
+  url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:'
+  const ws = new WebSocket(url)
+  ws.addEventListener('message', ({ origin, data }) => {
+    if (origin !== url.origin) {
+      console.warn('Received message from unknown origin:', origin)
       return
     }
-    const msg = event.data as string
-    const data = JSON.parse(msg) as
+    const payload = JSON.parse(data) as
       | { update_type: 'progress'; file: string; status: 'SAVED' }
       | { update_type: 'upload_errored'; error: 'string'; isClosing: true }
       | {
@@ -205,34 +204,34 @@ function subscribeToWebSocket(
           isClosing: true
         }
       | { update_type: 'errored'; reason: string; isClosing: true }
-    lastMessage = data
-    switch (data.update_type) {
+    lastMessage = payload
+    switch (payload.update_type) {
       case 'progress':
-        onFileUploaded(Number(data.file.substring('file'.length)))
+        onFileUploaded(Number(payload.file.substring('file'.length)))
         break
       case 'upload_errored':
-        alert('Error while uploading files: ' + data.error)
+        alert('Error while uploading files: ' + payload.error)
         resolve()
         break
       case 'upload_success':
         onUploadSuccess({
-          links: data.links,
-          authorToken: data.author_token,
-          expiresAt: data.expires_at
+          links: payload.links,
+          authorToken: payload.author_token,
+          expiresAt: payload.expires_at
         })
         resolve()
         break
       case 'errored':
-        console.error('Error while uploading files', data.reason)
+        console.error('Error while uploading files', payload.reason)
         alert('Error while uploading files!')
         resolve()
         break
     }
   })
-  socket.addEventListener('error', (event) => {
+  ws.addEventListener('error', (event) => {
     console.error('Error with websocket', event)
   })
-  socket.addEventListener('close', () => {
+  ws.addEventListener('close', () => {
     if (!('isClosing' in lastMessage) || lastMessage['isClosing'] !== true) {
       subscribeToWebSocket(channelId, onFileUploaded, onUploadSuccess, resolve)
     }
