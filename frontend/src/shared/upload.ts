@@ -188,7 +188,7 @@ function subscribeToWebSocket(
   let lastMessage = {}
   url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:'
   const ws = new WebSocket(url)
-  ws.addEventListener('message', ({ origin, data }) => {
+  ws.onmessage = ({ origin, data }) => {
     if (origin !== url.origin) {
       console.warn('Received message from unknown origin:', origin)
       return
@@ -227,7 +227,7 @@ function subscribeToWebSocket(
         resolve()
         break
     }
-  })
+  }
   ws.addEventListener('error', (event) => {
     console.error('Error with websocket', event)
   })
