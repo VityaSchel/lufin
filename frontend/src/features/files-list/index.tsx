@@ -16,7 +16,7 @@ import { m } from '$m'
 import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
 import { getLocale } from '$paraglide/runtime'
 
-type SharedFile = {
+type UploadEntry = {
   pageId: string
   filesNames: string
   downloadLink: string
@@ -31,65 +31,88 @@ type SharedFile = {
 }
 
 export function FilesList() {
-  const [pages, setPages] = React.useState<null | SharedFile[]>(null)
+  const [entries, setEntries] = React.useState<null | UploadEntry[]>(null)
+  const [entriesDisplayed, setEntriesDisplayed] = React.useState<UploadEntry[]>([])
   const isMobile = !useMediaQuery('(min-width: 768px)')
 
   React.useEffect(() => {
     const handler = () => {
-      loadPages()
+      loadEntries()
     }
     window.addEventListener('storage', handler)
     handler()
     return () => window.removeEventListener('storage', handler)
   }, [])
 
-  const loadPages = () => {
-    const pages = loadFilesPages()
-    setPages(
-      pages
-        .map((page) => ({
-          pageId: page.pageId,
-          filesNames: page.files.map((f) => f.name).join(', '),
-          downloadLink: `${window.location.origin}/${page.pageId}#${page.decryptionToken}`,
-          viewCount: page.viewCount,
-          deleteAfterFirstDownload: page.deleteAfterFirstDownload,
-          uploadDate: new Date(page.createdAt),
-          expiresAt: new Date(page.expiresAt),
-          deleteLink: `${window.location.origin}/delete/${page.deleteToken}`,
-          deleteToken: page.deleteToken,
-          deleted: page.deleted,
-          authorToken: page.authorToken
-        }))
-        .sort((a, b) => b.uploadDate.getTime() - a.uploadDate.getTime())
-    )
+  const loadEntries = () => {
+    let entries = loadFilesPages()
+      .map((page) => ({
+        pageId: page.pageId,
+        filesNames: page.files.map((f) => f.name).join(', '),
+        downloadLink: `${window.location.origin}/${page.pageId}#${page.decryptionToken}`,
+        viewCount: page.viewCount,
+        deleteAfterFirstDownload: page.deleteAfterFirstDownload,
+        uploadDate: new Date(page.createdAt),
+        expiresAt: new Date(page.expiresAt),
+        deleteLink: `${window.location.origin}/delete/${page.deleteToken}`,
+        deleteToken: page.deleteToken,
+        deleted: page.deleted,
+        authorToken: page.authorToken
+      }))
+      .sort((a, b) => b.uploadDate.getTime() - a.uploadDate.getTime())
+    setEntries(entries)
+    setEntriesDisplayed(entries.slice(0, 15))
   }
 
-  return isMobile ? (
-    <MobileDataList
-      rows={pages === null ? [] : pages}
-      renderRow={(row) => <MobileTableRow row={row} key={row.pageId} />}
-    />
-  ) : (
-    <DataTable
-      columns={[
-        { label: '' },
-        { label: m.filesList_columns_name() },
-        { label: m.filesList_columns_downloadLink() },
-        { label: m.filesList_columns_downloads() },
-        { label: m.uploadForm_deleteAfterFirstDownloadCheckbox() },
-        { label: m.filesList_columns_uploadedAt() },
-        { label: m.filesList_columns_expiresAt() },
-        { label: m.filesList_columns_deleteLink() }
-      ]}
-      isLoading={pages === null}
-      rows={pages === null ? [] : pages}
-      renderRow={(row) => <StandaloneTableRow row={row} key={row.pageId} />}
-    />
+  const nextEntriesPageSize =
+    entries === null ? 0 : Math.min(15, entries.length - entriesDisplayed.length)
+
+  return (
+    <>
+      {isMobile ? (
+        <MobileDataList
+          rows={entries === null ? [] : entriesDisplayed}
+          renderRow={(row) => <MobileTableRow row={row} key={row.pageId} />}
+          showBottomSeparator={nextEntriesPageSize > 0}
+        />
+      ) : (
+        <DataTable
+          columns={[
+            { label: '' },
+            { label: m.filesList_columns_name() },
+            { label: m.filesList_columns_downloadLink() },
+            { label: m.filesList_columns_downloads() },
+            { label: m.uploadForm_deleteAfterFirstDownloadCheckbox() },
+            { label: m.filesList_columns_uploadedAt() },
+            { label: m.filesList_columns_expiresAt() },
+            { label: m.filesList_columns_deleteLink() }
+          ]}
+          isLoading={entries === null}
+          rows={entries === null ? [] : entriesDisplayed}
+          renderRow={(row) => <StandaloneTableRow row={row} key={row.pageId} />}
+        />
+      )}
+      {nextEntriesPageSize > 0 && (
+        <div className="w-full flex justify-center">
+          <Button
+            variant="badge"
+            onClick={() => {
+              setEntriesDisplayed((prev) => [
+                ...prev,
+                ...(entries ? entries.slice(prev.length, prev.length + nextEntriesPageSize) : [])
+              ])
+            }}
+          >
+            Load {nextEntriesPageSize} more
+          </Button>
+        </div>
+      )}
+    </>
   )
 }
 
 const fetchInfo = async (
-  row: SharedFile,
+  row: UploadEntry,
   {
     setDownloadsCount,
     setIsDeleted,
@@ -117,7 +140,7 @@ const fetchInfo = async (
   }
 }
 
-function StandaloneTableRow({ row }: { row: SharedFile }) {
+function StandaloneTableRow({ row }: { row: UploadEntry }) {
   const isExpired = row.expiresAt.getTime() < Date.now()
   // const [isChecked, setIsChecked] = React.useState(false)
   const [isDeleted, setIsDeleted] = React.useState(false)
@@ -152,13 +175,7 @@ function StandaloneTableRow({ row }: { row: SharedFile }) {
     <tr className={cx(styles.row, { [styles.unavailable]: disabled })}>
       <td>
         {encrypted ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24px"
-            height="24px"
-            viewBox="0 0 24 24"
-            className="ml-6"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
             <path
               fill="lightgreen"
               d="M6 22q-.825 0-1.412-.587T4 20V10q0-.825.588-1.412T6 8h1V6q0-2.075 1.463-3.537T12 1t3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.587 1.413T18 22zm6-5q.825 0 1.413-.587T14 15t-.587-1.412T12 13t-1.412.588T10 15t.588 1.413T12 17M9 8h6V6q0-1.25-.875-2.125T12 3t-2.125.875T9 6z"
@@ -179,14 +196,18 @@ function StandaloneTableRow({ row }: { row: SharedFile }) {
           </svg>
         )}
       </td>
-      <td>{row.filesNames}</td>
+      <td className='break-all lg:break-words'>{row.filesNames}</td>
       <td>
         <div className={styles.flexCenter}>
           <DownloadButton disabled={disabled} link={row.downloadLink} />
         </div>
       </td>
       <td>{downloadsCount}</td>
-      <td>{row.deleteAfterFirstDownload ? <TrueIcon /> : <FalseIcon />}</td>
+      <td>
+        <span className="m-auto inline-block">
+          {row.deleteAfterFirstDownload ? <TrueIcon /> : <FalseIcon />}
+        </span>
+      </td>
       <td>{formatDate(row.uploadDate, getLocale())}</td>
       <td>{formatDate(expiresAt, getLocale())}</td>
       <td>
@@ -200,15 +221,21 @@ function StandaloneTableRow({ row }: { row: SharedFile }) {
 
 function MobileDataList({
   rows,
-  renderRow
+  renderRow,
+  showBottomSeparator
 }: {
-  rows: SharedFile[]
-  renderRow: (row: SharedFile) => React.ReactNode
+  rows: UploadEntry[]
+  renderRow: (row: UploadEntry) => React.ReactNode
+  showBottomSeparator: boolean
 }) {
-  return <div className={styles.list}>{rows.map((row) => renderRow(row))}</div>
+  return (
+    <div className={cx(styles.list, { [styles.showBottomSeparator]: showBottomSeparator })}>
+      {rows.map((row) => renderRow(row))}
+    </div>
+  )
 }
 
-function MobileTableRow({ row }: { row: SharedFile }) {
+function MobileTableRow({ row }: { row: UploadEntry }) {
   const isExpired = row.expiresAt.getTime() < Date.now()
   // const [isChecked, setIsChecked] = React.useState(false)
   const [isDeleted, setIsDeleted] = React.useState(false)
@@ -251,7 +278,10 @@ function MobileTableRow({ row }: { row: SharedFile }) {
           {downloadsCount}
         </div>
       )}
-      <div>{row.deleteAfterFirstDownload ? <TrueIcon /> : <FalseIcon />}</div>
+      <div>
+        <span>{m.uploadForm_deleteAfterFirstDownloadCheckbox()}</span>
+        {row.deleteAfterFirstDownload ? <TrueIcon /> : <FalseIcon />}
+      </div>
       <div>
         <span>{m.filesList_columns_uploadedAt()}</span>
         {formatDate(row.uploadDate, getLocale())}

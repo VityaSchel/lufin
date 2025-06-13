@@ -15,6 +15,7 @@
       font-size: 14px;
       white-space: pre-wrap;
       text-align: left;
+      padding: 0 8px;
 
       &.centered {
         text-align: center;
@@ -23,16 +24,20 @@
   }
 
   tr:not(:first-child) {
-    border-top: 2px solid #1A2026;
-    
+    border-top: 2px solid #1a2026;
+
     td {
       background: #212932;
-      padding: 25px #{math.div(65, 2)}px;
+      padding: 25px 8px;
       white-space: pre-wrap;
     }
 
     td:first-child {
-      padding-left: 20px;
+      width: 10%;
+
+      svg {
+        margin: auto;
+      }
     }
 
     td:last-child {
@@ -43,7 +48,7 @@
   .loading {
     color: rgba(152, 163, 176, 1);
     font-weight: 400;
-    font-size: 14px;   
+    font-size: 14px;
     text-align: center;
   }
 }

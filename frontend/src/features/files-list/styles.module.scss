@@ -10,10 +10,14 @@
 
 .mobileRow {
   padding: 24px 15px;
-  border-top: 2px solid #1A2026;
+  border-top: 2px solid #2c3d4d;
   display: flex;
   flex-direction: column;
   gap: 15px;
+
+  &.showBottomSeparator:last-child {
+    border-bottom: 2px solid #2c3d4d;
+  }
 
   .filename {
     font-size: 18px;
@@ -35,12 +39,12 @@
 .row,
 .mobileRow {
   &.unavailable:not(:first-child) td {
-    background: #1B232C;
+    background: #1b232c;
     color: #728397;
   }
 }
 
- .aLink {
+.aLink {
   display: flex;
   width: fit-content;
 

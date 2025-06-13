@@ -1,22 +1,10 @@
 import { z } from 'zod'
 import sjson from 'secure-json-parse'
 
-export type FilesPageLocalStorage = {
-  files: { name: string; type: string }[]
-  decryptionToken: string
-  createdAt: number
-  expiresAt: number
-  viewCount: number
-  deleteAfterFirstDownload: boolean
-  deleteToken: string
-  deleted: boolean
-  authorToken: string
-}
-
 export const schema = z.object({
   files: z.array(z.object({ name: z.string().min(1), type: z.string() })).min(1),
   decryptionToken: z.string(),
-  viewCount: z.number().int().positive(),
+  viewCount: z.number().int().nonnegative(),
   createdAt: z.number().int().positive(),
   expiresAt: z.number().int().positive(),
   deleteAfterFirstDownload: z.boolean(),
@@ -24,6 +12,8 @@ export const schema = z.object({
   deleted: z.boolean(),
   authorToken: z.string().min(1)
 })
+
+export type FilesPageLocalStorage = z.infer<typeof schema>
 
 export function saveFilesPage(page: {
   pageId: string
@@ -46,7 +36,7 @@ export function saveFilesPage(page: {
       deleteToken: page.deleteToken,
       deleted: false,
       authorToken: page.authorToken
-    } satisfies z.infer<typeof schema> satisfies FilesPageLocalStorage)
+    } satisfies FilesPageLocalStorage)
   )
   window.dispatchEvent(new Event('storage'))
 }
@@ -73,7 +63,7 @@ export function markFilesPageDeleted(deletePageToken: string) {
       JSON.stringify({
         ...rest,
         deleted: true
-      } satisfies z.infer<typeof schema> satisfies FilesPageLocalStorage)
+      } satisfies FilesPageLocalStorage)
     )
     window.dispatchEvent(new Event('storage'))
   }
@@ -81,6 +71,7 @@ export function markFilesPageDeleted(deletePageToken: string) {
 
 export function getItem(key: string) {
   const rawData = window.localStorage.getItem(key)
+  console.log(rawData)
   if (rawData === null) return null
   let parsedData
   try {
@@ -90,6 +81,7 @@ export function getItem(key: string) {
   }
   const data = schema.safeParse(parsedData)
   if (!data.success) {
+    console.log(data.error)
     return null
   } else return data.data
 }
