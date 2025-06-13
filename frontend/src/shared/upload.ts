@@ -189,6 +189,10 @@ function subscribeToWebSocket(
   const socket = new WebSocket(url)
   let lastMessage = {}
   socket.addEventListener('message', (event) => {
+    if (event.origin !== url.origin) {
+      console.warn('Received message from unknown origin:', event.origin)
+      return
+    }
     const msg = event.data as string
     const data = JSON.parse(msg) as
       | { update_type: 'progress'; file: string; status: 'SAVED' }
