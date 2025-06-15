@@ -5,6 +5,7 @@ import React from 'react'
 const languagesMap = [
   { code: 'ru', flag: () => import('$assets/ru-flag.svg?react'), name: 'Русский' },
   { code: 'uk', flag: () => import('svg-country-flags/svg/ua.svg?react'), name: 'Українська' },
+  { code: 'be', flag: () => import('$assets/be-flag.svg?react'), name: 'Беларуская' },
   { code: 'en', flag: () => import('svg-country-flags/svg/us.svg?react'), name: 'English' },
   { code: 'bg', flag: () => import('svg-country-flags/svg/bg.svg?react'), name: 'Български' },
   { code: 'cs', flag: () => import('svg-country-flags/svg/cz.svg?react'), name: 'Čeština' },

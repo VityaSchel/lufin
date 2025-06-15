@@ -9,7 +9,7 @@ Features:
 - Modern neat design
 - S3 storage support (with Cloudflare R2 compatability)
 - Rich client-side preview features for: images, audio, video, zip archives, xlsx spreadsheets, text files, PDF
-- Translated to 24 languages: English, Русский, Українська, Български, Čeština, Dansk, Nederlands, Eesti, Suomi, Français, Deutsch, Ελληνικά, Magyar, Italiano, Latviešu, Lietuvių, Norsk, Polski, Português, Română, Slovenčina, Slovenščina, Español, Svenska, Türkçe. See [TRANSLATION.md](./TRANSLATION.md) for more information on how to contibute support for a language.
+- Translated to 26 languages: English, Русский, Українська, Беларуская, Български, Čeština, Dansk, Nederlands, Eesti, Suomi, Français, Deutsch, Ελληνικά, Magyar, Italiano, Latviešu, Lietuvių, Norsk, Polski, Português, Română, Slovenčina, Slovenščina, Español, Svenska, Türkçe. See [TRANSLATION.md](./TRANSLATION.md) for more information on how to contibute support for a language.
 - Metadata stripping such as EXIF from images
 - Configurable data retention settings based on files size
 - Optional end-to-end encryption using AES-GCM allowing user to opt-out to use files in hotlinks

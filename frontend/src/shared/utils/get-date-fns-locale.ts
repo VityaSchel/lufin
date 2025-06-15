@@ -1,5 +1,6 @@
 import ru from 'date-fns/locale/ru'
 import uk from 'date-fns/locale/uk'
+import be from 'date-fns/locale/be'
 import en from 'date-fns/locale/en-US'
 import bg from 'date-fns/locale/bg'
 import cs from 'date-fns/locale/cs'
@@ -28,6 +29,7 @@ export const getDateFnsLocale = (locale: string) => {
   switch (locale) {
     case 'ru': return ru
     case 'uk': return uk
+    case 'be': return be
     case 'en': return en
     case 'bg': return bg
     case 'cs': return cs
