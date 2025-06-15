@@ -8,7 +8,7 @@ Translation files must be plain JSON objects with no nesting. I suggest naming k
 
 After translating all keys and placing your translation to frontend/messages/\[language\].json file, add your two-characters language code to frontend/project.inlang/settings.json -> locales array.
 
-Next, you need to add the language to LanguageSwitch component. To display a flag, the language must be supported by [svg-country-flags](https://github.com/hampusborgos/country-flags/tree/main/svg) library. Add the following entry to languagesMap array: `{ code: 'xx', flag: () => import('svg-country-flags/svg/xx.svg?react'), name: 'Language name' },`. Flag‘s country code can differ from language code, you need to consult the svg-country-flags‘s docs to get the country code. Please write the language name in its own language.
+Next, you need to add the language to LanguageSwitch component in src/features/language-switch.tsx. To display a flag, the language must be supported by [svg-country-flags](https://github.com/hampusborgos/country-flags/tree/main/svg) library. Add the following entry to languagesMap array: `{ code: 'xx', flag: () => import('svg-country-flags/svg/xx.svg?react'), name: 'Language name' },`. Flag‘s country code can differ from language code, you need to consult the svg-country-flags‘s docs to get the country code. Please write the language name in its own language.
 
 Finally, you must add a [date-fns](https://date-fns.org/v4.1.0/docs/I18n) locale corresponding to the added language. Add it to frontend/src/shared/utils/get-date-fns-locale.ts file.
 
