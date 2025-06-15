@@ -3,7 +3,7 @@ import { getLocale, setLocale, type Locale } from '$paraglide/runtime'
 import React from 'react'
 
 const languagesMap = [
-  { code: 'ru', flag: () => import('svg-country-flags/svg/ru.svg?react'), name: 'Русский' },
+  { code: 'ru', flag: () => import('$assets/ru-flag.svg?react'), name: 'Русский' },
   { code: 'en', flag: () => import('svg-country-flags/svg/us.svg?react'), name: 'English' },
   { code: 'bg', flag: () => import('svg-country-flags/svg/bg.svg?react'), name: 'Български' },
   { code: 'cs', flag: () => import('svg-country-flags/svg/cz.svg?react'), name: 'Čeština' },
