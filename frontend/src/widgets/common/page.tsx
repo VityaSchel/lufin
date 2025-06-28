@@ -43,7 +43,7 @@ function Footer() {
       <div className="h-16 shrink-0"></div>
       <footer
         className={cx(
-          'fixed bottom-0 w-full left-0 bg-[#393939] shadow-[0px_-1px_5px_0px_rgba(18,18,18,0.3)] transition-all max-h-screen flex flex-col',
+          'fixed bottom-0 w-full left-0 bg-[#393939] shadow-[0px_-1px_5px_0px_rgba(18,18,18,0.3)] transition-all max-h-screen flex flex-col z-[1]',
           {
             'h-full': expanded,
             'h-16': !expanded
@@ -51,7 +51,7 @@ function Footer() {
         )}
       >
         <button
-          className="h-16 w-full flex items-center justify-between bg-[#272727] text-white px-6 shadow-md shadow-[linear-gradient(rgba(255,255,255,0.092),rgba(255,255,255,0.092))] shrink-0 text-left"
+          className="h-16 w-full flex items-center justify-between bg-[#272727] text-white px-6 shadow-md shrink-0 text-left"
           onClick={() => setExpanded(!expanded)}
         >
           <span className="font-medium font-default text-base md:text-xl">
