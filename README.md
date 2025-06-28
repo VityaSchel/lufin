@@ -55,7 +55,7 @@ Follow these instructions to install lufin to your server:
 3. Run `bun install`
 4. Run `cp .env.example .env` and open .env file in your preferred code editor
 5. Fill .env
-   - `VITE_API_URL` must point to the **public url** of backend, no trailing slash
+   - `VITE_API_URL` must point to the **public url** of backend **with trailing slash**
    - Optionally add `VITE_CONTACT_EMAIL` which will be shown on the website as a contact email address.
 6. Run `bun run build`
    - this command will create a static build of the frontend and output it to `dist` directory

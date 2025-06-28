@@ -6,7 +6,7 @@ export async function downloadFile(
   events: { onDownloaded?: (file: Blob) => any; onProgress?: (progress: number) => any },
   options?: { password?: string }
 ) {
-  const downloadURL = new URL(`/page/${pageId}/${encodeURIComponent(file)}`, apiUrl)
+  const downloadURL = new URL(`page/${pageId}/${encodeURIComponent(file)}`, apiUrl)
 
   const xhr = new XMLHttpRequest()
   const fileRequest = await new Promise<{ success: boolean; status: number; response: Blob }>(

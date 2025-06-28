@@ -121,7 +121,7 @@ const fetchInfo = async (
     setExpiresAt: (ea: number) => any
   }
 ) => {
-  const infoRequest = await fetch(new URL(`/page/${row.pageId}/info`, apiUrl), {
+  const infoRequest = await fetch(new URL(`page/${row.pageId}/info`, apiUrl), {
     headers: {
       Authorization: row.authorToken
     }

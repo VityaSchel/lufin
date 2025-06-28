@@ -64,7 +64,7 @@ export function onSubmitForm({
     try {
       const bodies = generateUploadBody(files, validatedValues)
 
-      const startUploadRequest = await fetch(new URL('/upload', apiUrl), {
+      const startUploadRequest = await fetch(new URL('upload', apiUrl), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bodies.startUploadBody)
@@ -104,7 +104,7 @@ export function onSubmitForm({
       callbacks.setUploadRequestProgressForAll(0, values.files?.length)
       if (uploadStrategy === 'parallel') {
         await xmlRequest(
-          new URL(`/upload/${tmpUploadId}`, apiUrl),
+          new URL(`upload/${tmpUploadId}`, apiUrl),
           { method: 'POST', body: bodies.uploadBody },
           (progress: number) => {
             callbacks.setUploadRequestProgressForAll(progress, values.files?.length)
@@ -116,7 +116,7 @@ export function onSubmitForm({
           const keys = [`file${i}`, `file${i}_type`]
           keys.forEach((key) => body.append(key, bodies.uploadBody.get(key)!))
           await xmlRequest(
-            new URL(`/upload/${tmpUploadId}`, apiUrl),
+            new URL(`upload/${tmpUploadId}`, apiUrl),
             { method: 'POST', body },
             (progress: number) => {
               if (values.convertToZip) {
@@ -129,7 +129,7 @@ export function onSubmitForm({
         }
       }
 
-      const finishUploadRequest = await fetch(new URL(`/upload/${tmpUploadId}/finish`, apiUrl), {
+      const finishUploadRequest = await fetch(new URL(`upload/${tmpUploadId}/finish`, apiUrl), {
         method: 'POST',
         body: ''
       })
@@ -182,7 +182,7 @@ function subscribeToWebSocket(
   onUploadSuccess: (data: { links: Links; authorToken: string; expiresAt: number }) => any,
   resolve: () => any
 ) {
-  const url = new URL(`/updates/${channelId}`, apiUrl)
+  const url = new URL(`updates/${channelId}`, apiUrl)
   let lastMessage = {}
   url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:'
   const ws = new WebSocket(url)

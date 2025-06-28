@@ -17,7 +17,7 @@ export function getEmbedLinks(
   file: string
 ): { name: EmbedLinkName; text: string }[] {
   const pageURL = `${window.location.origin}/${pageId}/${encodeURIComponent(file)}`
-  const directURL = new URL(`/page/${pageId}/${encodeURIComponent(file)}`, apiUrl).toString()
+  const directURL = new URL(`page/${pageId}/${encodeURIComponent(file)}`, apiUrl).toString()
 
   return [
     { name: 'direct_link', text: directURL },
