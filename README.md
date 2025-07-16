@@ -1,6 +1,7 @@
 # Lufin — a modern filesharing service based on lufi
 
-![Screenshot](docs/screenshot.png)
+![Screenshot](docs/screenshot-1.png)
+![Screenshot](docs/screenshot-2.png)
 
 Lufin (Let’s Upload that File—Next) is a modern alternative to lufi.
 
