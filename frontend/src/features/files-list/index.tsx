@@ -128,10 +128,10 @@ const fetchInfo = async (
   })
   const infoResponse = (await infoRequest.json()) as
     | { ok: false; error: string }
-    | { ok: true; downloads: number; expiresAt: number }
+    | { ok: true; downloads: number; expiresAt: string }
   if (infoResponse.ok) {
     setDownloadsCount(infoResponse.downloads)
-    setExpiresAt(infoResponse.expiresAt)
+    setExpiresAt(new Date(infoResponse.expiresAt).getTime())
   } else {
     setIsDeleted(true)
     markFilesPageDeleted(row.deleteToken)

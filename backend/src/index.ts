@@ -29,6 +29,9 @@ const app = new Elysia({
       set.status = 404
       return { ok: false, error: 'NOT_FOUND' }
     } else if (code === 'VALIDATION' || code === 'PARSE') {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(error)
+      }
       set.status = 400
       return { ok: false, error: 'INVALID_REQUEST' }
     } else if (code === 'PageMiddlewareError') {

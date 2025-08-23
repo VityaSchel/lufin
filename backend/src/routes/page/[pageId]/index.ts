@@ -1,9 +1,7 @@
 import Elysia, { t, NotFoundError } from 'elysia'
-import getDB from '$db'
 import argon2 from 'argon2'
 import { downloadFile } from 'src/s3'
-
-import type { PageDocument } from '$db/schema/file'
+import { deletePage, getPage, incrementDownloadsNum } from '$db'
 
 export class PageMiddlewareError extends Error {
   constructor(
@@ -16,11 +14,8 @@ export class PageMiddlewareError extends Error {
 
 export const getFilesPageSubrouter = new Elysia({ prefix: '/page/:pageId' })
   .resolve(async ({ params: { pageId }, headers }) => {
-    const db = await getDB()
-    const page = await db
-      .collection<PageDocument>('files')
-      .findOne({ pageId, incomplete: { $ne: true } })
-    if (!page || Date.now() > page.expiresAt) {
+    const page = await getPage({ pageId })
+    if (!page || page.expiresAt.getTime() <= Date.now()) {
       throw new NotFoundError()
     }
 
@@ -45,12 +40,7 @@ export const getFilesPageSubrouter = new Elysia({ prefix: '/page/:pageId' })
   })
   .get(
     '/',
-    async ({ params: { pageId } }) => {
-      const db = await getDB()
-      const page = (await db
-        .collection<PageDocument>('files')
-        .findOne({ pageId, incomplete: { $ne: true } }))!
-
+    async ({ page }) => {
       return {
         ok: true,
         encrypted: page.encrypted,
@@ -72,21 +62,14 @@ export const getFilesPageSubrouter = new Elysia({ prefix: '/page/:pageId' })
   )
   .get(
     '/:file',
-    async ({ params, set }) => {
+    async ({ params, set, page }) => {
       const pageId = params.pageId
       const fileNameOrIndex = params.file
 
-      const db = await getDB()
-      const page = (await db
-        .collection<PageDocument>('files')
-        .findOne({ pageId }))!
-
       if (page.deleteAtFirstDownload) {
-        await db.collection<PageDocument>('files').deleteOne({ pageId })
+        await deletePage({ pageId })
       } else {
-        await db
-          .collection<PageDocument>('files')
-          .updateOne({ pageId }, { $inc: { downloadsNum: 1 } })
+        await incrementDownloadsNum({ pageId })
       }
 
       let file = page.files.find((f) => f.filename === fileNameOrIndex)

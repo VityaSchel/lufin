@@ -1,17 +1,14 @@
-import getDB from '$db'
 import Elysia, { t, NotFoundError } from 'elysia'
 import { sendUpdate as sendWsUpdate } from 'src/ws'
 import { nanoid } from 'nanoid'
-import type { PendingPageDocument } from '$db/schema/file'
 import { getMaxExpirationTime } from 'src/utils/expiration-time'
+import { completePageUpload, getPage } from '$db'
 
 export const finishFilesUploadRoute = new Elysia().post(
   '/upload/:tmpUploadId/finish',
   async ({ params: { tmpUploadId }, set }) => {
-    const db = await getDB()
-
-    const page = await db.collection<PendingPageDocument>('files').findOne({
-      incomplete: true,
+    const page = await getPage({
+      pending: true,
       tmpUploadId,
     })
 
@@ -30,22 +27,14 @@ export const finishFilesUploadRoute = new Elysia().post(
     )
 
     const expiresAt =
-      page.setExpiresAtTo ?? Date.now() + getMaxExpirationTime(pageFilesSize)
+      page.setExpiresAtTo ??
+      new Date(Date.now() + getMaxExpirationTime(pageFilesSize))
 
-    await db.collection<PendingPageDocument>('files').updateOne(
-      { incomplete: true, tmpUploadId },
+    await completePageUpload(
+      { tmpUploadId },
       {
-        $unset: {
-          incomplete: true,
-          tmpUploadId: true,
-          wsChannelId: true,
-          setExpiresAtTo: true,
-        },
-        $set: {
-          authorToken: authorToken,
-          downloadsNum: 0,
-          expiresAt,
-        },
+        expiresAt,
+        authorToken,
       },
     )
 
@@ -53,7 +42,7 @@ export const finishFilesUploadRoute = new Elysia().post(
       type: 'upload_success',
       pageId: page.pageId,
       authorToken: authorToken,
-      pageExpiresAt: page.expiresAt,
+      pageExpiresAt: expiresAt.getTime(),
     })
 
     return { ok: true }

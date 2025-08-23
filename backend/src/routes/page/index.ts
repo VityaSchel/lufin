@@ -1,17 +1,13 @@
 import Elysia, { t, NotFoundError } from 'elysia'
-import getDB from '$db'
+import { deleteCompletePage } from '$db'
 import { deleteFile } from 'src/s3'
-import type { PageDocument } from '$db/schema/file'
 
 export const deleteFilesPageRoute = new Elysia().delete(
   '/page',
   async ({ headers }) => {
     const deleteToken = headers.authorization
 
-    const db = await getDB()
-    const page = await db
-      .collection<PageDocument>('files')
-      .findOneAndDelete({ deleteToken, incomplete: { $ne: true } })
+    const page = await deleteCompletePage({ deleteToken })
 
     if (!page) throw new NotFoundError()
 

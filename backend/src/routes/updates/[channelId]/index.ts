@@ -29,7 +29,10 @@ export const updatesWebsocketRoute = new Elysia().ws('/updates/:channelId', {
 
     if (channel.isEnded) {
       if (channel.isEnded.success) {
-        sendWsUploadSuccess(send, channel.isEnded.authorToken)
+        sendWsUploadSuccess(send, {
+          authorToken: channel.isEnded.authorToken,
+          expiresAt: channel.isEnded.expiresAt,
+        })
       } else {
         sendWsUploadError(send, channel.isEnded.error)
       }

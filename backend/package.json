@@ -6,7 +6,10 @@
   "author": "Viktor Shchelochkov <hi@hloth.dev> (https://hloth.dev)",
   "scripts": {
     "dev": "NODE_ENV=development bun --watch src/index.ts",
-    "start": "NODE_ENV=production bun src/index.ts"
+    "start": "NODE_ENV=production bun src/index.ts",
+    "dev:db:generate": "drizzle-kit generate",
+    "dev:db:forcepush": "drizzle-kit push --force",
+    "db:migrate": "drizzle-kit migrate"
   },
   "license": "MIT",
   "dependencies": {

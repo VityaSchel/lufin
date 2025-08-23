@@ -8,6 +8,7 @@ export const channels: Map<
       | {
           success: true
           authorToken: string
+          expiresAt: number
         }
       | {
           success: false
@@ -82,6 +83,7 @@ export function sendUpdate(channelId: string, update: Update) {
     channel.isEnded = {
       success: true,
       authorToken: update.authorToken,
+      expiresAt: update.pageExpiresAt,
     }
   }
   if (update.type === 'upload_errored' || update.type === 'upload_success') {

@@ -27,7 +27,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "$db": ["./src/db/index.ts"],
+      "$db": ["src/db/index.ts"],
       "$db/*": ["./src/db/*"]
     }
   }

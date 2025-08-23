@@ -1,17 +1,14 @@
-import getDB, { close as closeDb } from '../db'
-import type { PageDocument } from '../db/schema/file'
+import { closeDb, deletePages, getPagesExpiredBefore } from '$db'
 import { deleteFile } from '../s3'
 
-const gracePeriod = process.env.GRACE_PERIOD ? parseInt(process.env.GRACE_PERIOD, 10) : 7200
+const gracePeriod = process.env.GRACE_PERIOD
+  ? parseInt(process.env.GRACE_PERIOD, 10)
+  : 7200
 
 export async function cleanup() {
-  const db = await getDB()
-  const expirationTime = Date.now() - (gracePeriod * 1000)
+  const expirationTime = Date.now() - gracePeriod * 1000
 
-  const pages = await db
-    .collection<PageDocument>('files')
-    .find({ expiresAt: { $lte: expirationTime } })
-    .toArray()
+  const pages = await getPagesExpiredBefore({ expirationTime })
 
   console.log(
     'Found',
@@ -20,16 +17,22 @@ export async function cleanup() {
     new Date(expirationTime).toISOString(),
   )
 
-  const result = await db
-    .collection<PageDocument>('files')
-    .deleteMany({ pageId: { $in: pages.map((p) => p.pageId) } })
-  const files = await Promise.all(
-    pages.flatMap((p) => p.files).map((file) => deleteFile(file.storageId)),
-  )
+  let deletedCount = 0,
+    filesDeleted = 0
 
-  console.log('Deleted', files.length, 'files in', result.deletedCount, 'pages')
+  const chunkSize = 1000
+  const chunks = Math.ceil(pages.length / chunkSize)
+  for (let i = 0; i < chunks; i++) {
+    const chunk = pages.slice(i * chunkSize, (i + 1) * chunkSize)
+    deletedCount += await deletePages(chunk)
+    const files = pages.flatMap((p) => p.files)
+    await Promise.all(files.map((file) => deleteFile(file.storageId)))
+    filesDeleted += files.length
+  }
 
-  return files.length
+  console.log('Deleted', filesDeleted, 'files in', deletedCount, 'pages')
+
+  return filesDeleted
 }
 
 await cleanup()

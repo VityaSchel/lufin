@@ -1,8 +1,6 @@
-import getDB from '$db'
-import type { PendingPageDocument } from '$db/schema/file'
+import { getPage } from '$db'
 import Elysia, { t, NotFoundError } from 'elysia'
 import { maxUploadSize } from 'src/config'
-import { getMaxFilesSize } from 'src/utils/expiration-time'
 import { uploadFiles } from 'src/utils/submit-files'
 
 export const uploadFilesRoute = new Elysia().post(
@@ -20,11 +18,7 @@ export const uploadFilesRoute = new Elysia().post(
       }
     }
 
-    const db = await getDB()
-    const page = await db.collection<PendingPageDocument>('files').findOne({
-      incomplete: true,
-      tmpUploadId,
-    })
+    const page = await getPage({ tmpUploadId, pending: true })
 
     if (page === null) throw new NotFoundError()
 
@@ -34,7 +28,7 @@ export const uploadFilesRoute = new Elysia().post(
     ) {
       return { ok: false, error: 'TOO_MANY_FILES' }
     }
-    if (page.expiresAt < Date.now()) {
+    if (page.expiresAt.getTime() <= Date.now()) {
       return { ok: false, error: 'LINK_EXPIRED' }
     }
 

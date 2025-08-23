@@ -3,8 +3,7 @@ import { nanoid } from 'nanoid'
 import { getMaxExpirationTime } from 'src/utils/expiration-time'
 import { createUpdatesChannel } from 'src/ws'
 import argon2 from 'argon2'
-import getDB from '$db'
-import type { PendingPageDocument } from '$db/schema/file'
+import { insertPage } from '$db'
 
 export const uploadRoute = new Elysia().post(
   '/upload',
@@ -30,15 +29,13 @@ export const uploadRoute = new Elysia().post(
     const deleteToken = nanoid(32)
     const passwordHash = body.password && (await argon2.hash(body.password))
 
-    const db = await getDB()
+    const fiveMinutesToUploadFiles = Date.now() + 1000 * 60 * 5
 
-    await db.collection<PendingPageDocument>('files').insertOne({
-      incomplete: true,
+    await insertPage({
       pageId,
-      files: [],
-      checksum: body.checksum,
-      expiresAt: Date.now() + 1000 * 60 * 5, // 5 minutes to upload files
-      setExpiresAtTo: body.expiresAt,
+      checksum: body.checksum ?? null,
+      expiresAt: new Date(fiveMinutesToUploadFiles),
+      setExpiresAtTo: body.expiresAt ? new Date(body.expiresAt) : null,
       deleteAtFirstDownload: body.deleteAtFirstDownload,
       deleteToken: deleteToken,
       passwordHash: passwordHash ?? null,
