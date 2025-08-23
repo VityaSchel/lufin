@@ -1,4 +1,12 @@
-# How to contribute support for your language or fix translation
+# Contributing to lufin
+
+Thank you for taking time to learn how you can contribute to lufin.
+
+Generally all PRs are welcome and are reviewed manually. No AI-written code is allowed. AI assistance (such as code autocompletion) is allowed to some extent.
+
+## Translation
+
+Learn how to contribute support for your language or fix translation.
 
 This project only localizes frontend, backend part is completely in English. For frontend we use experimental [ParaglideJS](https://inlang.com/m/gerre34r/library-inlang-paraglideJs) library, so I recommended reading the Basics page to get started. You might also want to install Sherlock VSCode extension. To get started with a PR, fork this repository, clone locally and run `bun install` in frontend‘s repository.
 
