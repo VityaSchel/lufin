@@ -1,5 +1,7 @@
 # Lufin — a modern self-hosted file-sharing service
 
+[![CodeQL status](https://github.com/VityaSchel/lufin/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/VityaSchel/lufin/actions/workflows/github-code-scanning/codeql)
+
 Lufin (Let’s Upload that File—Next) is a modern alternative to [lufi](https://framagit.org/fiat-tux/hat-softwares/lufi).
 
 <p float="left">
@@ -38,7 +40,7 @@ Stack: React, Vite & Rollup, Material UI, SCSS modules, TailwindCSS, MongoDB, Po
 Demo: [lufin.hloth.dev](https://lufin.hloth.dev)
 
 > [!NOTE]
-> It's a demo website and files get deleted very quickly, it’s only purpose is demonstration of the project
+> It’s a demo website and files get deleted very quickly, it’s only purpose is demonstration of the project
 
 - [Lufin — a modern self-hosted file-sharing service](#lufin--a-modern-self-hosted-file-sharing-service)
   - [Screenshotter browser extension](#screenshotter-browser-extension)
@@ -83,6 +85,8 @@ Requirements:
   - Simplicity & faster set up — choose MongoDB. Speed, best class security, more tutorials and stability — choose PostgreSQL. Both have been tested, have equal support and good for lufin.
   - Create a database (e.g. `lufin`) and a user (e.g. `lufin`) with full access only to that database. Obtain the connection string (e.g. `mongodb://lufin:strongpassword@localhost:27017/lufin` or `postgresql://lufin:strongpassword@localhost:5432/lufin`). The database created must be empty and separated from any other services.
 
+Step by step guide to install Lufin:
+
 1. Clone this repository to your server
 2. Open `frontend` directory
 3. Run `bun ci` in your terminal
@@ -103,7 +107,7 @@ Requirements:
 12. Fill it according to these instructions:
     - **If you’re running MongoDB:** `MONGODB_CONNECTION_STRING` must be set to the mongodb connection string
     - **or, if you’re running PostgreSQL:** `POSTGRESQL_CONNECTION_STRING` must be set to the postgres connection string
-    - Do not set values to both. Prepend disabled database with a `#` character to comment it out
+    - Do not set values to both, prepend disabled database with a `#` character to comment it out
     - Make sure the connection string includes database name (e.g. `mongodb://localhost:27017/lufin` or `postgresql://localhost:5432/lufin`)
     - `S3_ACCESS_KEY`, `S3_SECRET_ACCESS_KEY`, `S3_ENDPOINT`, `S3_BUCKET` must be set to your S3 bucket credentials
     - Optional: `S3_REGION` can be set if your S3 provider requires it
@@ -118,14 +122,12 @@ Requirements:
       - files up to 50 MB can be stored at most for 150 days
       - files up to 100 megabytes can be stored at most 50 days
       - files over 100 megabytes cannot be stored
-    - This limitation is enforced for sum size of all files within one page. These limits don’t prevent an abuser from creating several pages and uploading several big files
+    - This limitation is enforced for sum size of all files within one page, these limits don’t prevent an abuser from creating several pages and uploading several big files
     - It’s not recommended to set limit more than 100 MB because chunking is not supported
     - If you use Cloudflare free tier, they will limit your uploads to 100 MB anyway
-16. Set up a regular job for cleaning up expired pages to automaticall run `bun /path/to/lufin/backend/src/jobs/cleanup-expired-pages.ts`
-
+16. Set up a regular job for cleaning up expired pages to automaticall run `bun /path/to/lufin/backend/src/jobs/cleanup-expired-pages.ts` command
     - One way is to use [Cron](https://en.wikipedia.org/wiki/Cron) which comes with most linux installations
       - add `0 * * * * /home/youruser/.bun/bin/bun --env-file=/var/www/lufin/backend/.env /var/www/lufin/backend/src/jobs/cleanup-expired-pages.ts` to the crontab, see [crontab.guru](https://crontab.guru/#0_*_*_*_*) to adjust frequency
-
 17. Set up a system daemon that will run backend (command `bun start` in the /path/to/lufin/backend directory)
     - One way is to use [systemd](https://en.wikipedia.org/wiki/Systemd) which comes with most linux installations
       - For example service config see [contrib/systemd-lufin-backend.service](./contrib/systemd-lufin-backend.service)
@@ -134,7 +136,7 @@ Requirements:
     - You can use the `PORT` environment variable to set the backend API port
 18. Configure your reverse proxy by pointing url from `VITE_API_URL` (in `frontend/.env`) to the lufin backend (see [nginx example configuration](#nginx-example-configuration) below)
     - The proxy must accept websockets connections (in nginx, add `Upgrade` and `Connection` headers)
-    - If you're getting HTTP 413 errors, increase request size limit (in nginx, it’s 1 MB, can be configured via `client_max_body_size`)
+    - If you’re getting HTTP 413 errors, increase request size limit (in nginx, it’s 1 MB, can be configured via `client_max_body_size`)
 
 ## Troubleshoot
 
@@ -180,7 +182,7 @@ Before publishing this project I rewrote the backend from Fastify to Elysia, mig
 
 ### Why no docker?
 
-There is nothing to dockerize. I could maybe put Bun, certbot and database together but IMO that really only makes it more complex. lmk in issues if you really want docker and I'll do it.
+There is nothing to dockerize. I could maybe put Bun, certbot and database together but IMO that really only makes it more complex. lmk in issues if you really want docker and I’ll do it.
 
 ### Why there are no compiled releases?
 
