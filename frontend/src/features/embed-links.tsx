@@ -24,8 +24,9 @@ export function EmbedLinks({ pageId, file }: { pageId: string; file: string }) {
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>{m.embedLinksSection()}</AccordionSummary>
         <AccordionDetails>
           <div className="flex flex-col gap-1">
-            {getEmbedLinks(pageId, file).map(({ name, text }) => (
+            {getEmbedLinks(pageId, file).map(({ name, text }, i) => (
               <TextField
+                key={i}
                 variant="outlined"
                 label={embedLinkNamesTranslations[name]}
                 value={text}
