@@ -80,7 +80,9 @@ export default function DirectFilePage() {
 
   React.useEffect(() => {
     const onHashChange = () => {
-      decodeDecryptionKey({ checksum }).then(setDecryptionKey)
+      decodeDecryptionKey({ checksum }).then((key) =>
+        setDecryptionKey(key ?? (encrypted ? 'error' : null))
+      )
     }
     window.addEventListener('hashchange', onHashChange)
     onHashChange()
