@@ -15,7 +15,9 @@ export function PageContainer({ children }: React.PropsWithChildren) {
         <meta rel="description" content={m.description()} />
       </Helmet>
       <AppBar />
-      <main className="w-[1200px] max-w-full px-[15px] py-[26px] flex flex-col gap-[30px]">{children}</main>
+      <main className="w-[1200px] max-w-full px-[15px] py-[26px] flex flex-col gap-[30px]">
+        {children}
+      </main>
       <Footer />
     </div>
   )
@@ -51,7 +53,7 @@ function Footer() {
         )}
       >
         <button
-          className="h-16 w-full flex items-center justify-between bg-[#272727] text-white px-6 shadow-md shrink-0 text-left"
+          className="h-16 w-full flex items-center justify-between bg-[#272727] text-white px-6 shadow-md shrink-0 text-left cursor-pointer focus-visible:-outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500"
           onClick={() => setExpanded(!expanded)}
         >
           <span className="font-medium font-default text-base md:text-xl">
@@ -66,7 +68,10 @@ function Footer() {
             <KeyboardArrowUpIcon fontSize="large" />
           </span>
         </button>
-        <div className="p-6 md:p-12 overflow-auto flex-1">
+        <div
+          className="p-6 md:p-12 flex-1 flex flex-col overflow-auto focus-visible:-outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500"
+          hidden={!expanded}
+        >
           <UploaderInfo />
           <FilesPageWarning />
         </div>
