@@ -54,31 +54,10 @@ export function base64ToUint8(b64: string): Uint8Array {
   return bytes
 }
 
-// export function fileToMD5Hash(file: Blob) {
-//   const blobSlice = File.prototype.slice,
-//     chunkSize = 2097152,
-//     chunks = Math.ceil(file.size / chunkSize)
-//   let currentChunk = 0
-//   const spark = new SparkMD5.ArrayBuffer()
-//   const fileReader = new FileReader()
-
-//   fileReader.onload = function (e) {
-//     spark.append(e.target!.result as ArrayBuffer)
-//     currentChunk++
-
-//     if (currentChunk < chunks) {
-//       loadNext()
-//     } else {
-//       console.info('computed hash', spark.end())
-//     }
-//   }
-
-//   function loadNext() {
-//     const start = currentChunk * chunkSize
-//     const end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize
-
-//     fileReader.readAsArrayBuffer(blobSlice.call(file, start, end))
-//   }
-
-//   loadNext()
-// }
+export function typedArrayToBuffer(array: Uint8Array): ArrayBuffer {
+  if (array.buffer instanceof SharedArrayBuffer) {
+    throw new Error('SharedArrayBuffer cannot be directly converted to ArrayBuffer')
+  } else {
+    return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset)
+  }
+}

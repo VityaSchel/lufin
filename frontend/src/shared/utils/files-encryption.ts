@@ -1,5 +1,7 @@
 import { base64ToUint8, uint8ToBase64Fast } from '$shared/utils/encodings'
 
+export type DecryptionKey = { iv: Uint8Array<ArrayBuffer>; key: CryptoKey }
+
 async function calculateChecksum({ iv, key }: DecryptionKey) {
   const encoded = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv },
@@ -49,13 +51,13 @@ export async function encryptFiles(
   }
 }
 
-function encryptFile(file: File, iv: Uint8Array, key: CryptoKey) {
+function encryptFile(file: File, iv: Uint8Array<ArrayBuffer>, key: CryptoKey) {
   return new Promise<ArrayBuffer>((resolve) => {
     const fileReader = new FileReader()
 
     fileReader.addEventListener('load', async (e) => {
       const data = e.target!.result as ArrayBuffer
-      const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, data)
+      const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv.buffer }, key, data)
       resolve(encrypted)
     })
 
@@ -68,7 +70,6 @@ export async function verifyChecksum(storedChecksum: string, decryptionKey: Decr
   return storedChecksum === calculatedChecksum
 }
 
-export type DecryptionKey = { iv: Uint8Array<ArrayBuffer>; key: CryptoKey }
 export function decryptFile(decryptionKey: DecryptionKey, content: Blob) {
   return new Promise<ArrayBuffer>((resolve, reject) => {
     const fileReader = new FileReader()
@@ -77,7 +78,7 @@ export function decryptFile(decryptionKey: DecryptionKey, content: Blob) {
       const data = e.target!.result as ArrayBuffer
       try {
         const decrypted = await crypto.subtle.decrypt(
-          { name: 'AES-GCM', iv: decryptionKey.iv },
+          { name: 'AES-GCM', iv: decryptionKey.iv.buffer },
           decryptionKey.key,
           data
         )
@@ -112,6 +113,9 @@ export async function getDecryptionKey(encodedKey: string): Promise<DecryptionKe
 export const decodeDecryptionKey = async ({ checksum }: { checksum?: string }) => {
   try {
     const encodedKey = window.location.hash
+    if (encodedKey.length === 0) {
+      return null
+    }
     const key = await getDecryptionKey(
       encodedKey.startsWith('#') ? encodedKey.substring(1) : encodedKey
     )
