@@ -43,6 +43,7 @@
         "zod": "3.22.4",
       },
       "devDependencies": {
+        "@eslint/compat": "^1.3.0",
         "@eslint/js": "^9.28.0",
         "@inlang/cli": "^3.0.0",
         "@inlang/paraglide-js": "2.0.13",
@@ -62,7 +63,6 @@
         "react-helmet-async": "^2.0.5",
         "sass-embedded": "^1.89.2",
         "tailwindcss": "^4.1.10",
-        "ts-key-enum": "2.0.12",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.34.0",
         "vite": "^6.3.5",
@@ -193,6 +193,8 @@
     "@eslint-community/eslint-utils": ["@eslint-community/eslint-utils@4.7.0", "", { "dependencies": { "eslint-visitor-keys": "^3.4.3" }, "peerDependencies": { "eslint": "^6.0.0 || ^7.0.0 || >=8.0.0" } }, "sha512-dyybb3AcajC7uha6CvhdVRJqaKyn7w2YKqKyAN37NKYgZT36w+iRb0Dymmc5qEJ549c/S31cMMSFd75bteCpCw=="],
 
     "@eslint-community/regexpp": ["@eslint-community/regexpp@4.12.1", "", {}, "sha512-CCZCDJuduB9OUkFkY2IgppNZMi2lBQgD2qzwXkEia16cge2pijY/aXi96CJMquDMn3nJdlPV1A5KrJEXwfLNzQ=="],
+
+    "@eslint/compat": ["@eslint/compat@1.3.2", "", { "peerDependencies": { "eslint": "^8.40 || 9" }, "optionalPeers": ["eslint"] }, "sha512-jRNwzTbd6p2Rw4sZ1CgWRS8YMtqG15YyZf7zvb6gY2rB2u6n+2Z+ELW0GtL0fQgyl0pr4Y/BzBfng/BdsereRA=="],
 
     "@eslint/config-array": ["@eslint/config-array@0.20.0", "", { "dependencies": { "@eslint/object-schema": "^2.1.6", "debug": "^4.3.1", "minimatch": "^3.1.2" } }, "sha512-fxlS1kkIjx8+vy2SjuCB94q3htSNrufYTXubwiBFeaQHbH6Ipi43gFJq2zCMt6PHhImH3Xmr0NksKDvchWlpQQ=="],
 
@@ -963,8 +965,6 @@
     "toggle-selection": ["toggle-selection@1.0.6", "", {}, "sha512-BiZS+C1OS8g/q2RRbJmy59xpyghNBqrr6k5L/uKBGRsTfxmu3ffiRnd8mlGPUVayg8pvfi5urfnu8TU7DVOkLQ=="],
 
     "ts-api-utils": ["ts-api-utils@2.1.0", "", { "peerDependencies": { "typescript": ">=4.8.4" } }, "sha512-CUgTZL1irw8u29bzrOD/nH85jqyc74D6SshFgujOIA7osm2Rz7dYH77agkx7H4FBNxDq7Cjf+IjaX/8zwFW+ZQ=="],
-
-    "ts-key-enum": ["ts-key-enum@2.0.12", "", {}, "sha512-Ety4IvKMaeG34AyXMp5r11XiVZNDRL+XWxXbVVJjLvq2vxKRttEANBE7Za1bxCAZRdH2/sZT6jFyyTWxXz28hw=="],
 
     "tslib": ["tslib@2.8.1", "", {}, "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="],
 
