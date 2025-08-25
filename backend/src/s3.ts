@@ -25,7 +25,7 @@ export async function get(id: string) {
 }
 
 export async function download(id: string) {
-	return await s3.file(id).stream();
+	return s3.file(id).stream();
 }
 
 export async function upload(file: File) {
