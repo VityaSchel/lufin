@@ -1,40 +1,40 @@
-import { closeDb, deletePages, getPagesExpiredBefore } from '$db'
-import { deleteFile } from '../s3'
+import { closeDb, deletePages, getPagesExpiredBefore } from "$db";
+import * as s3 from "src/s3";
 
 const gracePeriod = process.env.GRACE_PERIOD
-  ? parseInt(process.env.GRACE_PERIOD, 10)
-  : 7200
+	? parseInt(process.env.GRACE_PERIOD, 10)
+	: 7200;
 
 export async function cleanup() {
-  const expirationTime = Date.now() - gracePeriod * 1000
+	const expirationTime = Date.now() - gracePeriod * 1000;
 
-  const pages = await getPagesExpiredBefore({ expirationTime })
+	const pages = await getPagesExpiredBefore({ expirationTime });
 
-  console.log(
-    'Found',
-    pages.length,
-    'pages that had expired before',
-    new Date(expirationTime).toISOString(),
-  )
+	console.log(
+		"Found",
+		pages.length,
+		"pages that had expired before",
+		new Date(expirationTime).toISOString(),
+	);
 
-  let deletedCount = 0,
-    filesDeleted = 0
+	let deletedCount = 0,
+		filesDeleted = 0;
 
-  const chunkSize = 1000
-  const chunks = Math.ceil(pages.length / chunkSize)
-  for (let i = 0; i < chunks; i++) {
-    const chunk = pages.slice(i * chunkSize, (i + 1) * chunkSize)
-    deletedCount += await deletePages(chunk)
-    const files = pages.flatMap((p) => p.files)
-    await Promise.all(files.map((file) => deleteFile(file.storageId)))
-    filesDeleted += files.length
-  }
+	const chunkSize = 1000;
+	const chunks = Math.ceil(pages.length / chunkSize);
+	for (let i = 0; i < chunks; i++) {
+		const chunk = pages.slice(i * chunkSize, (i + 1) * chunkSize);
+		deletedCount += await deletePages(chunk);
+		const files = pages.flatMap((p) => p.files);
+		await Promise.all(files.map((file) => s3.del(file.storageId)));
+		filesDeleted += files.length;
+	}
 
-  console.log('Deleted', filesDeleted, 'files in', deletedCount, 'pages')
+	console.log("Deleted", filesDeleted, "files in", deletedCount, "pages");
 
-  return filesDeleted
+	return filesDeleted;
 }
 
-await cleanup()
-await closeDb()
-process.exit(0)
+await cleanup();
+await closeDb();
+process.exit(0);

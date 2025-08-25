@@ -1,6 +1,6 @@
-import { config } from 'src/config'
+import { config } from "src/config";
 
-const MBinB = 1000 * 1000
+const MBinB = 1000 * 1000;
 
 /**
  * Convert files sizes to a maximum expiration time
@@ -8,13 +8,13 @@ const MBinB = 1000 * 1000
  * @returns Maximum milliseconds since now
  */
 export function getMaxExpirationTime(sumFileSizeBytes: number): number {
-  const limitConfig = config.find(
-    ({ limit }) => sumFileSizeBytes <= limit * MBinB,
-  )
-  if (!limitConfig) {
-    return 0
-  }
-  return limitConfig.seconds * 1000
+	const limitConfig = config.find(
+		({ limit }) => sumFileSizeBytes <= limit * MBinB,
+	);
+	if (!limitConfig) {
+		return 0;
+	}
+	return limitConfig.seconds * 1000;
 }
 
 /**
@@ -23,11 +23,11 @@ export function getMaxExpirationTime(sumFileSizeBytes: number): number {
  * @returns Maximum files sizes in bytes
  */
 export function getMaxFilesSize(expirationTime: number): number {
-  const limitConfig = config.find(
-    ({ seconds }) => expirationTime < seconds * 1000,
-  )
-  if (!limitConfig) {
-    return 0
-  }
-  return limitConfig.limit * MBinB
+	const limitConfig = config.find(
+		({ seconds }) => expirationTime < seconds * 1000,
+	);
+	if (!limitConfig) {
+		return 0;
+	}
+	return limitConfig.limit * MBinB;
 }
