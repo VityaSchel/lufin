@@ -87,7 +87,12 @@ export const getFilesPageSubrouter = new Elysia({ prefix: "/page/:pageId" })
 				}
 			}
 
-			const stream = s3.download(file.storageId);
+      const stream = file.filesizeInBytes > 10 * 1000 * 1000
+
+			const content = s3.download(
+				file.storageId,
+				stream,
+			);
 
 			set.headers["content-type"] = page.encrypted
 				? "application/octet-stream"
@@ -95,7 +100,7 @@ export const getFilesPageSubrouter = new Elysia({ prefix: "/page/:pageId" })
 
 			set.headers["content-length"] = file.filesizeInBytes;
 
-			return stream;
+			return content;
 		},
 		{
 			params: t.Object({

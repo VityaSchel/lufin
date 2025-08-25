@@ -20,12 +20,12 @@ const s3 = new S3Client({
 	secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
 });
 
-export async function get(id: string) {
-	return await s3.file(id);
-}
-
-export async function download(id: string) {
-	return s3.file(id).stream();
+export function download(id: string, stream = false) {
+	const file = s3.file(id, {
+		partSize: 5 * 1024 * 1024,
+		queueSize: 4,
+	});
+	return stream ? file.stream() : file.bytes();
 }
 
 export async function upload(file: File) {
