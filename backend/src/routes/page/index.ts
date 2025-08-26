@@ -1,5 +1,5 @@
 import Elysia, { t, NotFoundError } from "elysia";
-import { deleteCompletePage } from "$db";
+import { db } from "$db";
 import * as s3 from "src/s3";
 
 export const deleteFilesPageRoute = new Elysia().delete(
@@ -7,7 +7,7 @@ export const deleteFilesPageRoute = new Elysia().delete(
 	async ({ headers }) => {
 		const deleteToken = headers.authorization;
 
-		const page = await deleteCompletePage({ deleteToken });
+		const page = await db.deleteCompletePageByDeleteToken(deleteToken);
 
 		if (!page) throw new NotFoundError();
 

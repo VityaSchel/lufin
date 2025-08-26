@@ -2,7 +2,7 @@ import Elysia, { t } from "elysia";
 import { nanoid } from "nanoid";
 import { getMaxExpirationTime } from "src/utils/expiration-time";
 import { createUpdatesChannel } from "src/ws";
-import { insertPage } from "$db";
+import { db } from "$db";
 
 export const uploadRoute = new Elysia().post(
 	"/upload",
@@ -31,7 +31,7 @@ export const uploadRoute = new Elysia().post(
 
 		const fiveMinutesToUploadFiles = Date.now() + 1000 * 60 * 5;
 
-		await insertPage({
+		await db.insertPage({
 			pageId,
 			checksum: body.checksum ?? null,
 			expiresAt: new Date(fiveMinutesToUploadFiles),

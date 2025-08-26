@@ -1,4 +1,4 @@
-import { getPage } from "$db";
+import { db } from "$db";
 import Elysia, { t, NotFoundError } from "elysia";
 import { maxUploadSize } from "src/config";
 import { uploadFiles } from "src/utils/submit-files";
@@ -18,7 +18,7 @@ export const uploadFilesRoute = new Elysia().post(
 			};
 		}
 
-		const page = await getPage({ tmpUploadId, pending: true });
+		const page = await db.getPendingPage({ tmpUploadId });
 
 		if (page === null) throw new NotFoundError();
 

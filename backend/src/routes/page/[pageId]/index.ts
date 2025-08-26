@@ -1,6 +1,6 @@
 import Elysia, { t, NotFoundError } from "elysia";
 import * as s3 from "src/s3";
-import { deletePage, getPage, incrementDownloadsNum } from "$db";
+import { db } from "$db";
 
 export class PageMiddlewareError extends Error {
 	constructor(
@@ -13,7 +13,7 @@ export class PageMiddlewareError extends Error {
 
 export const getFilesPageSubrouter = new Elysia({ prefix: "/page/:pageId" })
 	.resolve(async ({ params: { pageId }, headers }) => {
-		const page = await getPage({ pageId });
+		const page = await db.getPage(pageId);
 		if (!page || page.expiresAt.getTime() <= Date.now()) {
 			throw new NotFoundError();
 		}
@@ -66,9 +66,9 @@ export const getFilesPageSubrouter = new Elysia({ prefix: "/page/:pageId" })
 			const fileNameOrIndex = params.file;
 
 			if (page.deleteAtFirstDownload) {
-				await deletePage({ pageId });
+				await db.deletePage(pageId);
 			} else {
-				await incrementDownloadsNum({ pageId });
+				await db.incrementDownloadsNum({ pageId });
 			}
 
 			let file = page.files.find((f) => f.filename === fileNameOrIndex);
@@ -87,12 +87,9 @@ export const getFilesPageSubrouter = new Elysia({ prefix: "/page/:pageId" })
 				}
 			}
 
-      const stream = file.filesizeInBytes > 10 * 1000 * 1000
+			const stream = file.filesizeInBytes > 10 * 1000 * 1000;
 
-			const content = s3.download(
-				file.storageId,
-				stream,
-			);
+			const content = s3.download(file.storageId, stream);
 
 			set.headers["content-type"] = page.encrypted
 				? "application/octet-stream"

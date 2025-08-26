@@ -1,6 +1,6 @@
 import * as s3 from "../s3";
 import { sendUpdate as sendWsUpdate } from "../ws";
-import { pushFile } from "$db";
+import { db } from "$db";
 
 export async function uploadFiles({
 	pageId,
@@ -20,7 +20,7 @@ export async function uploadFiles({
 				fileField: fieldname,
 				status: "SAVED",
 			});
-			await pushFile(
+			await db.pushFile(
 				{ pageId },
 				{
 					storageId: id,
