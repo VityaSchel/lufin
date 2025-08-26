@@ -101,7 +101,7 @@ Step by step guide to install Lufin:
    - Do not serve the repository’s root
    - Do not serve the frontend directory
 8. Go back to the repository’s root and open `backend` directory
-9. Run `bun install` in your terminal
+9. Run `bun ci` in your terminal
 10. Run `cp .env.example .env && chmod 600 .env` in your terminal
 11. Open `backend/.env` file in your preferred code editor
 12. Fill it according to these instructions:
