@@ -1,6 +1,6 @@
-import * as s3 from "../s3";
-import { sendUpdate as sendWsUpdate } from "../ws";
+import { storage } from "$storage";
 import { db } from "$db";
+import { sendUpdate as sendWsUpdate } from "../ws";
 
 export async function uploadFiles({
 	pageId,
@@ -14,7 +14,9 @@ export async function uploadFiles({
 	try {
 		for (const { fieldname, file } of files) {
 			const id = crypto.randomUUID();
-			await s3.upload(new File([await file.bytes()], id, { type: file.type }));
+			await storage.upload(
+				new File([await file.bytes()], id, { type: file.type }),
+			);
 			sendWsUpdate(wsChannelId, {
 				type: "progress",
 				fileField: fieldname,

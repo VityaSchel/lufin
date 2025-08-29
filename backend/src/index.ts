@@ -12,6 +12,8 @@ import { getFilesPageInfoRoute } from "src/routes/page/[pageId]/info";
 import { updatesWebsocketRoute } from "src/routes/updates/[channelId]";
 import { limitsRoute } from "src/routes/limits";
 import { maxUploadSize } from "src/config";
+import { closeStorage } from "$storage";
+import { closeDb } from "$db";
 
 const app = new Elysia({
 	serve: {
@@ -54,4 +56,9 @@ const app = new Elysia({
 
 app.listen(process.env.PORT || 3000, ({ hostname, port }) => {
 	console.log(`Server is now listening on http://${hostname}:${port}`);
+});
+
+process.on("SIGINT", async () => {
+	await Promise.all([closeStorage(), closeDb(), app.stop()]);
+	process.exit(0);
 });

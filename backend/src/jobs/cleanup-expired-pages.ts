@@ -1,5 +1,5 @@
+import { storage } from "$storage";
 import { closeDb, db } from "$db";
-import * as s3 from "src/s3";
 
 const gracePeriod = process.env.GRACE_PERIOD
 	? parseInt(process.env.GRACE_PERIOD, 10)
@@ -26,7 +26,7 @@ export async function cleanup() {
 		const chunk = pages.slice(i * chunkSize, (i + 1) * chunkSize);
 		deletedCount += await db.deletePages(chunk.map((p) => p.pageId));
 		const files = pages.flatMap((p) => p.files);
-		await Promise.all(files.map((file) => s3.del(file.storageId)));
+		await Promise.all(files.map((file) => storage.del(file.storageId)));
 		filesDeleted += files.length;
 	}
 

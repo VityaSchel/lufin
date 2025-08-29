@@ -1,1 +1,1 @@
-./s3_postgresql.sh && ./s3_mongodb.sh && ./s3_sqlite.sh
+./s3_postgresql.sh && ./s3_mongodb.sh && ./s3_sqlite.sh && ./fs_postgresql.sh && ./fs_mongodb.sh && ./fs_sqlite.sh

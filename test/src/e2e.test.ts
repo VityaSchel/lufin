@@ -1,12 +1,13 @@
 import { afterAll, beforeAll, describe, test } from "bun:test";
 import { expect } from "earl";
 import { nanoidRegex } from "./utils";
-import { S3Client } from "bun";
 import z from "zod";
 import { getDb, Table } from "./db";
 import { encryptFiles } from "./frontend/crypto";
+import { getStorage } from "./storage";
 
 const { db, dbName, open, close } = getDb();
+const { storage, storageName } = getStorage();
 
 beforeAll(async () => {
 	await open();
@@ -16,17 +17,9 @@ afterAll(async () => {
 	await close();
 });
 
-const storageType = "s3";
-const s3 = new S3Client({
-	accessKeyId: "test",
-	secretAccessKey: "test1234",
-	endpoint: "http://s3:9000",
-	bucket: "lufin",
-});
-
 console.log("Starting tests...");
 
-describe(`Lufin with ${dbName}+${storageType}`, async () => {
+describe(`Lufin with ${dbName}+${storageName}`, async () => {
 	await test("should return correct limits", async () => {
 		const req = await fetch("http://backend:3000/limits");
 		expect(req.status).toEqual(200);
@@ -131,8 +124,7 @@ describe(`Lufin with ${dbName}+${storageType}`, async () => {
 	});
 
 	await test("should have empty initialized storage", async () => {
-		const files = await s3.list();
-		expect(files.keyCount).toEqual(0);
+		expect(await storage.getUploadsCount()).toEqual(0);
 	});
 
 	async function runTestWith({
@@ -225,9 +217,10 @@ describe(`Lufin with ${dbName}+${storageType}`, async () => {
 			}, 100);
 
 			await test("should upload file to storage", async () => {
-				const files = await s3.list();
-				expect(files.keyCount).toEqual(1);
-				const content = await s3.file(files.contents![0]!.key).text();
+				expect(await storage.getUploadsCount()).toEqual(1);
+				const content = await storage.read(
+					await storage.list().then((res) => res[0]!)
+				);
 				expect(content).toEqual(content);
 			});
 
@@ -380,8 +373,7 @@ describe(`Lufin with ${dbName}+${storageType}`, async () => {
 			});
 
 			await test("should have empty storage after deletion", async () => {
-				const files = await s3.list();
-				expect(files.keyCount).toEqual(0);
+				expect(await storage.getUploadsCount()).toEqual(0);
 			});
 		});
 	}

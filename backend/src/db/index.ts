@@ -43,8 +43,3 @@ export async function closeDb() {
 	closing = true;
 	await db.close();
 }
-
-process.on("SIGINT", async () => {
-	await closeDb();
-	process.exit(0);
-});

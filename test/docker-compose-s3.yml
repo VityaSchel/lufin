@@ -19,6 +19,11 @@ services:
       s3:
         condition: service_started
   test:
+    environment:
+      - S3_ENDPOINT=http://s3:9000
+      - S3_ACCESS_KEY=test
+      - S3_SECRET_ACCESS_KEY=test1234
+      - S3_BUCKET=lufin
     depends_on:
       s3:
         condition: service_started

@@ -1,6 +1,6 @@
 import Elysia, { t, NotFoundError } from "elysia";
+import { storage } from "$storage";
 import { db } from "$db";
-import * as s3 from "src/s3";
 
 export const deleteFilesPageRoute = new Elysia().delete(
 	"/page",
@@ -12,7 +12,7 @@ export const deleteFilesPageRoute = new Elysia().delete(
 		if (!page) throw new NotFoundError();
 
 		if (page) {
-			await Promise.all(page.files.map((f) => s3.del(f.storageId)));
+			await Promise.all(page.files.map((f) => storage.del(f.storageId)));
 			return { ok: true };
 		}
 	},

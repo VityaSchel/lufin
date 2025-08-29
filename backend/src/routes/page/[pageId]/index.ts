@@ -1,5 +1,5 @@
 import Elysia, { t, NotFoundError } from "elysia";
-import * as s3 from "src/s3";
+import { storage } from "$storage";
 import { db } from "$db";
 
 export class PageMiddlewareError extends Error {
@@ -89,7 +89,7 @@ export const getFilesPageSubrouter = new Elysia({ prefix: "/page/:pageId" })
 
 			const stream = file.filesizeInBytes > 10 * 1000 * 1000;
 
-			const content = s3.download(file.storageId, stream);
+			const content = storage.download(file.storageId, stream);
 
 			set.headers["content-type"] = page.encrypted
 				? "application/octet-stream"
