@@ -110,9 +110,8 @@ export async function getDecryptionKey(encodedKey: string): Promise<DecryptionKe
   return { iv, key }
 }
 
-export const decodeDecryptionKey = async ({ checksum }: { checksum?: string }) => {
+export const decodeDecryptionKey = async ({ checksum, encodedKey }: { checksum?: string; encodedKey: string }) => {
   try {
-    const encodedKey = window.location.hash
     if (encodedKey.length === 0) {
       return null
     }

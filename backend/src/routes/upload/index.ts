@@ -2,7 +2,7 @@ import Elysia, { t } from "elysia";
 import { nanoid } from "nanoid";
 import { getMaxExpirationTime } from "src/utils/expiration-time";
 import { createUpdatesChannel } from "src/ws";
-import { insertPage } from "$db";
+import { db } from "$db";
 
 export const uploadRoute = new Elysia().post(
 	"/upload",
@@ -22,7 +22,7 @@ export const uploadRoute = new Elysia().post(
 			}
 		}
 
-		const channelId = createUpdatesChannel();
+		const websocketChannelId = createUpdatesChannel();
 		const tmpUploadId = nanoid(16);
 		const pageId = nanoid(12);
 		const deleteToken = nanoid(32);
@@ -31,7 +31,7 @@ export const uploadRoute = new Elysia().post(
 
 		const fiveMinutesToUploadFiles = Date.now() + 1000 * 60 * 5;
 
-		await insertPage({
+		await db.insertPage({
 			pageId,
 			checksum: body.checksum ?? null,
 			expiresAt: new Date(fiveMinutesToUploadFiles),
@@ -39,14 +39,14 @@ export const uploadRoute = new Elysia().post(
 			deleteAtFirstDownload: body.deleteAtFirstDownload,
 			deleteToken: deleteToken,
 			passwordHash: passwordHash ?? null,
-			tmpUploadId: tmpUploadId,
-			wsChannelId: channelId,
+			tmpUploadId,
+			wsChannelId: websocketChannelId,
 			encrypted: body.encrypted,
 		});
 
 		return {
 			ok: true,
-			websocketChannelId: channelId,
+			websocketChannelId,
 			tmpUploadId,
 			links: { download: pageId, delete: deleteToken },
 		};

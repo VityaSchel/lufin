@@ -5,15 +5,17 @@
   "type": "module",
   "author": "Viktor Shchelochkov <hi@hloth.dev> (https://hloth.dev)",
   "scripts": {
-    "dev": "NODE_ENV=development bun --watch src/index.ts",
-    "start": "NODE_ENV=production bun src/index.ts",
-    "dev:db:generate": "drizzle-kit generate",
-    "dev:db:forcepush": "drizzle-kit push --force",
-    "db:migrate": "drizzle-kit migrate"
+    "dev": "NODE_ENV=development bun --bun --watch src/index.ts",
+    "start": "NODE_ENV=production bun --bun src/index.ts",
+    "dev:db:generate": "bun --bun drizzle-kit generate",
+    "dev:db:forcepush": "bun --bun drizzle-kit push --force",
+    "db:migrate": "bun --bun drizzle-kit migrate"
   },
   "license": "MIT",
   "dependencies": {
     "@elysiajs/cors": "^1.3.3",
+    "better-sqlite3": "nounder/bun-better-sqlite3",
+    "drizzle-kit": "^0.31.4",
     "drizzle-orm": "^0.44.4",
     "elysia": "^1.3.4",
     "mongodb": "^6.17.0",
@@ -26,7 +28,6 @@
     "@eslint/js": "^9.34.0",
     "@types/bun": "^1.2.15",
     "@types/pg": "^8.15.5",
-    "drizzle-kit": "^0.31.4",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
     "prettier": "^3.5.3",

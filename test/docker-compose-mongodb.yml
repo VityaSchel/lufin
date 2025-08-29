@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mongo:7-jammy
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: lufin
+    healthcheck:
+      test: ["CMD-SHELL", 'mongosh --eval ''db.adminCommand("ping")''']
+      interval: 1s
+      timeout: 1s
+      retries: 20
+    networks:
+      - lufintest
+    attach: false
+
+  backend:
+    environment:
+      - MONGODB_CONNECTION_STRING=mongodb://db:27017/lufin
+    depends_on:
+      db:
+        condition: service_healthy
+
+  test:
+    environment:
+      - MONGODB_CONNECTION_STRING=mongodb://db:27017/lufin

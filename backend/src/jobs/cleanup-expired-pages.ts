@@ -1,4 +1,4 @@
-import { closeDb, deletePages, getPagesExpiredBefore } from "$db";
+import { closeDb, db } from "$db";
 import * as s3 from "src/s3";
 
 const gracePeriod = process.env.GRACE_PERIOD
@@ -8,7 +8,7 @@ const gracePeriod = process.env.GRACE_PERIOD
 export async function cleanup() {
 	const expirationTime = Date.now() - gracePeriod * 1000;
 
-	const pages = await getPagesExpiredBefore({ expirationTime });
+	const pages = await db.getPagesExpiredBefore(new Date(expirationTime));
 
 	console.log(
 		"Found",
@@ -24,7 +24,7 @@ export async function cleanup() {
 	const chunks = Math.ceil(pages.length / chunkSize);
 	for (let i = 0; i < chunks; i++) {
 		const chunk = pages.slice(i * chunkSize, (i + 1) * chunkSize);
-		deletedCount += await deletePages(chunk);
+		deletedCount += await db.deletePages(chunk.map((p) => p.pageId));
 		const files = pages.flatMap((p) => p.files);
 		await Promise.all(files.map((file) => s3.del(file.storageId)));
 		filesDeleted += files.length;

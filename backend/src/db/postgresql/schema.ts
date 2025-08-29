@@ -1,3 +1,4 @@
+import type { InferSelectModel } from "drizzle-orm";
 import {
 	pgTable,
 	text,
@@ -6,14 +7,7 @@ import {
 	boolean,
 	jsonb,
 } from "drizzle-orm/pg-core";
-import type { InferSelectModel } from "drizzle-orm";
-
-export type FileItem = {
-	storageId: string;
-	filename: string;
-	filesizeInBytes: number;
-	mimeType: string;
-};
+import type { FileItem } from "$db/interface";
 
 export const commonPageFields = {
 	pageId: text("page_id").primaryKey(),

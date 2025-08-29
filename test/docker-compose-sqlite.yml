@@ -1,0 +1,24 @@
+services:
+  sqlite-init:
+    image: alpine:3.14
+    user: root
+    group_add:
+      - "1000"
+    volumes:
+      - sqlite_db:/tmp/recover_data
+    command: sh -c "chown -R 1000:1000 /tmp/recover_data && tail -f /dev/null"
+    restart: unless-stopped
+  backend:
+    environment:
+      - SQLITE_DB_PATH=/usr/src/app/sqlite/lufin.db
+    volumes:
+      - sqlite_db:/usr/src/app/sqlite
+    entrypoint: ["sh", "-c", "bun db:migrate && bun start"]
+  test:
+    environment:
+      - SQLITE_DB_PATH=/usr/src/app/sqlite/lufin.db
+    volumes:
+      - sqlite_db:/usr/src/app/sqlite
+
+volumes:
+  sqlite_db:

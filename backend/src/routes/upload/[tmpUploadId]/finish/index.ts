@@ -2,13 +2,12 @@ import Elysia, { t, NotFoundError } from "elysia";
 import { sendUpdate as sendWsUpdate } from "src/ws";
 import { nanoid } from "nanoid";
 import { getMaxExpirationTime } from "src/utils/expiration-time";
-import { completePageUpload, getPage } from "$db";
+import { db } from "$db";
 
 export const finishFilesUploadRoute = new Elysia().post(
 	"/upload/:tmpUploadId/finish",
 	async ({ params: { tmpUploadId }, set }) => {
-		const page = await getPage({
-			pending: true,
+		const page = await db.getPendingPage({
 			tmpUploadId,
 		});
 
@@ -30,7 +29,7 @@ export const finishFilesUploadRoute = new Elysia().post(
 			page.setExpiresAtTo ??
 			new Date(Date.now() + getMaxExpirationTime(pageFilesSize));
 
-		await completePageUpload(
+		await db.completePageUpload(
 			{ tmpUploadId },
 			{
 				expiresAt,

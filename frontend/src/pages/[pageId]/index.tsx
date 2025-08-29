@@ -70,7 +70,7 @@ export default function FilePage() {
 
   React.useEffect(() => {
     const onHashChange = () => {
-      decodeDecryptionKey({ checksum }).then((key) =>
+      decodeDecryptionKey({ checksum, encodedKey: window.location.hash }).then((key) =>
         setDecryptionKey(key ?? (encrypted ? 'error' : null))
       )
     }

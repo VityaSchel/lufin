@@ -1,0 +1,1 @@
+./s3_postgresql.sh && ./s3_mongodb.sh && ./s3_sqlite.sh
