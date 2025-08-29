@@ -80,10 +80,8 @@ export function PreviewZip({ zip }: { zip: File }) {
       {errored ? (
         <span className={styles.error}>{errored}</span>
       ) : (
-        <Button onClick={() => handleOpen()} type="button">
-          {zipContents
-            ? m.preview_viewZipFilePreview()
-            : m.preview_loadZipFilePreview()}
+        <Button onClick={() => handleOpen()}>
+          {zipContents ? m.preview_viewZipFilePreview() : m.preview_loadZipFilePreview()}
         </Button>
       )}
       <Dialog
@@ -105,9 +103,7 @@ export function PreviewZip({ zip }: { zip: File }) {
             </Toolbar>
           </AppBar>
         ) : (
-          <DialogTitle id="zip-file-contents-title">
-            {m.preview_previewZipFileButton()}
-          </DialogTitle>
+          <DialogTitle id="zip-file-contents-title">{m.preview_previewZipFileButton()}</DialogTitle>
         )}
         <DialogContent sx={{ width: '900px', maxWidth: '100%', height: '600px' }}>
           <ZipPreviewContext.Provider value={[previewFile, setPreviewFile]}>

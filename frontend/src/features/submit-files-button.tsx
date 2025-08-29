@@ -1,9 +1,9 @@
 import React from 'react'
-import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import type { FilesUploaderFormValues } from '$shared/model/upload-file'
 import { Button } from '$shared/ui/components/button'
 import { useFormikContext } from 'formik'
 import { m } from '$m'
-import * as API from '$app/api'
+import * as API from '$shared/api'
 
 export function SubmitFilesButton() {
   const { values, errors, isSubmitting } = useFormikContext<FilesUploaderFormValues>()

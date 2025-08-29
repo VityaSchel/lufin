@@ -3,16 +3,16 @@ import { DownloadFilesInfo } from '$widgets/download-files-info'
 import { FilesPagePasswordInput } from '$widgets/files-page-password-input'
 import { DecryptionKeyError } from '$widgets/decryption-key-error'
 import { type DecryptionKey, decodeDecryptionKey } from 'lufin-lib'
-import { type SharedFileForDownload } from '$shared/model/shared-file'
+import { type DownloadableFile } from '$shared/model/download-file'
 import { DecryptionKeyContext } from '$shared/context/decryption-key-context'
 import { useParams } from 'react-router'
-import * as API from '$app/api'
+import * as API from '$shared/api'
 import PageNotFound from '$pages/404'
 import { m } from '$m'
 
 export default function FilePage() {
   const [isLoaded, setIsLoaded] = React.useState(false)
-  const [files, setFiles] = React.useState<null | SharedFileForDownload[]>(null)
+  const [files, setFiles] = React.useState<null | DownloadableFile[]>(null)
   const [decryptionKey, setDecryptionKey] = React.useState<null | 'error' | DecryptionKey>(null)
   const [pageNotFound, setPageNotFound] = React.useState(false)
   const [encrypted, setEncrypted] = React.useState<boolean>(false)

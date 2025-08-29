@@ -5,7 +5,6 @@ import plural from 'plural-ru'
 import byteSize from 'byte-size'
 import { SharedFile } from '$features/shared-file'
 import { Button } from '$shared/ui/components/button'
-import { produce } from 'immer'
 import { CircularProgress } from '@mui/material'
 import saveAs from 'file-saver'
 import { type DecryptionKey, decrypt } from 'lufin-lib'
@@ -13,7 +12,7 @@ import { downloadFile } from '$shared/download'
 import { getFileType } from '$shared/utils/get-file-type'
 import { useComplexState } from '$shared/utils/react-hooks/complex-state'
 import { DecryptionKeyContext } from '$shared/context/decryption-key-context'
-import { type SharedFileForDownload } from '$shared/model/shared-file'
+import { type DownloadableFile } from '$shared/model/download-file'
 import { m } from '$m'
 import { useParams } from 'react-router'
 
@@ -25,7 +24,7 @@ export function DownloadFilesInfo({
 }: {
   encrypted: boolean
   password?: string
-  files: SharedFileForDownload[]
+  files: DownloadableFile[]
   onAbort: () => any
 }) {
   const decryptionKey = useContext(DecryptionKeyContext) as DecryptionKey
@@ -48,21 +47,18 @@ export function DownloadFilesInfo({
   const isDownloadedAll = files.length - downloadedFilesNum === 0
 
   const handleDownloadProgress = (i: number, progress: number) => {
-    const dlProgress = produce(fileIndexesDlProgress_.current, (draft) => {
-      draft[i] = progress
-    })
+    const dlProgress = structuredClone(fileIndexesDlProgress_.current)
+    dlProgress[i] = progress
     setFileIndexesDlProgress(dlProgress)
   }
 
   const handleStartDownloading = async (fileName: string, i: number) => {
-    const dlStatus = produce(fileIndexesDlProgress_.current, (draft) => {
-      draft[i] = 0
-    })
+    const dlStatus = structuredClone(fileIndexesDlProgress_.current)
+    dlStatus[i] = 0
     setFileIndexesDlProgress(dlStatus)
 
-    const errored = produce(erroredIndexes_.current, (draft) => {
-      draft[i] = false
-    })
+    const errored = structuredClone(erroredIndexes_.current)
+    errored[i] = false
     setErroredIndexes(errored)
 
     const downloadStart = Date.now()
@@ -80,9 +76,8 @@ export function DownloadFilesInfo({
     } catch (e) {
       console.error('Error while downloading file', e)
 
-      const erroredIndexes = produce(erroredIndexes_.current, (draft) => {
-        draft[i] = true
-      })
+      const erroredIndexes = structuredClone(erroredIndexes_.current)
+      erroredIndexes[i] = true
       setErroredIndexes(erroredIndexes)
 
       setTimeout(
@@ -134,15 +129,13 @@ export function DownloadFilesInfo({
       } else {
         resultingFile = new Blob([content], { type: files[i].mimeType })
       }
-      const contents = produce(fileContents_.current, (draft) => {
-        draft[i] = resultingFile
-      })
+      const contents = structuredClone(fileContents_.current)
+      contents[i] = resultingFile
       setFileContents(contents)
       return resultingFile
     } catch (e) {
-      const erroredIndexes = produce(erroredIndexes_.current, (draft) => {
-        draft[i] = true
-      })
+      const erroredIndexes = structuredClone(erroredIndexes_.current)
+      erroredIndexes[i] = true
       setErroredIndexes(erroredIndexes)
       console.error(e)
       onAbort()

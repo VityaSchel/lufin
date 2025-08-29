@@ -7,7 +7,7 @@ import filesize from 'byte-size'
 import { getLocale } from '$paraglide/runtime'
 import { formatDistanceStrict } from 'date-fns'
 import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
-import { getLimits } from '$app/api'
+import * as API from '$shared/api'
 
 export function UploaderInfo() {
   const [limits, setLimits] = React.useState<{ limit: number; seconds: number }[] | null | 'error'>(
@@ -15,7 +15,9 @@ export function UploaderInfo() {
   )
 
   React.useEffect(() => {
-    getLimits().then(setLimits)
+    API.getLimits()
+      .then(setLimits)
+      .catch((e) => console.error(e))
   }, [])
 
   const maxUploadSize = limits === 'error' ? undefined : limits?.at(-1)?.limit

@@ -1,4 +1,4 @@
-import { apiUrl } from '$app/api'
+import { apiUrl } from '$shared/api'
 
 export const embedLinkNames = [
   'direct_link',

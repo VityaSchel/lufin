@@ -95,7 +95,6 @@ function Preview({
             variant={'dimmed'}
             iconButton
             onClick={() => window.open(blobURL, '_blank', 'noopener,noreferrer')}
-            type="button"
             className={styles.imagePreviewButton}
           >
             <BiLinkExternal />

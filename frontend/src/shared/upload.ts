@@ -1,8 +1,8 @@
-import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import type { FilesUploaderFormValues } from '$shared/model/upload-file'
 import { saveFilesPage as saveFilesPageToLocalStorage } from '$shared/local-storage'
 import { encryptFiles } from 'lufin-lib'
 import { nmZipFilename } from '$shared/utils/zip-file-name'
-import { apiUrl } from '$app/api'
+import { apiUrl } from '$shared/api'
 
 type ValidatedValues = FilesUploaderFormValues & { files: File[]; checksum?: string }
 

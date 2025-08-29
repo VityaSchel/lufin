@@ -7,7 +7,7 @@ import { type DropTargetMonitor, useDrop } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 import cx from 'classnames'
 import { useFormikContext } from 'formik'
-import { type FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import { type FilesUploaderFormValues } from '$shared/model/upload-file'
 import { m } from '$m'
 
 export function DragNDrop({
@@ -64,7 +64,7 @@ export function DragNDrop({
           <div className={styles.dragNDropLabels}>
             <span>{m.uploadForm_dragNDrop()}</span>
             <span className={styles.or}>{m.uploadForm_or()}</span>
-            <Button type="button" onClick={() => fileInputRef.current?.click()} disabled={disabled}>
+            <Button onClick={() => fileInputRef.current?.click()} disabled={disabled}>
               {values.files?.length ? m.uploadForm_addFiles() : m.uploadForm_selectFiles()}
               <UploadIcon />
             </Button>

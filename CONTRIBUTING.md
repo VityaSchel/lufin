@@ -6,6 +6,10 @@ Generally all PRs are welcome and are reviewed manually. No AI-written code is a
 
 Please take a moment to test your changes before submitting them using the `test` runner. Install Docker and Docker Compose, start Docker daemon, execute the ./start.sh script to start end-to-end testing of all Lufin components combinations.
 
+Keep in mind that the frontend is built using [FSD](https://feature-sliced.design/) methodology.
+
+We maintain support for baseline most popular browsers versions. Any features available as ["baseline"](https://web-platform-dx.github.io/web-features/) can be used freely in the code. Any features that are going to be implemented in browsers in near future can be added with a polyfill.
+
 ## Translation
 
 Learn how to contribute support for your language or fix translation.

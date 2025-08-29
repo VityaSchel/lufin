@@ -55,6 +55,7 @@ function Footer() {
         <button
           className="h-16 w-full flex items-center justify-between bg-[#272727] text-white px-6 shadow-md shrink-0 text-left cursor-pointer focus-visible:-outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500"
           onClick={() => setExpanded(!expanded)}
+          type="button"
         >
           <span className="font-medium font-default text-base md:text-xl">
             {m.termsFooter_title()}

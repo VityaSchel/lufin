@@ -15,7 +15,7 @@ import { useMediaQuery } from '@mui/material'
 import { m } from '$m'
 import { getDateFnsLocale } from '$shared/utils/get-date-fns-locale'
 import { getLocale } from '$paraglide/runtime'
-import { apiUrl } from '$app/api'
+import { apiUrl } from '$shared/api'
 
 type UploadEntry = {
   pageId: string

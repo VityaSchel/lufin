@@ -96,7 +96,6 @@ function WorkSheet({ sheet }: { sheet: import('xlsx').WorkSheet }) {
         variant={'dimmed'}
         iconButton
         onClick={() => window.open(blobWithTable, '_blank', 'noopener,noreferrer')}
-        type="button"
         className={styles.openInNewTabButton}
       >
         <BiLinkExternal />

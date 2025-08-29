@@ -13,8 +13,7 @@ import { getSvgIconByFileType } from '$shared/utils/get-svg-icon-by-filetype'
 import { RenamableTitle } from '$entities/uploadable-file/renamable-title'
 import { Progress } from '$shared/ui/progress'
 import filesize from 'byte-size'
-import type { UploadableFile as UploadableFileType } from '$shared/model/files-uploader-values'
-import { produce } from 'immer'
+import type { UploadableFile as UploadableFileType } from '$shared/model/upload-file'
 import { m } from '$m'
 import { getLocale } from '$paraglide/runtime'
 
@@ -156,13 +155,12 @@ function UploadableImageCompressedPreview({
 
   const setIsUsingCompressed = (isUsing: boolean) => {
     if (isUsing !== file.isCompressedVersion) {
-      const newFile = produce(file, (draft) => {
-        draft.isCompressedVersion = isUsing
-        if (file.altBlob) {
-          draft.blob = file.altBlob
-          draft.altBlob = file.blob
-        }
-      })
+      const newFile = structuredClone(file)
+      newFile.isCompressedVersion = isUsing
+      if (file.altBlob) {
+        newFile.blob = file.altBlob
+        newFile.altBlob = file.blob
+      }
       setFile(newFile)
     }
   }

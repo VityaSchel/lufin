@@ -1,12 +1,9 @@
 import React from 'react'
-import type { SharedFileForDownload } from '$shared/model/shared-file'
+import type { DownloadableFile } from '$shared/model/download-file'
 import { getFileType } from '$shared/utils/get-file-type'
 
 export const supportedInstantPreviews = ['image']
-export function InstantPreview({ file, content }: {
-  file: SharedFileForDownload
-  content?: File
-}) {
+export function InstantPreview({ file, content }: { file: DownloadableFile; content?: File }) {
   const fileType = React.useMemo(() => getFileType(file.mimeType, file.name), [file])
   const [blobURL, setBlobURL] = React.useState<null | string>('')
 
@@ -23,7 +20,7 @@ export function InstantPreview({ file, content }: {
   if (blobURL) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={blobURL} alt='' />
+      <img src={blobURL} alt="" />
     )
   } else {
     return null

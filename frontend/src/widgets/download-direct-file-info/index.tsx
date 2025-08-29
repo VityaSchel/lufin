@@ -7,7 +7,7 @@ import saveAs from 'file-saver'
 import { type DecryptionKey, decrypt } from 'lufin-lib'
 import { downloadFile } from '$shared/download'
 import { DecryptionKeyContext } from '$shared/context/decryption-key-context'
-import type { SharedFileForDownload } from '$shared/model/shared-file'
+import type { DownloadableFile } from '$shared/model/download-file'
 import DownloadIcon from './icons/download.svg'
 import { FileContentPreview } from '$features/file-content-preview'
 import { Progress } from '$shared/ui/progress'
@@ -26,7 +26,7 @@ export function DirectLinkFileWidget({
 }: {
   encrypted: boolean
   password?: string
-  file: SharedFileForDownload
+  file: DownloadableFile
   onAbort: () => any
 }) {
   const decryptionKey = useContext(DecryptionKeyContext) as DecryptionKey

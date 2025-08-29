@@ -3,7 +3,18 @@ import styles from './styles.module.scss'
 import ClearIcon from './clear.svg'
 import cx from 'classnames'
 
-export function TextField({ variant = 'default', label, value, onClear, leftAdornment, rightAdornment, wrapperProps, className, disabled, ...props }: {
+export function TextField({
+  variant = 'default',
+  label,
+  value,
+  onClear,
+  leftAdornment,
+  rightAdornment,
+  wrapperProps,
+  className,
+  disabled,
+  ...props
+}: {
   variant: 'default' | 'outlined'
   value?: string
   label?: string
@@ -25,21 +36,21 @@ export function TextField({ variant = 'default', label, value, onClear, leftAdor
   // }, [disabled, inputRef])
 
   return (
-    <div 
-      className={cx(styles.textField, { 
-        [styles.default]: variant === 'default',
-        [styles.outlined]: variant === 'outlined',
-        [styles.withLabel]: Boolean(label),
-        [styles.focused]: isFocused,
-        [styles.disabled]: disabled
-      }, className)}
+    <div
+      className={cx(
+        styles.textField,
+        {
+          [styles.default]: variant === 'default',
+          [styles.outlined]: variant === 'outlined',
+          [styles.withLabel]: Boolean(label),
+          [styles.focused]: isFocused,
+          [styles.disabled]: disabled
+        },
+        className
+      )}
       {...wrapperProps}
     >
-      {leftAdornment && (
-        <span className={styles.leftAdornment}>
-          {leftAdornment}
-        </span>
-      )}
+      {leftAdornment && <span className={styles.leftAdornment}>{leftAdornment}</span>}
       <div className={styles.input}>
         {label && <span className={styles.label}>{label}</span>}
         <input
@@ -51,14 +62,14 @@ export function TextField({ variant = 'default', label, value, onClear, leftAdor
           {...props}
         />
         {onClear && (
-          <button 
+          <button
             onClick={(e) => {
               e.stopPropagation()
               onClear()
-            }} 
-            className={styles.clearButton} 
+            }}
+            className={styles.clearButton}
             tabIndex={value ? undefined : -1}
-            type='button'
+            type="button"
             disabled={disabled}
           >
             <ClearIcon />

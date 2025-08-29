@@ -1,4 +1,4 @@
-export type SharedFileForDownload = {
+export type DownloadableFile = {
   name: string
   sizeInBytes: number
   mimeType: string

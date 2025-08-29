@@ -50,7 +50,6 @@ function Previewer({ text }: { text: string }) {
           variant={wrapText ? 'contained' : 'dimmed'}
           iconButton
           onClick={() => setWrapText(!wrapText)}
-          type="button"
           className={styles.wrapTextButton}
         >
           <MdWrapText />

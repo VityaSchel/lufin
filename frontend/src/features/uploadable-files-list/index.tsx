@@ -5,15 +5,14 @@ import { useFormikContext } from 'formik'
 import type {
   FilesUploaderFormValues,
   UploadableFile as UploadableFileType
-} from '$shared/model/files-uploader-values'
+} from '$shared/model/upload-file'
 import { UploadableGroupTitle } from '$entities/uploadable-group-title'
 import { UploadableFile } from '$entities/uploadable-file'
 import { UploadFilesContext } from '$shared/context/upload-context'
-import { produce } from 'immer'
 import { m } from '$m'
 import filesize from 'byte-size'
 import { getLocale } from '$paraglide/runtime'
-import * as API from '$app/api'
+import * as API from '$shared/api'
 
 export function UploadableFilesList() {
   const { values, setFieldValue, isSubmitting } = useFormikContext<FilesUploaderFormValues>()
@@ -28,23 +27,20 @@ export function UploadableFilesList() {
   const sumSizeExceededLimit = fileSizeLimit !== undefined && sumSizeBytes > fileSizeLimit
 
   const handleRemove = (i: number) => {
-    const files = produce(values.files!, (draft) => {
-      draft.splice(i, 1)
-    })
+    const files = structuredClone(values.files)
+    if (files !== null) files.splice(i, 1)
     setFieldValue('files', files)
   }
 
   const handleRename = (i: number, newName: string) => {
-    const files = produce(values.files!, (draft) => {
-      draft[i].name = newName
-    })
+    const files = structuredClone(values.files)
+    if (files !== null) files[i].name = newName
     setFieldValue('files', files)
   }
 
   const handleSetFile = (i: number, newFile: UploadableFileType) => {
-    const files = produce(values.files!, (draft) => {
-      draft[i] = newFile
-    })
+    const files = structuredClone(values.files)
+    if (files !== null) files[i] = newFile
     setFieldValue('files', files)
   }
 

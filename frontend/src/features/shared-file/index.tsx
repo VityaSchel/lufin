@@ -29,7 +29,7 @@ import { InstantPreview, supportedInstantPreviews } from '$features/shared-file/
 import cx from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'
 import { useHotkeys } from 'react-hotkeys-hook'
-import type { SharedFileForDownload } from '$shared/model/shared-file'
+import type { DownloadableFile } from '$shared/model/download-file'
 import copy from 'copy-to-clipboard'
 import { m } from '$m'
 import { EmbedLinks } from '$features/embed-links'
@@ -57,7 +57,7 @@ const SharedFile = React.forwardRef(
       downloadProgress: number | false
       onDownloadStarted: (endedCallback?: 'SAVE' | 'PREVIEW') => any
       onSave: () => any
-      file: SharedFileForDownload
+      file: DownloadableFile
       content?: Blob
       onOpenPreviousPreview?: () => any
       onOpenNextPreview?: () => any
@@ -211,7 +211,7 @@ function PreviewButton({
   content
 }: {
   onClick: () => any
-  file: SharedFileForDownload
+  file: DownloadableFile
   content?: Blob
 }) {
   const [blobURL, setBlobURL] = React.useState<string | null>(null)
@@ -269,7 +269,7 @@ function PreviewDialog({
 }: {
   open: boolean
   onClose: () => any
-  file: SharedFileForDownload
+  file: DownloadableFile
   fileInstance: File
   onOpenPreviousPreview?: () => any
   onOpenNextPreview?: () => any

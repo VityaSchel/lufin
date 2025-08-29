@@ -31,7 +31,6 @@
     "flat": "5.0.2",
     "formik": "2.4.2",
     "grapheme-splitter": "1.0.4",
-    "immer": "10.1.1",
     "jszip": "3.10.1",
     "lufin-lib": "../lib",
     "mime": "^4.0.7",

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FilesDeleted } from '$widgets/files-deleted'
-import { deleteFilesPage } from '$app/api'
+import { deleteFilesPage } from '$shared/api'
 import { FilesDeletionConfirmation } from '$widgets/files-deleted/confirmation'
 import { useParams } from 'react-router'
 import { CircularProgress } from '@mui/material'

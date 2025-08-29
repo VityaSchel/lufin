@@ -1,18 +1,18 @@
 import React from 'react'
 import { DecryptionKeyContext } from '$shared/context/decryption-key-context'
-import type { SharedFileForDownload } from '$shared/model/shared-file'
+import type { DownloadableFile } from '$shared/model/download-file'
 import { type DecryptionKey, decodeDecryptionKey } from 'lufin-lib'
 import { DecryptionKeyError } from '$widgets/decryption-key-error'
 import { DirectLinkFileWidget } from '$widgets/download-direct-file-info'
 import { FilesPagePasswordInput } from '$widgets/files-page-password-input'
 import { useParams } from 'react-router'
-import * as API from '$app/api'
+import * as API from '$shared/api'
 import PageNotFound from '$pages/404'
 import { m } from '$m'
 
 export default function DirectFilePage() {
   const [isLoaded, setIsLoaded] = React.useState(false)
-  const [file, setFile] = React.useState<null | SharedFileForDownload>(null)
+  const [file, setFile] = React.useState<null | DownloadableFile>(null)
   const [decryptionKey, setDecryptionKey] = React.useState<null | 'error' | DecryptionKey>(null)
   const [pageNotFound, setPageNotFound] = React.useState(false)
   const [encrypted, setEncrypted] = React.useState<boolean>(false)

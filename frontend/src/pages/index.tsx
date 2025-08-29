@@ -2,9 +2,8 @@ import React from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { FilesUploader } from '$features/uploader'
-import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import type { FilesUploaderFormValues } from '$shared/model/upload-file'
 import { Formik, type FormikProps } from 'formik'
-import { produce } from 'immer'
 import { UploadSuccessful } from '$features/upload-successful'
 import { onSubmitForm } from '$shared/upload'
 import { useComplexState } from '$shared/utils/react-hooks/complex-state'
@@ -25,9 +24,8 @@ export default function FilesPage() {
   const formikRef = React.useRef<FormikProps<FilesUploaderFormValues>>()
 
   const handleOnFileUploaded = (fileIndex: number) => {
-    const files = produce(uploadedFilesRef.current, (draft) => {
-      draft[fileIndex] = true
-    })
+    const files = structuredClone(uploadedFilesRef.current)
+    if (files) files[fileIndex] = true
     setUploadedFiles(files)
   }
 

@@ -3,7 +3,6 @@ import styles from './styles.module.scss'
 import { type FormikProps, useFormikContext } from 'formik'
 import mime from 'mime'
 import ImageCompressor from 'compressorjs'
-import { produce } from 'immer'
 import { Checkbox } from '$shared/ui/components/checkbox'
 import { TextField } from '$shared/ui/components/text-field'
 import { DragNDrop } from '$entities/drag-n-drop'
@@ -16,7 +15,7 @@ import { UploadableFilesList } from '$features/uploadable-files-list'
 import { SubmitFilesButton } from '$features/submit-files-button'
 import { m } from '$m'
 import { getFileType } from '$shared/utils/get-file-type'
-import type { FilesUploaderFormValues, UploadableFile } from '$shared/model/files-uploader-values'
+import type { FilesUploaderFormValues, UploadableFile } from '$shared/model/upload-file'
 
 export function FilesUploader({
   onSubmit,
@@ -70,29 +69,27 @@ export function FilesUploader({
                   new ImageCompressor(img.blob, {
                     quality: 0.5,
                     success: (file) => {
-                      const newFiles = produce(formikRef.current.values['files'], (draft) => {
-                        if (draft) {
-                          const fileObject = draft.find((f) => f.id === img.id)
-                          if (fileObject && fileObject.blob.size > file.size) {
-                            fileObject.altBlob = fileObject.blob
-                            fileObject.blob = file
-                            fileObject.isCompressedVersion = true
-                          }
+                      const newFiles = structuredClone(formikRef.current.values['files'])
+                      if (newFiles) {
+                        const fileObject = newFiles.find((f) => f.id === img.id)
+                        if (fileObject && fileObject.blob.size > file.size) {
+                          fileObject.altBlob = fileObject.blob
+                          fileObject.blob = file
+                          fileObject.isCompressedVersion = true
                         }
-                      })
+                      }
                       setFieldValue('files', newFiles)
                     },
                     error: (err) => {
                       console.error('Image compression failed:', err)
-                      const newFiles = produce(formikRef.current.values['files'], (draft) => {
-                        if (draft) {
-                          const fileObject = draft.find((f) => f.id === img.id)
-                          if (fileObject) {
-                            fileObject.altBlob = fileObject.blob
-                            fileObject.isCompressedVersion = false
-                          }
+                      const newFiles = structuredClone(formikRef.current.values['files'])
+                      if (newFiles) {
+                        const fileObject = newFiles.find((f) => f.id === img.id)
+                        if (fileObject) {
+                          fileObject.altBlob = fileObject.blob
+                          fileObject.isCompressedVersion = false
                         }
-                      })
+                      }
                       setFieldValue('files', newFiles)
                     }
                   })
