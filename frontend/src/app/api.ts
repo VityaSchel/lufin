@@ -2,31 +2,46 @@ import { z } from 'zod'
 
 export const apiUrl = new URL(import.meta.env.VITE_API_URL)
 
-export async function getFilesPage(pageId: string, password?: string) {
-  const filesRequest = await fetch(new URL('page/' + pageId, apiUrl), {
+export async function getFilesPage({ pageId, password }: { pageId: string; password?: string }) {
+  const res = await fetch(new URL('page/' + pageId, apiUrl), {
     method: 'GET',
     headers: {
       ...(password && { Authorization: password })
     }
-  })
-  const filesResponse = (await filesRequest.json()) as
-    | {
-        ok: true
-        encrypted: boolean
-        checksum?: string
-        files: { filename: string; sizeInBytes: number; mimeType: string }[]
-      }
-    | { ok: false; error: 'NOT_FOUND' | 'PAGE_PASSWORD_PROTECTED' | 'INVALID_PAGE_PASSWORD' }
-  return filesResponse
+  }).then((req) => req.json())
+  const page = z
+    .discriminatedUnion('ok', [
+      z.object({
+        ok: z.literal(true),
+        encrypted: z.boolean(),
+        checksum: z.string().optional(),
+        files: z.array(
+          z.object({
+            filename: z.string(),
+            sizeInBytes: z.number().nonnegative(),
+            mimeType: z.string()
+          })
+        )
+      }),
+      z.object({
+        ok: z.literal(false),
+        error: z.enum(['NOT_FOUND', 'PAGE_PASSWORD_PROTECTED', 'INVALID_PAGE_PASSWORD'])
+      })
+    ])
+    .parse(res)
+  return page
 }
 
-export async function getFileDownloadableStream(
-  pageId: string,
-  fileIndex: number,
+export async function streamFileDownload({
+  pageId,
+  fileIndex,
+  password
+}: {
+  pageId: string
+  fileIndex: number
   password?: string
-): Promise<
-  | { success: true; filesizeInBytes: number; fileStream: ReadableStream<Uint8Array> }
-  | { success: false; error: string }
+}): Promise<
+  { ok: true; size: number; stream: ReadableStream<Uint8Array> } | { ok: false; error: string }
 > {
   const filesRequest = await fetch(new URL(`page/${pageId}/${fileIndex}`, apiUrl), {
     method: 'GET',
@@ -41,17 +56,17 @@ export async function getFileDownloadableStream(
         error: z.string()
       })
       .parse(await filesRequest.json())
-    return { success: false, error: filesResponse.error }
+    return { ok: false, error: filesResponse.error }
   } else {
     return {
-      success: true,
-      filesizeInBytes: Number(filesRequest.headers.get('Content-Length')),
-      fileStream: filesRequest.body
+      ok: true,
+      size: Number(filesRequest.headers.get('Content-Length')),
+      stream: filesRequest.body
     }
   }
 }
 
-export async function deleteFilesPage(deleteToken: string) {
+export async function deleteFilesPage({ deleteToken }: { deleteToken: string }) {
   const response = await fetch(new URL('page', apiUrl), {
     method: 'DELETE',
     headers: {

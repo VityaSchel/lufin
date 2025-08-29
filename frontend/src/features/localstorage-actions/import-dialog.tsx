@@ -10,7 +10,10 @@ import {
 } from '@mui/material'
 import sjson from 'secure-json-parse'
 import cx from 'classnames'
-import { getItem as getItemFromLocalStorage, schema as localStorageSchema } from '$shared/storage'
+import {
+  getItem as getItemFromLocalStorage,
+  schema as localStorageSchema
+} from '$shared/local-storage'
 import { z } from 'zod'
 import plural from 'plural-ru'
 import MdCheck from '$assets/icons/check.svg?react'

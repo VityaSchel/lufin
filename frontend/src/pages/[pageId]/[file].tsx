@@ -1,7 +1,7 @@
 import React from 'react'
-import { DecryptionKeyContext } from '$shared/context/decryption-key'
+import { DecryptionKeyContext } from '$shared/context/decryption-key-context'
 import type { SharedFileForDownload } from '$shared/model/shared-file'
-import { type DecryptionKey, decodeDecryptionKey } from '$shared/utils/files-encryption'
+import { type DecryptionKey, decodeDecryptionKey } from 'lufin-lib'
 import { DecryptionKeyError } from '$widgets/decryption-key-error'
 import { DirectLinkFileWidget } from '$widgets/download-direct-file-info'
 import { FilesPagePasswordInput } from '$widgets/files-page-password-input'
@@ -29,7 +29,7 @@ export default function DirectFilePage() {
   React.useEffect(() => {
     if (!pageId) return
     setPasswordSubmitting(true)
-    API.getFilesPage(pageId, password)
+    API.getFilesPage({ pageId, password })
       .then((response) => {
         if (response.ok) {
           let file = response.files.find((f) => f.filename === fileNameOrIndex)
@@ -80,9 +80,12 @@ export default function DirectFilePage() {
 
   React.useEffect(() => {
     const onHashChange = () => {
-      decodeDecryptionKey({ checksum, encodedKey: window.location.hash }).then((key) =>
-        setDecryptionKey(key ?? (encrypted ? 'error' : null))
-      )
+      decodeDecryptionKey({ checksum, encodedKey: window.location.hash })
+        .then((key) => setDecryptionKey(key ?? (encrypted ? 'error' : null)))
+        .catch((e) => {
+          console.error(e)
+          setDecryptionKey('error')
+        })
     }
     window.addEventListener('hashchange', onHashChange)
     onHashChange()

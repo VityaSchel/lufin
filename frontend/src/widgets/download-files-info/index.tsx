@@ -8,11 +8,11 @@ import { Button } from '$shared/ui/components/button'
 import { produce } from 'immer'
 import { CircularProgress } from '@mui/material'
 import saveAs from 'file-saver'
-import { type DecryptionKey, decryptFile } from '$shared/utils/files-encryption'
+import { type DecryptionKey, decrypt } from 'lufin-lib'
 import { downloadFile } from '$shared/download'
 import { getFileType } from '$shared/utils/get-file-type'
 import { useComplexState } from '$shared/utils/react-hooks/complex-state'
-import { DecryptionKeyContext } from '$shared/context/decryption-key'
+import { DecryptionKeyContext } from '$shared/context/decryption-key-context'
 import { type SharedFileForDownload } from '$shared/model/shared-file'
 import { m } from '$m'
 import { useParams } from 'react-router'
@@ -129,7 +129,7 @@ export function DownloadFilesInfo({
     try {
       let resultingFile: Blob
       if (encrypted) {
-        const buf = await decryptFile(decryptionKey, content)
+        const buf = await decrypt(content, decryptionKey)
         resultingFile = new Blob([buf], { type: files[i].mimeType })
       } else {
         resultingFile = new Blob([content], { type: files[i].mimeType })

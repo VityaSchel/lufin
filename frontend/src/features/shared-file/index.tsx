@@ -29,7 +29,6 @@ import { InstantPreview, supportedInstantPreviews } from '$features/shared-file/
 import cx from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'
 import { useHotkeys } from 'react-hotkeys-hook'
-import { Key } from 'ts-key-enum'
 import type { SharedFileForDownload } from '$shared/model/shared-file'
 import copy from 'copy-to-clipboard'
 import { m } from '$m'

@@ -52,7 +52,7 @@ export function loadFilesPages() {
   return pages
 }
 
-export function markFilesPageDeleted(deletePageToken: string) {
+export function markFilesPageAsDeleted(deletePageToken: string) {
   const filePages = loadFilesPages()
   const fp = filePages.find((p) => p.deleteToken === deletePageToken)
 

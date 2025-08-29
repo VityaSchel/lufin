@@ -49,6 +49,7 @@ Demo: [lufin.hloth.dev](https://lufin.hloth.dev)
   - [Nginx example configuration](#nginx-example-configuration)
   - [For advanced users](#for-advanced-users)
     - [(Optional) compile backend to a binary](#optional-compile-backend-to-a-binary)
+  - [Security](#security)
   - [FAQ](#faq)
     - [Motivation](#motivation)
     - [Why no docker?](#why-no-docker)
@@ -176,6 +177,10 @@ bun build \
 ```
 
 And then run `./server` instead of `bun start`
+
+## Security
+
+Code handling AES-GCM encryption can be found in [lib](./lib/) directory. You can then refer to any calls to this library made through `import { ... } from 'lufin-lib'`, most notably [frontend/src/shared/upload.ts](./frontend/src/shared/upload.ts).
 
 ## FAQ
 

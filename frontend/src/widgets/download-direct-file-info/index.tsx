@@ -4,9 +4,9 @@ import { Headline } from '$entities/headline'
 import byteSize from 'byte-size'
 import { Button } from '$shared/ui/components/button'
 import saveAs from 'file-saver'
-import { type DecryptionKey, decryptFile } from '$shared/utils/files-encryption'
+import { type DecryptionKey, decrypt } from 'lufin-lib'
 import { downloadFile } from '$shared/download'
-import { DecryptionKeyContext } from '$shared/context/decryption-key'
+import { DecryptionKeyContext } from '$shared/context/decryption-key-context'
 import type { SharedFileForDownload } from '$shared/model/shared-file'
 import DownloadIcon from './icons/download.svg'
 import { FileContentPreview } from '$features/file-content-preview'
@@ -91,7 +91,7 @@ export function DirectLinkFileWidget({
     try {
       let blob = content
       if (encrypted) {
-        const buf = await decryptFile(decryptionKey, content)
+        const buf = await decrypt(content, decryptionKey)
         blob = new Blob([buf])
       }
       const newDecryptedFile = new File([blob], file.name, { type: file.mimeType })

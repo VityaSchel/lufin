@@ -9,7 +9,7 @@ import { UploadSuccessful } from '$features/upload-successful'
 import { onSubmitForm } from '$shared/upload'
 import { useComplexState } from '$shared/utils/react-hooks/complex-state'
 import { m } from '$m'
-import { UploadFilesContext } from '$shared/upload-context'
+import { UploadFilesContext } from '$shared/context/upload-context'
 import { useNavigate } from 'react-router'
 import type { Links } from '$shared/upload'
 
@@ -43,7 +43,7 @@ export default function FilesPage() {
   }
 
   const handleFileUploadProgress = (fileIndex: number, progress: number) => {
-    const progressArray = clone(uploadRequestProgressRef.current)
+    const progressArray = [...uploadRequestProgressRef.current]
     progressArray[fileIndex] = progress
     setUploadRequestProgress(progressArray)
   }

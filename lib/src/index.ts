@@ -1,0 +1,1 @@
+export { encrypt, decrypt, encryptFiles, decodeDecryptionKey, type DecryptionKey } from "./encryption.js";

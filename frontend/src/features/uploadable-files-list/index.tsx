@@ -2,12 +2,14 @@ import React from 'react'
 import styles from './styles.module.scss'
 import cx from 'classnames'
 import { useFormikContext } from 'formik'
-import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
+import type {
+  FilesUploaderFormValues,
+  UploadableFile as UploadableFileType
+} from '$shared/model/files-uploader-values'
 import { UploadableGroupTitle } from '$entities/uploadable-group-title'
 import { UploadableFile } from '$entities/uploadable-file'
-import { UploadFilesContext } from '$shared/upload-context'
+import { UploadFilesContext } from '$shared/context/upload-context'
 import { produce } from 'immer'
-import type { UploadableFile as UploadableFileType } from '$shared/uploadable-file'
 import { m } from '$m'
 import filesize from 'byte-size'
 import { getLocale } from '$paraglide/runtime'

@@ -3,7 +3,7 @@ import { expect } from "earl";
 import { nanoidRegex } from "./utils";
 import z from "zod";
 import { getDb, Table } from "./db";
-import { encryptFiles } from "./frontend/crypto";
+import { encryptFiles } from "lufin-lib";
 import { getStorage } from "./storage";
 
 const { db, dbName, open, close } = getDb();
@@ -179,7 +179,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 					{
 						method: "POST",
 						body,
-					}
+					},
 				);
 				expect(req.status).toEqual(400);
 				const res = await req.json();
@@ -192,7 +192,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 			await test("should accept uploads", async () => {
 				const ws = new WebSocket(
-					"ws://backend:3000/updates/" + page.websocketChannelId
+					"ws://backend:3000/updates/" + page.websocketChannelId,
 				);
 				const promise = new Promise<void>((resolve) => {
 					ws.onmessage = (e) => {
@@ -208,10 +208,10 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 					{
 						method: "POST",
 						body,
-					}
+					},
 				).then((res) => res.json());
 				expect(() =>
-					z.object({ ok: z.literal(true) }).parse(response)
+					z.object({ ok: z.literal(true) }).parse(response),
 				).not.toThrow();
 				await promise;
 			}, 100);
@@ -219,7 +219,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 			await test("should upload file to storage", async () => {
 				expect(await storage.getUploadsCount()).toEqual(1);
 				const content = await storage.read(
-					await storage.list().then((res) => res[0]!)
+					await storage.list().then((res) => res[0]!),
 				);
 				expect(content).toEqual(content);
 			});
@@ -240,7 +240,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 			await test("should throw on get page request while it's pending", async () => {
 				const req = await fetch(
-					"http://backend:3000/page/" + page.links.download
+					"http://backend:3000/page/" + page.links.download,
 				);
 				expect(req.status).toEqual(404);
 			});
@@ -255,7 +255,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 			await test("should finish upload", async () => {
 				const ws = new WebSocket(
-					"ws://backend:3000/updates/" + page.websocketChannelId
+					"ws://backend:3000/updates/" + page.websocketChannelId,
 				);
 				const promise = new Promise<void>((resolve) => {
 					ws.onmessage = (e) => {
@@ -269,7 +269,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 				});
 				const req = await fetch(
 					"http://backend:3000/upload/" + page.tmpUploadId + "/finish",
-					{ method: "POST" }
+					{ method: "POST" },
 				);
 				expect(req.ok).toBeTruthy();
 				await promise;
@@ -294,7 +294,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 			await test("should return page files", async () => {
 				const req = await fetch(
-					"http://backend:3000/page/" + page.links.download
+					"http://backend:3000/page/" + page.links.download,
 				);
 				expect(req.status).toEqual(200);
 				const res = await req.json();
@@ -311,7 +311,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 										sizeInBytes: z.literal(file.size),
 										mimeType: z.literal(file.type),
 									})
-									.strict()
+									.strict(),
 							)
 							.length(1),
 					})
@@ -327,22 +327,22 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 			await test("should return file content by its name", async () => {
 				const req = await fetch(
-					"http://backend:3000/page/" + page.links.download + "/" + file.name
+					"http://backend:3000/page/" + page.links.download + "/" + file.name,
 				);
 				expect(req.status).toEqual(200);
 				expect(req.headers.get("content-type")).toEqual(
-					encrypted ? "application/octet-stream" : file.type
+					encrypted ? "application/octet-stream" : file.type,
 				);
 				expect(await req.text()).toEqual(content);
 			});
 
 			await test("should return file content by its index", async () => {
 				const req = await fetch(
-					"http://backend:3000/page/" + page.links.download + "/0"
+					"http://backend:3000/page/" + page.links.download + "/0",
 				);
 				expect(req.status).toEqual(200);
 				expect(req.headers.get("content-type")).toEqual(
-					encrypted ? "application/octet-stream" : file.type
+					encrypted ? "application/octet-stream" : file.type,
 				);
 				expect(await req.text()).toEqual(content);
 			});
@@ -350,7 +350,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 			await test("should throw on invalid basic page info request", async () => {
 				const req = await fetch(
 					"http://backend:3000/page/" + page.links.download + "/info",
-					{ headers: { Authorization: "invalidvalue" } }
+					{ headers: { Authorization: "invalidvalue" } },
 				);
 				expect(req.status).toEqual(404);
 			});
@@ -363,7 +363,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 				const response = await req.json();
 				expect(req.status).toEqual(200);
 				expect(() =>
-					z.object({ ok: z.literal(true) }).parse(response)
+					z.object({ ok: z.literal(true) }).parse(response),
 				).not.toThrow();
 			});
 
@@ -417,7 +417,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 			})
 			.parse(res);
 		const ws = new WebSocket(
-			"ws://backend:3000/updates/" + page.websocketChannelId
+			"ws://backend:3000/updates/" + page.websocketChannelId,
 		);
 		const waitForSaved = new Promise<void>((resolve) => {
 			const onMsg = (e: MessageEvent) => {
@@ -434,10 +434,10 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 			{
 				method: "POST",
 				body: uploadFileBody,
-			}
+			},
 		).then((res) => res.json());
 		expect(() =>
-			z.object({ ok: z.literal(true) }).parse(response)
+			z.object({ ok: z.literal(true) }).parse(response),
 		).not.toThrow();
 		await waitForSaved;
 		const waitForFinish = new Promise<void>((resolve) => {
@@ -463,11 +463,11 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 	await test("should delete after first download", async () => {
 		const req1 = await fetch(
-			"http://backend:3000/page/" + oneTimePageId + "/0"
+			"http://backend:3000/page/" + oneTimePageId + "/0",
 		);
 		expect(req1.status).toEqual(200);
 		const req2 = await fetch(
-			"http://backend:3000/page/" + oneTimePageId + "/0"
+			"http://backend:3000/page/" + oneTimePageId + "/0",
 		);
 		expect(req2.status).toEqual(404);
 	});

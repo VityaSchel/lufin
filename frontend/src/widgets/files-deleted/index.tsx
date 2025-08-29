@@ -1,7 +1,7 @@
 import React from 'react'
 import { Headline } from '$entities/headline'
 import styles from './styles.module.scss'
-import { markFilesPageDeleted } from '$shared/storage'
+import { markFilesPageAsDeleted } from '$shared/local-storage'
 import { m } from '$m'
 import { useParams } from 'react-router'
 
@@ -11,7 +11,7 @@ export function FilesDeleted({ success }: { success: boolean }) {
   React.useEffect(() => {
     if (success) {
       if (typeof token === 'string') {
-        markFilesPageDeleted(token)
+        markFilesPageAsDeleted(token)
       }
     }
   }, [success])

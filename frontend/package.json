@@ -1,8 +1,9 @@
 {
   "name": "lufin-frontend",
-  "version": "0.1.0",
-  "author": "Viktor Shchelochkov <hi@hloth.dev> (https://hloth.dev)",
   "type": "module",
+  "version": "1.0.0",
+  "author": "Viktor Shchelochkov <hi@hloth.dev> (https://hloth.dev)",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -32,6 +33,7 @@
     "grapheme-splitter": "1.0.4",
     "immer": "10.1.1",
     "jszip": "3.10.1",
+    "lufin-lib": "../lib",
     "mime": "^4.0.7",
     "nanoid": "^5.1.5",
     "plural-ru": "2.0.2",

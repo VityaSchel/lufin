@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"name": "Library",
+			"path": "lib"
+		},
+		{
+			"name": "Frontend",
+			"path": "frontend"
+		},
+		{
+			"name": "Backend",
+			"path": "backend"
+		},
+		{
+			"name": "Testing",
+			"path": "test"
+		},
+		{
+			"name": "Contrib",
+			"path": "contrib"
+		},
+		{
+			"name": "Docs",
+			"path": "docs"
+		},
+		{
+			"path": "."
+		}
+	]
+}

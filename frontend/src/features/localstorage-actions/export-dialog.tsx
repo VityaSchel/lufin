@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import { loadFilesPages } from '$shared/storage'
+import { loadFilesPages } from '$shared/local-storage'
 import { ResponsiveMUIDialog } from '$shared/ui/components/responsive-material-dialog'
 import { DialogContent, TextareaAutosize } from '@mui/material'
 import { Button } from '$shared/ui/components/button'

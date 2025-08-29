@@ -2,9 +2,9 @@ import React from 'react'
 import { DownloadFilesInfo } from '$widgets/download-files-info'
 import { FilesPagePasswordInput } from '$widgets/files-page-password-input'
 import { DecryptionKeyError } from '$widgets/decryption-key-error'
-import { type DecryptionKey, decodeDecryptionKey } from '$shared/utils/files-encryption'
+import { type DecryptionKey, decodeDecryptionKey } from 'lufin-lib'
 import { type SharedFileForDownload } from '$shared/model/shared-file'
-import { DecryptionKeyContext } from '$shared/context/decryption-key'
+import { DecryptionKeyContext } from '$shared/context/decryption-key-context'
 import { useParams } from 'react-router'
 import * as API from '$app/api'
 import PageNotFound from '$pages/404'
@@ -26,7 +26,7 @@ export default function FilePage() {
   const pageId = params.pageId
 
   const fetchFiles = (pageId: string, password: string | undefined) => {
-    API.getFilesPage(pageId, password)
+    API.getFilesPage({ pageId, password })
       .then((response) => {
         if (response.ok) {
           setFiles(
@@ -70,9 +70,12 @@ export default function FilePage() {
 
   React.useEffect(() => {
     const onHashChange = () => {
-      decodeDecryptionKey({ checksum, encodedKey: window.location.hash }).then((key) =>
-        setDecryptionKey(key ?? (encrypted ? 'error' : null))
-      )
+      decodeDecryptionKey({ checksum, encodedKey: window.location.hash })
+        .then((key) => setDecryptionKey(key ?? (encrypted ? 'error' : null)))
+        .catch((e) => {
+          console.error(e)
+          setDecryptionKey('error')
+        })
     }
     window.addEventListener('hashchange', onHashChange)
     onHashChange()

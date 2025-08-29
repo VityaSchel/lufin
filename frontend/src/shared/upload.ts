@@ -1,6 +1,6 @@
 import type { FilesUploaderFormValues } from '$shared/model/files-uploader-values'
-import { saveFilesPage as saveFilesPageToLocalStorage } from '$shared/storage'
-import { encryptFiles } from '$shared/utils/files-encryption'
+import { saveFilesPage as saveFilesPageToLocalStorage } from '$shared/local-storage'
+import { encryptFiles } from 'lufin-lib'
 import { nmZipFilename } from '$shared/utils/zip-file-name'
 import { apiUrl } from '$app/api'
 
@@ -248,11 +248,6 @@ function xmlRequest(
         onProgress(event.loaded / event.total)
       }
     })
-    // xhr.addEventListener('progress', (event) => {
-    //   if (event.lengthComputable) {
-    //     downloadProgress.value = event.loaded / event.total
-    //   }
-    // })
     xhr.addEventListener('loadend', () => {
       resolve({
         success: xhr.readyState === 4,

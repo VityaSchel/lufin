@@ -9,7 +9,7 @@ import DownloadIcon from './icons/download.svg'
 import DeleteIcon from './icons/delete.svg'
 import TrueIcon from './icons/true.svg'
 import FalseIcon from './icons/false.svg'
-import { loadFilesPages, markFilesPageDeleted, updateFilePage } from '$shared/storage'
+import { loadFilesPages, markFilesPageAsDeleted, updateFilePage } from '$shared/local-storage'
 import { Link } from 'react-router'
 import { useMediaQuery } from '@mui/material'
 import { m } from '$m'
@@ -134,7 +134,7 @@ const fetchInfo = async (
     setExpiresAt(new Date(infoResponse.expiresAt).getTime())
   } else {
     setIsDeleted(true)
-    markFilesPageDeleted(row.deleteToken)
+    markFilesPageAsDeleted(row.deleteToken)
   }
 }
 
