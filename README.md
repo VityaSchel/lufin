@@ -1,6 +1,6 @@
 # Lufin — a modern self-hosted file-sharing service
 
-[![CodeQL status](https://github.com/VityaSchel/lufin/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/VityaSchel/lufin/actions/workflows/github-code-scanning/codeql)
+[![CodeQL status](https://github.com/VityaSchel/lufin/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/VityaSchel/lufin/actions/workflows/github-code-scanning/codeql) [![Testing](https://github.com/VityaSchel/lufin/actions/workflows/testing.yml/badge.svg)](https://github.com/VityaSchel/lufin/actions/workflows/testing.yml)
 
 Lufin (Let’s Upload that File—Next) is a modern alternative to [lufi](https://framagit.org/fiat-tux/hat-softwares/lufi).
 

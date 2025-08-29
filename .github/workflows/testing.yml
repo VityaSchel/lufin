@@ -1,4 +1,4 @@
-name: Run tests
+name: Testing
 permissions:
   contents: read
 on:
