@@ -3,6 +3,7 @@ import { saveFilesPage as saveFilesPageToLocalStorage } from '$shared/local-stor
 import { encryptFiles } from 'lufin-lib'
 import { nmZipFilename } from '$shared/utils/zip-file-name'
 import { apiUrl } from '$shared/api'
+import sjson from 'secure-json-parse'
 
 type ValidatedValues = FilesUploaderFormValues & { files: File[]; checksum?: string }
 
@@ -191,7 +192,7 @@ function subscribeToWebSocket(
       console.warn('Received message from unknown origin:', origin)
       return
     }
-    const payload = JSON.parse(data) as
+    const payload = sjson.parse(data) as
       | { update_type: 'progress'; file: string; status: 'SAVED' }
       | { update_type: 'upload_errored'; error: 'string'; isClosing: true }
       | {

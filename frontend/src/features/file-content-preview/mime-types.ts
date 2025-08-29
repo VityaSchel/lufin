@@ -6,4 +6,4 @@ export const supportedMimeTypes = [
   'text',
   'archive',
   'spreadsheet'
-] as const
+]

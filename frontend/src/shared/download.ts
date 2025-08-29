@@ -1,4 +1,5 @@
 import { apiUrl } from '$shared/api'
+import sjson from 'secure-json-parse'
 
 export async function downloadFile(
   pageId: string,
@@ -41,7 +42,7 @@ export async function downloadFile(
       return file
     }
   } else {
-    const filesResponseJSON = JSON.parse(await fileRequest.response.text())
+    const filesResponseJSON = sjson.parse(await fileRequest.response.text())
     const fileResponse = filesResponseJSON as { ok: false; error: string }
     throw new Error(fileResponse.error)
   }

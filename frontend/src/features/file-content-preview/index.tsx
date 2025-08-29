@@ -23,8 +23,7 @@ export function FileContentPreview({
   }
 }): JSX.Element {
   const fileType = React.useMemo(() => getFileType(file.type, file.name), [file])
-  const isPreviewAvailable =
-    fileType && supportedMimeTypes.includes(fileType as (typeof supportedMimeTypes)[number])
+  const isPreviewAvailable = fileType && supportedMimeTypes.includes(fileType)
 
   const [fileBlobSrc, setFileBlobSrc] = React.useState<null | string>(null)
 
@@ -39,12 +38,7 @@ export function FileContentPreview({
   return isPreviewAvailable ? (
     fileBlobSrc !== null ? (
       <div className={styles.preview}>
-        <Preview
-          type={fileType as (typeof supportedMimeTypes)[number]}
-          file={file}
-          blobURL={fileBlobSrc}
-          slider={slider}
-        />
+        <Preview type={fileType} file={file} blobURL={fileBlobSrc} slider={slider} />
       </div>
     ) : (
       <></>

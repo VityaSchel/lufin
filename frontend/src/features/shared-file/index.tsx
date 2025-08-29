@@ -86,10 +86,7 @@ const SharedFile = React.forwardRef(
       }
     }
 
-    const previewAvailable = previewSupportedMimeTypes.includes(
-      // @ts-expect-error ???
-      fileType
-    )
+    const previewAvailable = fileType && previewSupportedMimeTypes.includes(fileType)
 
     const handleStartDownloading = () => {
       if (content) {

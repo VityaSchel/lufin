@@ -7,7 +7,6 @@ import '@fontsource-variable/noto-sans-mono'
 import ReactDOM from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter, Route, Routes } from 'react-router'
-import { Toaster } from 'sonner'
 import { PageContainer } from '$widgets/common/page'
 import { ThemeProvider } from '@mui/material'
 import theme from '$app/mui'
@@ -23,7 +22,6 @@ function App() {
     <BrowserRouter>
       <HelmetProvider>
         <ThemeProvider theme={theme}>
-          <Toaster richColors />
           <PageContainer>
             <Routes>
               <Route path="/" element={<FilesPage />} />

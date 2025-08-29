@@ -37,9 +37,7 @@ export function UploadableFile({
 
   const fileType = React.useMemo(() => getFileType(file.type, file.name), [file])
   const icon = getSvgIconByFileType(fileType)
-  const previewAvailable = previewSupportedMimeTypes.includes(
-    fileType as (typeof previewSupportedMimeTypes)[number]
-  )
+  const previewAvailable = fileType && previewSupportedMimeTypes.includes(fileType)
 
   return (
     <>
@@ -97,9 +95,7 @@ export function UploadableFile({
                 <Collapse orientation="vertical" in={previewOpen}>
                   <div
                     className={cx('mt-4 h-full', {
-                      [styles.smallPreview]: ['audio', 'archive'].includes(
-                        fileType as (typeof previewSupportedMimeTypes)[number]
-                      )
+                      [styles.smallPreview]: fileType === 'audio' || fileType === 'archive'
                     })}
                   >
                     {fileType === 'image' &&
