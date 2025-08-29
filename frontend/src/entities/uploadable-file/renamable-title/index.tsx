@@ -6,12 +6,14 @@ export function RenamableTitle({
   value,
   onChange,
   readonly,
-  placeholder
+  placeholder,
+  ariaLabel
 }: {
   value: string
   onChange: (newValue: string) => any
   placeholder?: string
   readonly: boolean
+  ariaLabel?: string
 }) {
   const [inputValue, setInputValue] = React.useState('')
   const hiddenSpan = React.useRef<HTMLSpanElement>(null)
@@ -64,6 +66,7 @@ export function RenamableTitle({
         maxLength={100}
         placeholder={placeholder}
         disabled={readonly}
+        aria-label={ariaLabel}
       />
     </div>
   )

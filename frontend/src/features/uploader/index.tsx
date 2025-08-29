@@ -150,21 +150,6 @@ export function FilesUploader({
             >
               {m.uploadForm_uploadAsZipCheckbox()}
             </Checkbox>
-            <Collapse orientation="vertical" in={values.convertToZip}>
-              <TextField
-                onClear={() => {
-                  setFieldValue('zipArchiveName', '')
-                }}
-                value={values.zipArchiveName ?? ''}
-                onChange={({ target: { value } }) => setFieldValue('zipArchiveName', value)}
-                variant="outlined"
-                label={m.uploadForm_zipNameInput()}
-                placeholder="documents.zip"
-                type="zipArchiveName"
-                disabled={isSubmitting}
-                className="mt-2"
-              />
-            </Collapse>
           </div>
           <div className="flex flex-col">
             <Checkbox

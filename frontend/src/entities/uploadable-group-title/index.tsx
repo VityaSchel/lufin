@@ -39,6 +39,7 @@ export function UploadableGroupTitle({ disabled }: { disabled: boolean }) {
                 }}
                 placeholder="documents.zip"
                 readonly={disabled}
+                ariaLabel={m.uploadForm_zipNameInput()}
               />
             }
             subtitle={

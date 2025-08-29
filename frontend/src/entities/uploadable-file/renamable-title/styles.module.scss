@@ -1,5 +1,5 @@
 .container {
-  height: 24px;
+  height: 30px;
   font-family: inherit;
   font-size: 20px;
   font-weight: 400;
@@ -18,7 +18,9 @@
     transform: translate(-10px, -5px);
     background-color: transparent;
     border: 1px dashed transparent;
-    transition: background-color 120ms ease-in-out, border-color 120ms ease-in-out;
+    transition:
+      background-color 120ms ease-in-out,
+      border-color 120ms ease-in-out;
 
     &:hover:not([disabled]),
     &:focus:not([disabled]) {
