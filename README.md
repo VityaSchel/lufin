@@ -28,7 +28,7 @@ Lufin (Let’s Upload that File—Next) is a modern alternative to [lufi](https:
 - 🗃️ Client-side archive generation before uploading
 - 📸 Client-side image compression
 - ✏️ Automatic file renaming with option to keep original filenames
-- 📀 Multiple databases support (MongoDB, PostgreSQL)
+- 📀 Multiple databases support (MongoDB, PostgreSQL, SQLite)
 - ⚡️ Fully static frontend (no SSR, no Next.js needed running for the website)
 - 💻 Links to uploaded files are stored in LocalStorage
 - 💾 Importable/exportable LocalStorage with a button to clean up expired pages
@@ -82,8 +82,9 @@ Requirements:
 - A database installed, configured and ready to accept connections. Below are supported databases:
   - **MongoDB:** Community Edition and Mongo Atlas will both work. No schema setup needed from your end.
   - **PostgreSQL:** Tested on v14 and v17. Drizzle ORM handles everything related to schema.
-  - Simplicity & faster set up — choose MongoDB. Speed, best class security, more tutorials and stability — choose PostgreSQL. Both have been tested, have equal support and good for lufin.
-  - Create a database (e.g. `lufin`) and a user (e.g. `lufin`) with full access only to that database. Obtain the connection string (e.g. `mongodb://lufin:strongpassword@localhost:27017/lufin` or `postgresql://lufin:strongpassword@localhost:5432/lufin`). The database created must be empty and separated from any other services.
+  - **SQLite:** Uses [bun:sqlite](https://bun.sh/docs/api/sqlite). Tested and supported, but due to synchronius nature and thread blocking, not recommended for high load.
+  - Easiest & instant setup — choose SQLite. Flexibility & faster setup — choose MongoDB. Speed, best class security, more tutorials and stability — choose PostgreSQL. All have been tested, have equal support and good for Lufin.
+  - For server-based databases (Mongo, Postgres): create a database (e.g. `lufin`) and a user (e.g. `lufin`) with full access only to that database. Obtain the connection string (e.g. `mongodb://lufin:strongpassword@localhost:27017/lufin` or `postgresql://lufin:strongpassword@localhost:5432/lufin`). The database must be separate from any other services and empty.
 
 Step by step guide to install Lufin:
 
@@ -107,12 +108,13 @@ Step by step guide to install Lufin:
 12. Fill it according to these instructions:
     - **If you’re running MongoDB:** `MONGODB_CONNECTION_STRING` must be set to the mongodb connection string
     - **or, if you’re running PostgreSQL:** `POSTGRESQL_CONNECTION_STRING` must be set to the postgres connection string
-    - Do not set values to both, prepend disabled database with a `#` character to comment it out
-    - Make sure the connection string includes database name (e.g. `mongodb://localhost:27017/lufin` or `postgresql://localhost:5432/lufin`)
+    - **or, if you’re running SQLite:** `SQLITE_DB_PATH` must be set to path to the sqlite database file
+    - Only set one of those. Prepend disabled databases with a `#` character to comment it out in .env file.
+    - For server-based databases (Mongo, Postgres): make sure the connection string includes database name (e.g. `mongodb://localhost:27017/lufin` or `postgresql://localhost:5432/lufin`)
     - `S3_ACCESS_KEY`, `S3_SECRET_ACCESS_KEY`, `S3_ENDPOINT`, `S3_BUCKET` must be set to your S3 bucket credentials
     - Optional: `S3_REGION` can be set if your S3 provider requires it
     - Optional (recommended if your frontend and backend are on separate domains or subdomains): `CORS_ORIGIN` — set it to your domain name to enable [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
-13. **ONLY for PostgreSQL users:** run `bun db:migrate` in your terminal
+13. Only for SQL databases (Postgres, SQLite): run `bun db:migrate` in your terminal
 14. Run `cp data-retention.config.example.json data-retention.config.json` in your terminal
 15. Open `data-retention.config.json` file in your preferred code editor
     - This config defines file pages expiration settings for your lufin instance

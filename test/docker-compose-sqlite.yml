@@ -13,6 +13,7 @@ services:
       - SQLITE_DB_PATH=/usr/src/app/sqlite/lufin.db
     volumes:
       - sqlite_db:/usr/src/app/sqlite
+    entrypoint: ["sh", "-c", "bun db:migrate && bun start"]
   test:
     environment:
       - SQLITE_DB_PATH=/usr/src/app/sqlite/lufin.db

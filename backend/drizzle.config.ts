@@ -10,11 +10,13 @@ if (POSTGRESQL_DATABASE_URL && SQLITE_DB_PATH) {
 }
 
 let db: { type: "postgresql" | "sqlite"; url: string };
-if (POSTGRESQL_DATABASE_URL)
+if (POSTGRESQL_DATABASE_URL) {
 	db = { type: "postgresql", url: POSTGRESQL_DATABASE_URL };
-else if (SQLITE_DB_PATH) db = { type: "sqlite", url: SQLITE_DB_PATH };
-else
+} else if (SQLITE_DB_PATH) {
+	db = { type: "sqlite", url: SQLITE_DB_PATH };
+} else {
 	throw new Error("Please set POSTGRESQL_CONNECTION_STRING or SQLITE_DB_PATH");
+}
 
 export default defineConfig({
 	dialect: db.type,

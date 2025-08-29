@@ -3,7 +3,7 @@ import { expect } from "earl";
 import { nanoidRegex } from "./utils";
 import { S3Client } from "bun";
 import z from "zod";
-import { getDb } from "./db";
+import { getDb, Table } from "./db";
 import { encryptFiles } from "./frontend/crypto";
 
 const { db, dbName, open, close } = getDb();
@@ -232,14 +232,14 @@ describe(`Lufin with ${dbName}+${storageType}`, async () => {
 			});
 
 			await test("should save file to the pending_pages table", async () => {
-				const result = await db.getMatchesCount("pending_pages", {
+				const result = await db.getMatchesCount(Table.PendingPages, {
 					tmp_upload_id: page.tmpUploadId,
 				});
 				expect(result).toEqual(1);
 			});
 
 			await test("should not have saved to the pages table", async () => {
-				const result = await db.getMatchesCount("pages", {
+				const result = await db.getMatchesCount(Table.Pages, {
 					page_id: page.links.download,
 				});
 				expect(result).toEqual(0);
@@ -283,12 +283,12 @@ describe(`Lufin with ${dbName}+${storageType}`, async () => {
 			}, 500);
 
 			await test("should delete from pending_pages table", async () => {
-				const result = await db.getMatchesCount("pending_pages");
+				const result = await db.getMatchesCount(Table.PendingPages);
 				expect(result).toEqual(0);
 			});
 
 			await test("should save to pages table", async () => {
-				const result = await db.getMatchesCount("pages", {
+				const result = await db.getMatchesCount(Table.Pages, {
 					page_id: page.links.download,
 				});
 				expect(result).toEqual(1);
@@ -375,7 +375,7 @@ describe(`Lufin with ${dbName}+${storageType}`, async () => {
 			});
 
 			await test("should delete page from db", async () => {
-				const result = await db.getMatchesCount("pages");
+				const result = await db.getMatchesCount(Table.Pages);
 				expect(result).toEqual(0);
 			});
 

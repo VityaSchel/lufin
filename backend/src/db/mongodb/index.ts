@@ -33,7 +33,7 @@ export const mongoDb: LufinDbBuilder<void, import("mongodb").MongoClient> = (
 			.db()
 			.collection<Pick<PageDocument, "files">>("pages")
 			.findOneAndDelete(
-				{ deleteToken: token, incomplete: { $ne: true } },
+				{ deleteToken: token, status: "complete" },
 				{ projection: { files: true, _id: false } },
 			);
 	},

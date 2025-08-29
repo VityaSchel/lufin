@@ -1,12 +1,12 @@
 services:
   db:
-    image: postgres:16
+    image: mongo:7-jammy
     environment:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
       POSTGRES_DB: lufin
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U test -d lufin"]
+      test: ["CMD-SHELL", 'mongosh --eval ''db.adminCommand("ping")''']
       interval: 1s
       timeout: 1s
       retries: 20
@@ -16,12 +16,11 @@ services:
 
   backend:
     environment:
-      - POSTGRESQL_CONNECTION_STRING=postgresql://test:test@db:5432/lufin
+      - MONGODB_CONNECTION_STRING=mongodb://db:27017/lufin
     depends_on:
       db:
         condition: service_healthy
-    entrypoint: ["sh", "-c", "bun db:migrate && bun start"]
 
   test:
     environment:
-      - POSTGRESQL_CONNECTION_STRING=postgresql://test:test@db:5432/lufin
+      - MONGODB_CONNECTION_STRING=mongodb://db:27017/lufin

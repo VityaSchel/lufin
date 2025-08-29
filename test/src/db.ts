@@ -1,18 +1,29 @@
 import { Client } from "pg";
 import { Database } from "bun:sqlite";
+import { MongoClient } from "mongodb";
 
+const mongoDbConn = process.env.MONGODB_CONNECTION_STRING;
 const postgresqlConn = process.env.POSTGRESQL_CONNECTION_STRING;
 const sqliteDbPath = process.env.SQLITE_DB_PATH;
 
-if (postgresqlConn && sqliteDbPath) {
+if (
+	[Boolean(mongoDbConn), Boolean(postgresqlConn), Boolean(sqliteDbPath)].filter(
+		Boolean
+	).length !== 1
+) {
 	throw new Error(
-		"Only one of POSTGRESQL_CONNECTION_STRING or SQLITE_DB_PATH must be set"
+		"Only one of MONGODB_CONNECTION_STRING, POSTGRESQL_CONNECTION_STRING or SQLITE_DB_PATH must be set"
 	);
+}
+
+export enum Table {
+	Pages = "pages",
+	PendingPages = "pending_pages",
 }
 
 interface DbShim {
 	getMatchesCount(
-		tableName: string,
+		tableName: Table,
 		query?: {
 			[key: string]: string | number;
 		}
@@ -78,6 +89,29 @@ export function getDb(): {
 			},
 			open: () => {},
 			close: () => db.close(),
+		};
+	} else if (mongoDbConn) {
+		const client = new MongoClient(mongoDbConn);
+		return {
+			dbName: "MongoDB",
+			db: {
+				getMatchesCount: async (tableName, query) => {
+					const collection = client.db().collection("pages");
+					const count = await collection.countDocuments({
+						status: tableName === Table.PendingPages ? "pending" : "complete",
+						...(query &&
+							Object.fromEntries(
+								Object.entries(query).map(([k, v]) => [
+									k.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()),
+									v,
+								])
+							)),
+					});
+					return count;
+				},
+			},
+			open: () => void client.connect(),
+			close: () => client.close(),
 		};
 	} else {
 		throw new Error(

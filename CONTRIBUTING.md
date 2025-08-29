@@ -4,6 +4,8 @@ Thank you for taking time to learn how you can contribute to lufin.
 
 Generally all PRs are welcome and are reviewed manually. No AI-written code is allowed. AI assistance (such as code autocompletion) is allowed to some extent.
 
+Please take a moment to test your changes before submitting them using the `test` runner. Install Docker and Docker Compose, start Docker daemon, execute the ./start.sh script to start end-to-end testing of all Lufin components combinations.
+
 ## Translation
 
 Learn how to contribute support for your language or fix translation.
