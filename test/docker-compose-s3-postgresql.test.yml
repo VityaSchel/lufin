@@ -9,13 +9,20 @@ services:
       - S3_SECRET_ACCESS_KEY=test1234
       - S3_BUCKET=lufin
       - POSTGRESQL_CONNECTION_STRING=postgresql://test:test@db:5432/lufin
-    ports:
-      - "3000:3000"
     depends_on:
       db:
         condition: service_healthy
       s3:
         condition: service_started
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'bun -e "fetch(''http://localhost:3000'').then(res => res.ok)"',
+        ]
+      interval: 1s
+      timeout: 1s
+      retries: 20
     networks:
       - lufintest
 
@@ -32,6 +39,7 @@ services:
       retries: 20
     networks:
       - lufintest
+    attach: false
 
   s3:
     image: minio/minio
@@ -40,6 +48,21 @@ services:
     environment:
       MINIO_ROOT_USER: test
       MINIO_ROOT_PASSWORD: test1234
+    networks:
+      - lufintest
+    attach: false
+
+  test:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      backend:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      s3:
+        condition: service_started
     networks:
       - lufintest
 

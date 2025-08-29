@@ -61,7 +61,7 @@ export const postgresqlDb: LufinDbBuilder<
 	async getPage(pageId) {
 		return await client
 			.select({
-				pageId: pendingPagesTable.pageId,
+				pageId: pagesTable.pageId,
 				expiresAt: pagesTable.expiresAt,
 				passwordHash: pagesTable.passwordHash,
 				encrypted: pagesTable.encrypted,

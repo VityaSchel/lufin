@@ -22,7 +22,7 @@ export const uploadRoute = new Elysia().post(
 			}
 		}
 
-		const channelId = createUpdatesChannel();
+		const websocketChannelId = createUpdatesChannel();
 		const tmpUploadId = nanoid(16);
 		const pageId = nanoid(12);
 		const deleteToken = nanoid(32);
@@ -39,14 +39,14 @@ export const uploadRoute = new Elysia().post(
 			deleteAtFirstDownload: body.deleteAtFirstDownload,
 			deleteToken: deleteToken,
 			passwordHash: passwordHash ?? null,
-			tmpUploadId: tmpUploadId,
-			wsChannelId: channelId,
+			tmpUploadId,
+			wsChannelId: websocketChannelId,
 			encrypted: body.encrypted,
 		});
 
 		return {
 			ok: true,
-			websocketChannelId: channelId,
+			websocketChannelId,
 			tmpUploadId,
 			links: { download: pageId, delete: deleteToken },
 		};

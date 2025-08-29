@@ -22,4 +22,4 @@ COPY --from=prerelease /usr/src/app/data-retention.config.example.json data-rete
 ENV NODE_ENV=production
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "start" ]
+ENTRYPOINT [ "sh", "-c", "bun db:migrate && bun start" ]

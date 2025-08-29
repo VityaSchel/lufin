@@ -14,7 +14,7 @@ export async function uploadFiles({
 	try {
 		for (const { fieldname, file } of files) {
 			const id = crypto.randomUUID();
-			await s3.upload(new File([file], id, { type: file.type }));
+			await s3.upload(new File([await file.bytes()], id, { type: file.type }));
 			sendWsUpdate(wsChannelId, {
 				type: "progress",
 				fileField: fieldname,

@@ -43,7 +43,7 @@ export const getFilesPageSubrouter = new Elysia({ prefix: "/page/:pageId" })
 			return {
 				ok: true,
 				encrypted: page.encrypted,
-				checksum: page.checksum,
+				...(page.checksum !== null && { checksum: page.checksum }),
 				files: page.files.map((f) => ({
 					filename: f.filename,
 					sizeInBytes: f.filesizeInBytes,

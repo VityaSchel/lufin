@@ -47,7 +47,6 @@ export const uploadFilesRoute = new Elysia().post(
 			set.status = 413;
 			return { ok: false, error: "FILES_ARE_TOO_BIG" };
 		}
-
 		await uploadFiles({
 			pageId: page.pageId,
 			wsChannelId: page.wsChannelId,
