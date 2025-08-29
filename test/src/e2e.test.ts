@@ -401,4 +401,82 @@ describe(`Lufin with ${dbName}+${storageType}`, async () => {
 		encrypted: true,
 		checksum: encrypted.checksum,
 	});
+
+	async function quickUpload(file: File) {
+		const createPageBody = new FormData();
+		createPageBody.append("expiresAt", (Date.now() + 2500).toString());
+		createPageBody.append("deleteAtFirstDownload", "true");
+		createPageBody.append("encrypted", "false");
+		const req = await fetch("http://backend:3000/upload", {
+			method: "POST",
+			body: createPageBody,
+		});
+		if (!req.ok) {
+			throw new Error(await req.text());
+		}
+		const res = await req.json();
+		const page = z
+			.object({
+				tmpUploadId: z.string().length(16).regex(nanoidRegex),
+				websocketChannelId: z.string().length(16).regex(nanoidRegex),
+				links: z.object({
+					download: z.string().length(12).regex(nanoidRegex),
+				}),
+			})
+			.parse(res);
+		const ws = new WebSocket(
+			"ws://backend:3000/updates/" + page.websocketChannelId
+		);
+		const waitForSaved = new Promise<void>((resolve) => {
+			const onMsg = (e: MessageEvent) => {
+				z.object({ status: z.literal("SAVED") }).parse(JSON.parse(e.data));
+				ws.removeEventListener("message", onMsg);
+				resolve();
+			};
+			ws.addEventListener("message", onMsg);
+		});
+		const uploadFileBody = new FormData();
+		uploadFileBody.append("file", file);
+		const response = await fetch(
+			"http://backend:3000/upload/" + page.tmpUploadId,
+			{
+				method: "POST",
+				body: uploadFileBody,
+			}
+		).then((res) => res.json());
+		expect(() =>
+			z.object({ ok: z.literal(true) }).parse(response)
+		).not.toThrow();
+		await waitForSaved;
+		const waitForFinish = new Promise<void>((resolve) => {
+			ws.onmessage = (e) => {
+				ws.close();
+				z.object({
+					update_type: z.literal("upload_success"),
+				}).parse(JSON.parse(e.data));
+				resolve();
+			};
+		});
+		await fetch("http://backend:3000/upload/" + page.tmpUploadId + "/finish", {
+			method: "POST",
+		});
+		await waitForFinish;
+		return page.links.download;
+	}
+
+	let oneTimePageId: string;
+	await test("should accept request to delete after first download", async () => {
+		oneTimePageId = await quickUpload(new File(["test"], "test.txt"));
+	});
+
+	await test("should delete after first download", async () => {
+		const req1 = await fetch(
+			"http://backend:3000/page/" + oneTimePageId + "/0"
+		);
+		expect(req1.status).toEqual(200);
+		const req2 = await fetch(
+			"http://backend:3000/page/" + oneTimePageId + "/0"
+		);
+		expect(req2.status).toEqual(404);
+	});
 });

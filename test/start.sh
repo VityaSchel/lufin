@@ -1,1 +1,1 @@
-./s3_postgresql.sh && ./sqlite.sh
+./s3_postgresql.sh && ./s3_sqlite.sh

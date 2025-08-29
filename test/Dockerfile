@@ -21,4 +21,4 @@ COPY --from=prerelease /usr/src/app/tsconfig.json .
 COPY --from=prerelease /usr/src/app/package.json .
 
 USER bun
-ENTRYPOINT [ "bun", "test" ]
+ENTRYPOINT [ "bun", "test", "--bail", "--runInBand" ]
