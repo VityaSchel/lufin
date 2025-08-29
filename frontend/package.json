@@ -5,8 +5,8 @@
   "author": "Viktor Shchelochkov <hi@hloth.dev> (https://hloth.dev)",
   "license": "MIT",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "bun --bun vite",
+    "build": "NODE_ENV=production bun --bun vite build",
     "preview": "vite preview",
     "machine-translate": "inlang machine translate --project project.inlang"
   },
