@@ -55,7 +55,6 @@ export const uploadFilesRoute = new Elysia().post(
 				file,
 			})),
 		});
-
 		return { ok: true };
 	},
 	{

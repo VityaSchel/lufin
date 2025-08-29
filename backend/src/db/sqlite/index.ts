@@ -121,12 +121,25 @@ export const sqliteDb: LufinDbBuilder<
 		});
 	},
 	async pushFile({ pageId }, file) {
-		await client
-			.update(pendingPagesTable)
-			.set({
-				files: sql`${pendingPagesTable.files} || ${JSON.stringify([file])}::jsonb`,
-			})
-			.where(eq(pendingPagesTable.pageId, pageId));
+		await client.transaction(
+			async (tx) => {
+				const page = await tx
+					.select()
+					.from(pendingPagesTable)
+					.where(eq(pendingPagesTable.pageId, pageId))
+					.then((res) => res[0]);
+				if (!page) throw new Error("Page not found");
+				await tx
+					.update(pendingPagesTable)
+					.set({
+						files: page.files.concat([file]),
+					})
+					.where(eq(pendingPagesTable.pageId, pageId));
+			},
+			{
+				behavior: "immediate",
+			},
+		);
 	},
 	async close() {
 		await conn.close();

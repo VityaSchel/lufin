@@ -1,0 +1,14 @@
+services:
+  test:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - lufintest
+
+networks:
+  lufintest:
+    driver: bridge

@@ -17,6 +17,7 @@ COPY . .
 FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/e2e.test.ts .
+COPY --from=prerelease /usr/src/app/db.ts .
 COPY --from=prerelease /usr/src/app/utils.ts .
 COPY --from=prerelease /usr/src/app/tsconfig.json .
 COPY --from=prerelease /usr/src/app/package.json .

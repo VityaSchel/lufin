@@ -2,17 +2,20 @@ import { afterAll, beforeAll, describe, test } from "bun:test";
 import { expect } from "earl";
 import { nanoidRegex } from "./utils";
 import { S3Client } from "bun";
-import { Client } from "pg";
 import z from "zod";
+import { getDb } from "./db";
 
-const client = new Client({
-	connectionString: "postgresql://test:test@db:5432/lufin",
-});
+const { db, dbName, open, close } = getDb();
 
 beforeAll(async () => {
-	await client.connect();
+	await open();
 });
 
+afterAll(async () => {
+	await close();
+});
+
+const storageType = "s3";
 const s3 = new S3Client({
 	accessKeyId: "test",
 	secretAccessKey: "test1234",
@@ -22,7 +25,7 @@ const s3 = new S3Client({
 
 console.log("Starting tests...");
 
-describe("Lufin with PostgreSQL", async () => {
+describe(`Lufin with ${dbName}+${storageType}`, async () => {
 	await test("should return correct limits", async () => {
 		const req = await fetch("http://backend:3000/limits");
 		expect(req.status).toEqual(200);
@@ -209,19 +212,17 @@ describe("Lufin with PostgreSQL", async () => {
 	});
 
 	await test("should save file to the pending_pages table", async () => {
-		const result = await client.query(
-			"SELECT 1 FROM pending_pages WHERE tmp_upload_id = $1",
-			[page.tmpUploadId]
-		);
-		expect(result.rowCount).toEqual(1);
+		const result = await db.getMatchesCount("pending_pages", {
+			tmp_upload_id: page.tmpUploadId,
+		});
+		expect(result).toEqual(1);
 	});
 
 	await test("should not have saved to the pages table", async () => {
-		const result = await client.query(
-			"SELECT 1 FROM pages WHERE page_id = $1",
-			[page.links.download]
-		);
-		expect(result.rowCount).toEqual(0);
+		const result = await db.getMatchesCount("pages", {
+			page_id: page.links.download,
+		});
+		expect(result).toEqual(0);
 	});
 
 	await test("should throw on get page request while it's pending", async () => {
@@ -260,16 +261,15 @@ describe("Lufin with PostgreSQL", async () => {
 	}, 500);
 
 	await test("should delete from pending_pages table", async () => {
-		const result = await client.query("SELECT 1 FROM pending_pages");
-		expect(result.rowCount).toEqual(0);
+		const result = await db.getMatchesCount("pending_pages");
+		expect(result).toEqual(0);
 	});
 
 	await test("should save to pages table", async () => {
-		const result = await client.query(
-			"SELECT 1 FROM pages WHERE page_id = $1",
-			[page.links.download]
-		);
-		expect(result.rowCount).toEqual(1);
+		const result = await db.getMatchesCount("pages", {
+			page_id: page.links.download,
+		});
+		expect(result).toEqual(1);
 	});
 
 	await test("should throw on invalid page", async () => {
@@ -332,16 +332,12 @@ describe("Lufin with PostgreSQL", async () => {
 	});
 
 	await test("should delete page from db", async () => {
-		const result = await client.query("SELECT 1 FROM pages");
-		expect(result.rowCount).toEqual(0);
+		const result = await db.getMatchesCount("pages");
+		expect(result).toEqual(0);
 	});
 
 	await test("should have empty storage after deletion", async () => {
 		const files = await s3.list();
 		expect(files.keyCount).toEqual(0);
 	});
-});
-
-afterAll(async () => {
-	await client.end();
 });

@@ -1,22 +1,20 @@
 import { defineConfig } from "drizzle-kit";
 
 const POSTGRESQL_DATABASE_URL = process.env.POSTGRESQL_CONNECTION_STRING;
-const SQLITE_DB_FILE_NAME = process.env.SQLITE_DB_FILE_NAME;
+const SQLITE_DB_PATH = process.env.SQLITE_DB_PATH;
 
-if (POSTGRESQL_DATABASE_URL && SQLITE_DB_FILE_NAME) {
+if (POSTGRESQL_DATABASE_URL && SQLITE_DB_PATH) {
 	throw new Error(
-		"Please only set either POSTGRESQL_CONNECTION_STRING or SQLITE_DB_FILE_NAME",
+		"Please only set either POSTGRESQL_CONNECTION_STRING or SQLITE_DB_PATH",
 	);
 }
 
 let db: { type: "postgresql" | "sqlite"; url: string };
 if (POSTGRESQL_DATABASE_URL)
 	db = { type: "postgresql", url: POSTGRESQL_DATABASE_URL };
-else if (SQLITE_DB_FILE_NAME) db = { type: "sqlite", url: SQLITE_DB_FILE_NAME };
+else if (SQLITE_DB_PATH) db = { type: "sqlite", url: SQLITE_DB_PATH };
 else
-	throw new Error(
-		"Please set POSTGRESQL_CONNECTION_STRING or SQLITE_DB_FILE_NAME",
-	);
+	throw new Error("Please set POSTGRESQL_CONNECTION_STRING or SQLITE_DB_PATH");
 
 export default defineConfig({
 	dialect: db.type,
