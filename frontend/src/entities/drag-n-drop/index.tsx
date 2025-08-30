@@ -11,29 +11,20 @@ import { type FilesUploaderFormValues } from '$shared/model/upload-file'
 import { m } from '$m'
 
 export function DragNDrop({
-  onChange,
+  onAddDroppedItems,
   disabled
 }: {
-  onChange: (value: File[] | null) => any
+  onAddDroppedItems: (files: File[]) => any
   disabled: boolean
 }) {
   const { values } = useFormikContext<FilesUploaderFormValues>()
   const fileInputRef = React.useRef<HTMLInputElement>(null)
 
-  const handleChange = (files: FileList | null) => {
-    if (files && !disabled) {
-      onChange(Array.from(files))
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''
-      }
-    }
-  }
-
   const [{ canDrop, isOver }, fileDropZoneRef] = useDrop(
     () => ({
       accept: [NativeTypes.FILE],
       drop(item: { files: FileList }) {
-        handleChange(item.files)
+        onAddDroppedItems(Array.from(item.files))
       },
       canDrop() {
         return !disabled
@@ -75,7 +66,12 @@ export function DragNDrop({
         type="file"
         name="file"
         multiple
-        onChange={(e) => handleChange(e.target.files)}
+        onChange={(e) => {
+          if (e.target.files) {
+            onAddDroppedItems(Array.from(e.target.files))
+          }
+          e.target.value = ''
+        }}
         style={{ display: 'none' }}
         ref={fileInputRef}
       />

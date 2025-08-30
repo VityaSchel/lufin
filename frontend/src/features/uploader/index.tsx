@@ -2,20 +2,18 @@ import React from 'react'
 import styles from './styles.module.scss'
 import { type FormikProps, useFormikContext } from 'formik'
 import mime from 'mime'
-import ImageCompressor from 'compressorjs'
 import { Checkbox } from '$shared/ui/components/checkbox'
-import { TextField } from '$shared/ui/components/text-field'
 import { DragNDrop } from '$entities/drag-n-drop'
 import { PasswordInput } from '$entities/password-input'
-import { Collapse, FormHelperText } from '@mui/material'
-import { isThisAFile } from '$shared/utils/is-this-file'
-import { stripMetadata } from '$shared/utils/strip-metadata'
-import { getRandomFileName, normalizeFileFilename } from '$shared/utils/normalize-file-name'
+import { FormHelperText } from '@mui/material'
+import { removeExifFromJpeg } from '$shared/processing/strip-metadata'
+import { nanoid } from 'nanoid'
 import { UploadableFilesList } from '$features/uploadable-files-list'
 import { SubmitFilesButton } from '$features/submit-files-button'
 import { m } from '$m'
 import { getFileType } from '$shared/utils/get-file-type'
 import type { FilesUploaderFormValues, UploadableFile } from '$shared/model/upload-file'
+import { compressImage } from '$shared/processing/compress'
 
 export function FilesUploader({
   onSubmit,
@@ -27,81 +25,62 @@ export function FilesUploader({
   const { values, errors, touched, setFieldValue, isSubmitting } =
     useFormikContext<FilesUploaderFormValues>()
 
+  const onAddDroppedItems = async (items: File[]) => {
+    const files = items.filter((f) => f.type || f.size % 4096 !== 0)
+
+    const newFiles: UploadableFile[] = []
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i]
+      file = new File([file], file.name.normalize(), { type: file.type })
+      if (file.type === 'image/jpeg') {
+        try {
+          const blob = await removeExifFromJpeg(file)
+          file = new File([blob], file.name, { type: file.type })
+        } catch (e) {
+          console.error('Error while stripping off metadata', file, e)
+        }
+      }
+      const initialName = file.name
+      const extension = file.name.includes('.')
+        ? file.name.split('.').at(-1)
+        : mime.getExtension(file.type)
+      const newName = nanoid(16) + (extension ? `.${extension}` : '')
+      const uploadableFile: UploadableFile = {
+        id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
+        blob: file,
+        initialName,
+        name: newName,
+        type: file.type
+      }
+      if (
+        getFileType(file.type, file.name) === 'image' &&
+        file.type !== 'image/gif' &&
+        file.type !== 'image/webp'
+      ) {
+        const compressed = await compressImage(file)
+        if (compressed !== null) {
+          uploadableFile.altBlob = file
+          uploadableFile.blob = compressed
+          uploadableFile.isCompressedVersion = true
+        } else {
+          // uploadableFile.altBlob = file
+          // uploadableFile.isCompressedVersion = false
+        }
+      }
+      newFiles.push(uploadableFile)
+    }
+
+    const existingFiles = formikRef.current.values['files'] || []
+    setFieldValue('files', [...existingFiles, ...newFiles])
+  }
+
   return (
     <form onSubmit={onSubmit} className={styles.uploader}>
       <div className="flex flex-col top-[98px] md:sticky gap-4 flex-1 h-[calc(100vh-188px)]">
         <DragNDrop
-          onChange={async (newEntries) => {
-            if (newEntries && !isSubmitting) {
-              const newFiles: File[] = []
-              for (const file of newEntries) {
-                if (await isThisAFile(file)) {
-                  newFiles.push(file)
-                }
-              }
-              if (newFiles.length === 0) return
-
-              const metadataFreeNewFiles = await stripMetadata(newFiles)
-              const normalizedFilenamesFiles = metadataFreeNewFiles.map((f) =>
-                normalizeFileFilename(f)
-              )
-              const randomizedFilenamesFiles = normalizedFilenamesFiles.map((f, i) => {
-                const extension = f.name.includes('.')
-                  ? f.name.split('.').at(-1)
-                  : mime.getExtension(f.type)
-                const name = getRandomFileName(extension || undefined)
-                return {
-                  id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
-                  blob: f,
-                  initialName: normalizedFilenamesFiles[i].name,
-                  name,
-                  type: f.type
-                } satisfies UploadableFile
-              })
-              randomizedFilenamesFiles
-                .filter(
-                  (f) =>
-                    getFileType(f.type, f.name) === 'image' &&
-                    f.type !== 'image/gif' &&
-                    f.type !== 'image/webp'
-                )
-                .forEach((img) => {
-                  new ImageCompressor(img.blob, {
-                    quality: 0.5,
-                    success: (file) => {
-                      const newFiles = structuredClone(formikRef.current.values['files'])
-                      if (newFiles) {
-                        const fileObject = newFiles.find((f) => f.id === img.id)
-                        if (fileObject && fileObject.blob.size > file.size) {
-                          fileObject.altBlob = fileObject.blob
-                          fileObject.blob = file
-                          fileObject.isCompressedVersion = true
-                        }
-                      }
-                      setFieldValue('files', newFiles)
-                    },
-                    error: (err) => {
-                      console.error('Image compression failed:', err)
-                      const newFiles = structuredClone(formikRef.current.values['files'])
-                      if (newFiles) {
-                        const fileObject = newFiles.find((f) => f.id === img.id)
-                        if (fileObject) {
-                          fileObject.altBlob = fileObject.blob
-                          fileObject.isCompressedVersion = false
-                        }
-                      }
-                      setFieldValue('files', newFiles)
-                    }
-                  })
-                })
-              setFieldValue(
-                'files',
-                (formikRef.current.values['files'] ?? []).concat(...randomizedFilenamesFiles)
-              )
-            }
-          }}
-          key={values.files?.length}
+          onAddDroppedItems={onAddDroppedItems}
           disabled={isSubmitting}
+          key={values.files?.length}
         />
         <div className="hidden md:flex">
           <SubmitFilesButton />

@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import { normalizeFilename } from '$shared/utils/normalize-file-name'
 
 export function RenamableTitle({
   value,
@@ -44,10 +43,10 @@ export function RenamableTitle({
   }, [hiddenSpan.current])
 
   const handleBlur = () => {
-    const fn = inputValue === '' ? '' : normalizeFilename(inputValue)
-    setInputValue(fn)
-    if (fn !== value) {
-      onChange(fn)
+    const normalized = inputValue.normalize()
+    setInputValue(normalized)
+    if (normalized !== value) {
+      onChange(normalized)
     }
   }
 

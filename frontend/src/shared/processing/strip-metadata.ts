@@ -1,31 +1,7 @@
-export async function stripMetadata(files: File[]): Promise<File[]> {
-  const processedFiles: File[] = []
-  for (const file of files) {
-    try {
-      if (file.type === 'image/jpeg') {
-        const blob = await removeExifFromJpeg(file)
-        processedFiles.push(new File([blob], file.name, { type: file.type }))
-      } else {
-        processedFiles.push(file)
-      }
-    } catch (e) {
-      console.error('Error while stripping off metadata', file, e)
-      processedFiles.push(file)
-    }
-  }
-  return processedFiles
-}
-
 // CREDIT: https://github.com/mshibl/Exif-Stripper/blob/master/exif-stripper.js
 // Open Source License
-async function removeExifFromJpeg(imageFile: File) {
-  const fileReader = new FileReader()
-  const promise = new Promise<ArrayBuffer>((resolve, reject) => {
-    fileReader.addEventListener('loadend', (e) => resolve(e.target?.result as ArrayBuffer))
-    fileReader.addEventListener('error', (e) => reject(e.target?.error))
-  })
-  fileReader.readAsArrayBuffer(imageFile)
-  const imageArrayBuffer = await promise
+export async function removeExifFromJpeg(imageFile: File) {
+  const imageArrayBuffer = await imageFile.arrayBuffer()
 
   const dv = new DataView(imageArrayBuffer)
 
