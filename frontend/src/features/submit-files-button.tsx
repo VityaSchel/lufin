@@ -10,7 +10,7 @@ export function SubmitFilesButton() {
   const [fileSizeLimit, setFileSizeLimit] = React.useState<undefined | number>()
 
   const sumSizeBytes = React.useMemo(
-    () => (values.files ? values.files.reduce((prev, cur) => prev + cur.blob.size, 0) : 0),
+    () => (values.files ? values.files.reduce((prev, cur) => prev + cur.content.size, 0) : 0),
     [values.files]
   )
 

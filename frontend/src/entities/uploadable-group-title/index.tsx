@@ -44,7 +44,9 @@ export function UploadableGroupTitle({ disabled }: { disabled: boolean }) {
             }
             subtitle={
               values.files?.length
-                ? byteSize(values.files.reduce((prev, cur) => prev + cur.blob.size, 0)).toString()
+                ? byteSize(
+                    values.files.reduce((prev, cur) => prev + cur.content.size, 0)
+                  ).toString()
                 : m.uploadForm_archiveEmpty()
             }
           />

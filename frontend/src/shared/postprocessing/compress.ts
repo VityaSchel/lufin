@@ -8,9 +8,9 @@ function isCanvasExtractionAllowed() {
     .data.every((v) => v === 0)
 }
 
-export async function compressImage(input: File) {
+export async function compressImage(input: Blob) {
   try {
-    const output = await new Promise<File | Blob>((resolve, reject) => {
+    const output = await new Promise<Blob>((resolve, reject) => {
       if (!isCanvasExtractionAllowed()) {
         return reject(new Error('Canvas extraction is blocked'))
       }

@@ -16,10 +16,15 @@ export type FilesUploaderFormValues = {
 
 export type UploadableFile = {
   id: number
-  blob: Blob
   type: string
-  initialName: string
   name: string
-  altBlob?: Blob
-  isCompressedVersion?: boolean
+  fsOriginalName: string
+  content: Blob
+  processing?: true
+  compressed?: CompressedUploadableFile
+}
+
+export type CompressedUploadableFile = {
+  content: Blob
+  chosen: boolean
 }

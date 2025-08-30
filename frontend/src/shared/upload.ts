@@ -25,13 +25,15 @@ export function onSubmitForm({
     const validatedValues = values as ValidatedValues
 
     let srcFiles = validatedValues.files.map(
-      (f) => new File([f.blob], f.name || f.initialName, { type: f.type })
+      (f) => new File([f.content], f.name || f.fsOriginalName, { type: f.type })
     )
     if (validatedValues.convertToZip) {
       try {
         const JSZip = await import('jszip').then((m) => m.default)
         const zip = new JSZip()
-        validatedValues.files.forEach((file) => zip.file(file.name || file.initialName, file.blob))
+        validatedValues.files.forEach((file) =>
+          zip.file(file.name || file.fsOriginalName, file.content)
+        )
         const blobZip = await zip.generateAsync({ type: 'blob' })
         srcFiles = [
           new File(

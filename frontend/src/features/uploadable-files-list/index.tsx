@@ -2,10 +2,7 @@ import React from 'react'
 import styles from './styles.module.scss'
 import cx from 'classnames'
 import { useFormikContext } from 'formik'
-import type {
-  FilesUploaderFormValues,
-  UploadableFile as UploadableFileType
-} from '$shared/model/upload-file'
+import type { FilesUploaderFormValues } from '$shared/model/upload-file'
 import { UploadableGroupTitle } from '$entities/uploadable-group-title'
 import { UploadableFile } from '$entities/uploadable-file'
 import { UploadFilesContext } from '$shared/context/upload-context'
@@ -20,7 +17,7 @@ export function UploadableFilesList() {
   const [fileSizeLimit, setFileSizeLimit] = React.useState<undefined | number>()
 
   const sumSizeBytes = React.useMemo(
-    () => (values.files ? values.files.reduce((prev, cur) => prev + cur.blob.size, 0) : 0),
+    () => (values.files ? values.files.reduce((prev, cur) => prev + cur.content.size, 0) : 0),
     [values.files]
   )
 
@@ -35,12 +32,6 @@ export function UploadableFilesList() {
   const handleRename = (i: number, newName: string) => {
     const files = structuredClone(values.files)
     if (files !== null) files[i].name = newName
-    setFieldValue('files', files)
-  }
-
-  const handleSetFile = (i: number, newFile: UploadableFileType) => {
-    const files = structuredClone(values.files)
-    if (files !== null) files[i] = newFile
     setFieldValue('files', files)
   }
 
@@ -65,7 +56,14 @@ export function UploadableFilesList() {
             <div className={styles.files}>
               {Array.from(values.files).map((file, i) => (
                 <UploadableFile
-                  setFile={(file) => handleSetFile(i, file)}
+                  setIsChosenCompressedVersion={({ fileId, isChosen }) => {
+                    const files = structuredClone(values.files)
+                    const file = files?.find((f) => f.id === fileId)
+                    if (file && file.compressed) {
+                      file.compressed.chosen = isChosen
+                    }
+                    setFieldValue('files', files)
+                  }}
                   onRename={(newName: string) => handleRename(i, newName)}
                   onRemove={() => handleRemove(i)}
                   file={file}

@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import cx from 'classnames'
-import { CircularProgress, Collapse, Fade, IconButton, Radio, useMediaQuery } from '@mui/material'
+import { Collapse, Fade, IconButton, Radio, Skeleton, useMediaQuery } from '@mui/material'
 import { HorizontalCard } from '$shared/ui/components/horizontal-card'
 import byteSize from 'byte-size'
 import MdClose from '$assets/icons/close.svg?react'
@@ -13,20 +13,26 @@ import { getSvgIconByFileType } from '$shared/utils/get-svg-icon-by-filetype'
 import { RenamableTitle } from '$entities/uploadable-file/renamable-title'
 import { Progress } from '$shared/ui/progress'
 import filesize from 'byte-size'
-import type { UploadableFile as UploadableFileType } from '$shared/model/upload-file'
+import type {
+  CompressedUploadableFile,
+  UploadableFile as UploadableFileType
+} from '$shared/model/upload-file'
 import { m } from '$m'
 import { getLocale } from '$paraglide/runtime'
 
 export function UploadableFile({
   file,
-  setFile,
+  setIsChosenCompressedVersion,
   onRemove,
   onRename,
   disableEditing,
   progress
 }: {
   file: UploadableFileType
-  setFile: (file: UploadableFileType) => void
+  setIsChosenCompressedVersion: (args: {
+    fileId: UploadableFileType['id']
+    isChosen: boolean
+  }) => void
   onRename: (newFilename: string) => any
   onRemove: () => any
   disableEditing: boolean
@@ -44,6 +50,13 @@ export function UploadableFile({
       <Fade in={true}>
         <Collapse orientation="vertical" in={true}>
           <div className={cx(styles.outlined, styles.file)}>
+            {file.processing && (
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                className="top-0 left-0 !w-full !h-full !absolute"
+              />
+            )}
             <div
               className={styles.mobileTop}
               onClick={isMobile ? () => setPreviewOpen(!previewOpen) : undefined}
@@ -55,11 +68,13 @@ export function UploadableFile({
                     <RenamableTitle
                       value={file.name}
                       onChange={onRename}
-                      placeholder={file.initialName}
+                      placeholder={file.fsOriginalName}
                       readonly={disableEditing}
                     />
                   }
-                  subtitle={byteSize(file.blob.size).toString()}
+                  subtitle={byteSize(
+                    (file.compressed?.chosen ? file.compressed.content : file.content).size
+                  ).toString()}
                 />
                 <div className={styles.buttons}>
                   {previewAvailable && !isMobile && (
@@ -101,11 +116,16 @@ export function UploadableFile({
                     {fileType === 'image' &&
                     file.type !== 'image/gif' &&
                     file.type !== 'image/webp' &&
-                    file.altBlob ? (
-                      <UploadableImageCompressedPreview file={file} setFile={setFile} />
+                    file.compressed ? (
+                      <UploadableImageCompressedPreview
+                        file={{ ...file, compressed: file.compressed }}
+                        setIsChosenCompressedVersion={(isChosen) => {
+                          setIsChosenCompressedVersion({ fileId: file.id, isChosen })
+                        }}
+                      />
                     ) : (
                       <FileContentPreview
-                        file={new File([file.blob], file.name, { type: file.type })}
+                        file={new File([file.content], file.name, { type: file.type })}
                       />
                     )}
                   </div>
@@ -122,58 +142,32 @@ export function UploadableFile({
 
 function UploadableImageCompressedPreview({
   file,
-  setFile
+  setIsChosenCompressedVersion
 }: {
-  file: UploadableFileType
-  setFile: (file: UploadableFileType) => void
+  file: UploadableFileType & { compressed: CompressedUploadableFile }
+  setIsChosenCompressedVersion: (isChosen: boolean) => void
 }) {
-  const originalUrl = React.useMemo(
-    () => URL.createObjectURL(file.isCompressedVersion && file.altBlob ? file.altBlob : file.blob),
-    [file]
+  const originalUrl = React.useMemo(() => URL.createObjectURL(file.content), [file.content])
+  const compressedUrl = React.useMemo(
+    () => URL.createObjectURL(file.compressed.content),
+    [file.compressed.content]
   )
-  const compressedUrl = React.useMemo(() => {
-    if (file.isCompressedVersion) {
-      return URL.createObjectURL(file.blob)
-    } else if (file.altBlob) {
-      return URL.createObjectURL(file.altBlob)
-    } else {
-      return null
-    }
-  }, [file])
-  const compressedSize = React.useMemo(
-    () => (file.isCompressedVersion ? file.blob.size : (file.altBlob?.size ?? null)),
-    [file]
-  )
-  const originalSize = React.useMemo(
-    () => (file.isCompressedVersion ? file.altBlob?.size : file.blob.size),
-    [file]
-  )
-
-  const setIsUsingCompressed = (isUsing: boolean) => {
-    if (isUsing !== file.isCompressedVersion) {
-      const newFile = structuredClone(file)
-      newFile.isCompressedVersion = isUsing
-      if (file.altBlob) {
-        newFile.blob = file.altBlob
-        newFile.altBlob = file.blob
-      }
-      setFile(newFile)
-    }
-  }
+  const originalSize = React.useMemo(() => file.content.size, [file])
+  const compressedSize = React.useMemo(() => file.compressed.content.size, [file])
 
   return (
     <div className="w-full h-auto flex flex-col gap-4">
       <div className="h-full flex flex-col flex-1 items-center justify-center gap-2 relative">
         <div className="absolute top-0 left-0">
           <Radio
-            checked={!file.isCompressedVersion}
-            onChange={(_, checked) => checked && setIsUsingCompressed(false)}
+            checked={!file.compressed.chosen}
+            onChange={(_, checked) => checked && setIsChosenCompressedVersion(false)}
           />
         </div>
         <button
           type="button"
           className="cursor-pointer max-h-[300px]"
-          onClick={() => setIsUsingCompressed(false)}
+          onClick={() => setIsChosenCompressedVersion(false)}
         >
           <img src={originalUrl} className="min-h-0 w-full object-contain max-h-[300px]" />
         </button>
@@ -181,38 +175,28 @@ function UploadableImageCompressedPreview({
           {originalSize !== undefined && filesize(originalSize, { locale: getLocale() }).toString()}
         </span>
       </div>
-      {compressedUrl !== null && compressedSize !== null ? (
-        <div className="h-full flex flex-col flex-1 items-center justify-center gap-2 relative">
-          <div className="absolute top-0 left-0">
-            <Radio
-              checked={file.isCompressedVersion}
-              onChange={(_, checked) => checked && setIsUsingCompressed(true)}
-            />
-          </div>
-          <button
-            type="button"
-            className="cursor-pointer max-h-[300px]"
-            onClick={() => setIsUsingCompressed(true)}
-          >
-            <img src={compressedUrl} className="min-h-0 w-full object-contain max-h-[300px]" />
-          </button>
-          <span className="shrink-0 text-muted">
-            {filesize(compressedSize, { locale: getLocale() }).toString()} (-
-            {(
-              (((originalSize as number) - compressedSize) / (originalSize as number)) *
-              100
-            ).toFixed(2)}
-            %)
-          </span>
+      <div className="h-full flex flex-col flex-1 items-center justify-center gap-2 relative">
+        <div className="absolute top-0 left-0">
+          <Radio
+            checked={file.compressed.chosen}
+            onChange={(_, checked) => checked && setIsChosenCompressedVersion(true)}
+          />
         </div>
-      ) : (
-        <div className="h-full flex-1 flex flex-col items-center justify-center gap-2">
-          <div className="flex items-center justify-center flex-1 w-full aspect-square h-auto bg-background-darken">
-            <CircularProgress />
-          </div>
-          <span className="text-muted">Сжатие изображения...</span>
-        </div>
-      )}
+        <button
+          type="button"
+          className="cursor-pointer max-h-[300px]"
+          onClick={() => setIsChosenCompressedVersion(true)}
+        >
+          <img src={compressedUrl} className="min-h-0 w-full object-contain max-h-[300px]" />
+        </button>
+        <span className="shrink-0 text-muted">
+          {filesize(compressedSize, { locale: getLocale() }).toString()} (-
+          {((((originalSize as number) - compressedSize) / (originalSize as number)) * 100).toFixed(
+            2
+          )}
+          %)
+        </span>
+      </div>
     </div>
   )
 }

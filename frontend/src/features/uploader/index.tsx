@@ -6,14 +6,14 @@ import { Checkbox } from '$shared/ui/components/checkbox'
 import { DragNDrop } from '$entities/drag-n-drop'
 import { PasswordInput } from '$entities/password-input'
 import { FormHelperText } from '@mui/material'
-import { removeExifFromJpeg } from '$shared/processing/strip-metadata'
+import { removeExifFromJpeg } from '$shared/postprocessing/exif'
 import { nanoid } from 'nanoid'
 import { UploadableFilesList } from '$features/uploadable-files-list'
 import { SubmitFilesButton } from '$features/submit-files-button'
 import { m } from '$m'
 import { getFileType } from '$shared/utils/get-file-type'
 import type { FilesUploaderFormValues, UploadableFile } from '$shared/model/upload-file'
-import { compressImage } from '$shared/processing/compress'
+import { compressImage } from '$shared/postprocessing/compress'
 
 export function FilesUploader({
   onSubmit,
@@ -25,21 +25,24 @@ export function FilesUploader({
   const { values, errors, touched, setFieldValue, isSubmitting } =
     useFormikContext<FilesUploaderFormValues>()
 
+  type PostProcessingStep = {
+    step: 'exif' | 'compress'
+    process: (file: Blob) => Promise<Blob | null>
+  }
+  type PostProcessFileConfig = {
+    fileId: number
+    steps: PostProcessingStep[]
+  }
+
   const onAddDroppedItems = async (items: File[]) => {
     const files = items.filter((f) => f.type || f.size % 4096 !== 0)
-
+    const postProcessingPromises: PostProcessFileConfig[] = []
     const newFiles: UploadableFile[] = []
     for (let i = 0; i < files.length; i++) {
+      const postProcessingSteps: PostProcessingStep[] = []
+
       let file = files[i]
       file = new File([file], file.name.normalize(), { type: file.type })
-      if (file.type === 'image/jpeg') {
-        try {
-          const blob = await removeExifFromJpeg(file)
-          file = new File([blob], file.name, { type: file.type })
-        } catch (e) {
-          console.error('Error while stripping off metadata', file, e)
-        }
-      }
       const initialName = file.name
       const extension = file.name.includes('.')
         ? file.name.split('.').at(-1)
@@ -47,31 +50,82 @@ export function FilesUploader({
       const newName = nanoid(16) + (extension ? `.${extension}` : '')
       const uploadableFile: UploadableFile = {
         id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
-        blob: file,
-        initialName,
+        content: file,
+        fsOriginalName: initialName,
         name: newName,
         type: file.type
+      }
+      if (file.type === 'image/jpeg') {
+        postProcessingSteps.push({
+          step: 'exif',
+          process: (file) =>
+            removeExifFromJpeg(file).then((blob) => blob && new Blob([blob], { type: file.type }))
+        })
       }
       if (
         getFileType(file.type, file.name) === 'image' &&
         file.type !== 'image/gif' &&
         file.type !== 'image/webp'
       ) {
-        const compressed = await compressImage(file)
-        if (compressed !== null) {
-          uploadableFile.altBlob = file
-          uploadableFile.blob = compressed
-          uploadableFile.isCompressedVersion = true
-        } else {
-          // uploadableFile.altBlob = file
-          // uploadableFile.isCompressedVersion = false
-        }
+        postProcessingSteps.push({ step: 'compress', process: (file) => compressImage(file) })
       }
+      if (postProcessingSteps.length > 0) {
+        uploadableFile.processing = true
+      }
+
+      postProcessingPromises.push({
+        fileId: uploadableFile.id,
+        steps: postProcessingSteps
+      })
       newFiles.push(uploadableFile)
     }
 
     const existingFiles = formikRef.current.values['files'] || []
     setFieldValue('files', [...existingFiles, ...newFiles])
+
+    await new Promise((r) => setTimeout(r, 0))
+    postProcessFiles(postProcessingPromises)
+  }
+
+  async function postProcessFiles(postProcessingFiles: PostProcessFileConfig[]) {
+    async function processFile({ fileId, steps }: PostProcessFileConfig) {
+      const files = formikRef.current.values['files'] || []
+      const file = structuredClone(files.find((f) => f.id === fileId))
+      if (!file) return null
+      let content = file.content
+      for (const { step, process } of steps) {
+        const newContent = await process(content)
+        if (newContent) {
+          if (step === 'compress') {
+            file.compressed = {
+              content: newContent,
+              chosen: true
+            }
+          } else {
+            content = newContent
+          }
+        }
+      }
+      file.content = content
+      file.processing = undefined
+      return file
+    }
+
+    const promises: { fileId: number; promise: Promise<UploadableFile | null> }[] = []
+    for (const file of postProcessingFiles) {
+      promises.push({ fileId: file.fileId, promise: processFile(file) })
+    }
+
+    for (const { fileId, promise } of promises) {
+      const newUploadableFile = await promise
+      if (!newUploadableFile) continue
+      const files = structuredClone(formikRef.current.values['files'] || [])
+      const fileIndex = files.findIndex((f) => f.id === fileId)
+      if (fileIndex === -1) continue
+      files[fileIndex] = newUploadableFile
+      formikRef.current.values['files'] = files
+      await setFieldValue('files', files)
+    }
   }
 
   return (
