@@ -1,24 +1,17 @@
 FROM oven/bun:1 AS base
-WORKDIR /usr/src/app
+WORKDIR /usr/src
 
 FROM base AS install
-RUN mkdir -p /temp/dev
-COPY package.json bun.lock /temp/dev/
-RUN cd /temp/dev && bun install --frozen-lockfile
-
-RUN mkdir -p /temp/prod
-COPY package.json bun.lock /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile --production
-
-FROM base AS prerelease
-COPY --from=install /temp/dev/node_modules node_modules
-COPY . .
+COPY lib/package.json lib/bun.lock lib/tsconfig.json lib/src lib/
+COPY test/package.json test/bun.lock test/tsconfig.json test/
+RUN cd lib && bun install --frozen-lockfile --production
+RUN cd test && bun install --frozen-lockfile --production
 
 FROM base AS release
-COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/src .
-COPY --from=prerelease /usr/src/app/tsconfig.json .
-COPY --from=prerelease /usr/src/app/package.json .
+COPY test/src test/package.json test/tsconfig.json /usr/src/app/
+COPY --from=install /usr/src/test/node_modules /usr/src/app/node_modules
+COPY --from=install /usr/src/lib /usr/src/lib
 
+WORKDIR /usr/src/app
 USER bun
 ENTRYPOINT [ "bun", "test", "--bail", "--runInBand" ]

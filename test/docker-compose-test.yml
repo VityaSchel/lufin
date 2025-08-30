@@ -1,8 +1,8 @@
 services:
   test:
     build:
-      context: ./
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: test/Dockerfile
     depends_on:
       backend:
         condition: service_healthy
