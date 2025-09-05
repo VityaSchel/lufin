@@ -46,7 +46,7 @@ Demo: [lufin.hloth.dev](https://lufin.hloth.dev)
   - [Screenshotter browser extension](#screenshotter-browser-extension)
   - [Installation](#installation)
   - [Troubleshoot](#troubleshoot)
-  - [Nginx example configuration](#nginx-example-configuration)
+  - [Web server example configuration](#web-server-example-configuration)
   - [For advanced users](#for-advanced-users)
     - [(Optional) compile backend to a binary](#optional-compile-backend-to-a-binary)
   - [Security](#security)
@@ -75,8 +75,7 @@ Requirements:
 
 - A domain name(s) and completed DNS setup
 - A server with an IP address that is publicly available in the internet
-- A webserver that is capable of serving static HTML, CSS and JS files, such as Nginx, running on your server
-- A reverse proxy service, such as Nginx, running on your server
+- A webserver running on your machine that is capable of 1. serving static files 2. reverse proxying requests to backend; I recommend [Caddy](https://caddyserver.com/) but [Nginx](https://nginx.org/) is fine too
 - An SSL certificate such as from Let’s Encrypt or Cloudflare
 - [Bun.sh](https://bun.sh) installed. Node.js and deno are not supported.
 - A place where you’re going to store files (S3 or locally in your file system)
@@ -101,7 +100,7 @@ Step by step guide to install Lufin:
    - Optional: `VITE_CONTACT_EMAIL` — your email address displayed publicly for all users (e.g. `admin@example.org`)
 7. Run `bun run build` — this outputs a static frontend website files to the `frontend/dist` directory
    - You must to run `bun run build` command each time you edit the `frontend/.env` file
-   - Set up your web server to serve `dist` directory to users (see [nginx example configuration](#nginx-example-configuration) below)
+   - Set up your web server to serve `dist` directory to users (see [Web server example configuration](#web-server-example-configuration) below)
    - Do not serve the repository’s root
    - Do not serve the frontend directory
 8. Go back to the repository’s root and open `backend` directory
@@ -142,9 +141,9 @@ Step by step guide to install Lufin:
     - Backend must be running under the same user who created `backend/.env` file, this file contains sensetive values and should not be readable by other users
     - You should not run backend as the root user or as any other sudoer, create a separate linux user (e.g. `lufin`) and restrict its access to only lufin directory
     - You can use the `PORT` environment variable to set the backend API port
-20. Configure your reverse proxy by pointing url from `VITE_API_URL` (in `frontend/.env`) to the lufin backend (see [nginx example configuration](#nginx-example-configuration) below)
-    - The proxy must accept websockets connections (in nginx, add `Upgrade` and `Connection` headers)
-    - If you’re getting HTTP 413 errors, increase request size limit (in nginx, it’s 1 MB, can be configured via `client_max_body_size`)
+20. Configure your reverse proxy by pointing url from `VITE_API_URL` (in `frontend/.env`) to the lufin backend (see [WEb server example configuration](#web-server-example-configuration) below)
+    - The proxy must accept websockets connections (e.g. Caddy handles it automatically, but for nginx you must add `Upgrade` and `Connection` headers)
+    - If you’re getting HTTP 413 errors, increase request size limit (e.g Caddy does not set any limit by default, in nginx it’s 1 MB and can be configured via `client_max_body_size`)
 
 ## Troubleshoot
 
@@ -156,9 +155,16 @@ Step by step guide to install Lufin:
   - Websockets timeout — your server is uploading files to the S3 cloud so slow that you need to increase your reverse proxy connection idle timeout
 - Otherwise open an issue
 
-## Nginx example configuration
+## Web server example configuration
 
-I recommend using Nginx as a reverse proxy and a web server. See [contrib/nginx.conf](contrib/nginx.conf) for example on how to use Nginx with lufin.
+In order for lufin to work correctly, please ensure that your webserver+reverse proxy do the following:
+1. Statically serves /path/to/repository/frontend/dist files. Does not serve files in /path/to/repository, /path/to/repository/frontend or /path/to/repository/backend.
+2. Proxies requests for /api/ (or under a separate subdomain) to lufin backend port. Strip /api/ prefix if applicable i.e. https://lufin.example.org/api/foobar should be proxied to http://localhost:3000/foobar or https://api.lufin.example.org/foobar to http://localhost:3000/foobar (assuming backend is running on port 3000).
+
+Ensure your website is secured with a TLS certificate. Caddy handles it fully automatically. Nginx requires configuration. If you use Nginx I recommend certbot with Let’s Encrypt or delegate certificate management to Cloudflare.
+
+- See [contrib/lufin.caddy](contrib/lufin.caddy) for Caddy configuration
+- See [contrib/nginx.conf](contrib/nginx.conf) for Nginx configuration
 
 ## For advanced users
 
@@ -182,6 +188,8 @@ And then run `./server` instead of `bun start`
 
 Code handling AES-GCM encryption can be found in [lib](./lib/) directory. You can then refer to any calls to this library made through `import { ... } from 'lufin-lib'`, most notably [frontend/src/shared/upload.ts](./frontend/src/shared/upload.ts).
 
+After configuring HTTPS **and verifying it works** you should enable [HSTS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security) in your web server configuration.
+
 ## FAQ
 
 ### Motivation
@@ -194,7 +202,7 @@ Before publishing this project I rewrote the backend from Fastify to Elysia, mig
 
 ### Why no docker?
 
-There is nothing to dockerize. I could maybe put Bun, certbot and database together but IMO that really only makes it more complex. lmk in issues if you really want docker and I’ll do it.
+Working on it, see [#14](https://github.com/VityaSchel/lufin/issues/14)
 
 ### Why there are no compiled releases?
 

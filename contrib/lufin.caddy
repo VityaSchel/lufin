@@ -1,0 +1,16 @@
+# Change to your real domain
+lufin.mydomain.com {
+	# Assuming you host backend and frontend on the same domain
+	# and `VITE_API_URL` is https://lufin.mydomain.com/api
+	handle /api/* {
+		# and you run backend with PORT=3000
+		reverse_proxy :3000
+	}
+	handle {
+		# Change to the directory of repository/frontend/dist
+		root /var/www/lufin/frontend/dist
+		try_files {path} /index.html
+		file_server
+	}
+	# Caddy handles HTTPS and TLS certificates automatically 🥰
+}
