@@ -28,13 +28,6 @@ export function TextField({
   const [isFocused, setIsFocused] = React.useState(false)
   const inputRef = React.useRef<HTMLInputElement>(null)
 
-  // TODO: remove code below
-  // React.useEffect(() => {
-  //   if (disabled && inputRef.current && document.activeElement === inputRef.current) {
-  //     inputRef.current.focus()
-  //   }
-  // }, [disabled, inputRef])
-
   return (
     <div
       className={cx(

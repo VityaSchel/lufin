@@ -70,7 +70,6 @@ function Preview({
     return <PreviewText file={file} />
   }
 
-  // eslint-disable-next-line @next/next/no-img-element
   if (type === 'image') {
     return (
       <div className={styles.imagePreviewContainer}>
