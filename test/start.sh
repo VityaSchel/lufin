@@ -13,7 +13,7 @@ configs="$configs $backend_config"
 
 add_service_configs() {
   local service=$1
-  configs="$configs -f ../docker-compose.${service}.yml"
+  configs="$configs -f ../docker/docker-compose.${service}.yml"
   if [ "$test" = "test" ]; then
     configs="$configs -f ./docker-compose.override.${service}-test.yml"
     configs="$configs --env-file ./test.${service}.env"

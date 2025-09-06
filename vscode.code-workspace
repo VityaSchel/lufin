@@ -25,6 +25,10 @@
 			"path": "docs"
 		},
 		{
+			"name": "Docker",
+			"path": "docker"
+		},
+		{
 			"path": "."
 		}
 	]

@@ -67,7 +67,7 @@ This is the recommended way of installing lufin for contributors or people who a
     - Backend must be running under the same user who created `backend/.env` file, this file contains sensetive values and should not be readable by other users
     - You should not run backend as the root user or as any other sudoer, create a separate linux user (e.g. `lufin`) and restrict its access to only lufin directory
     - You can use the `PORT` environment variable to set the backend API port
-5.  Configure your reverse proxy by pointing url from `VITE_API_URL` (in `frontend/.env`) to the lufin backend (see [WEb server example configuration](#web-server-example-configuration) below)
+5.  Configure your reverse proxy by pointing url from `VITE_API_URL` (in `frontend/.env`) to the lufin backend (see [Web server example configuration](#web-serAver-example-configuration) below)
     - The proxy must accept websockets connections (e.g. Caddy handles it automatically, but for nginx you must add `Upgrade` and `Connection` headers)
     - If you're getting HTTP 413 errors, increase request size limit (e.g Caddy does not set any limit by default, in nginx it's 1 MB and can be configured via `client_max_body_size`)
 
