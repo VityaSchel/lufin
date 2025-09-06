@@ -1,5 +1,5 @@
 {
-  "name": "lufin-test-runner",
+  "name": "lufin-test-suite",
   "module": "index.ts",
   "devDependencies": {
     "@types/bun": "^1.2.21",

@@ -23,9 +23,10 @@ FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/src src
 COPY --from=prerelease /usr/src/app/drizzle drizzle
+COPY --from=prerelease /usr/src/app/drizzle.config.ts .
 COPY --from=prerelease /usr/src/app/tsconfig.json .
-COPY --from=prerelease /usr/src/app/data-retention.config.example.json data-retention.config.json
 COPY --from=prerelease /usr/src/app/package.json .
+COPY --from=prerelease /usr/src/app/data-retention.config.example.json data-retention.config.json
 
 USER bun
-ENTRYPOINT [ "bun", "start", "--port", "3000", "--host", "0.0.0.0" ]
+ENTRYPOINT [ "sh", "-c", "QUIET=1 bun db:migrate && bun start --port 3000 --host" ]

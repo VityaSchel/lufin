@@ -1,0 +1,33 @@
+services:
+  s3:
+    image: minio/minio
+    entrypoint: sh
+    command: -c 'mkdir -p /data/$$S3_BUCKET_NAME && /usr/bin/minio server /data'
+    environment:
+      - MINIO_ROOT_USER=${S3_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${S3_SECRET_ACCESS_KEY}
+    healthcheck:
+      test: timeout 5s bash -c ':> /dev/tcp/127.0.0.1/9000' || exit 1
+      interval: 5s
+      retries: 1
+      start_period: 5s
+      timeout: 5s
+    attach: false
+  backend:
+    environment:
+      - S3_ENDPOINT=http://s3:9000
+      - S3_ACCESS_KEY=${S3_ACCESS_KEY}
+      - S3_SECRET_ACCESS_KEY=${S3_SECRET_ACCESS_KEY}
+      - S3_BUCKET=${S3_BUCKET_NAME}
+    depends_on:
+      s3:
+        condition: service_started
+  # test:
+  #   environment:
+  #     - S3_ENDPOINT=http://s3:9000
+  #     - S3_ACCESS_KEY=${S3_ACCESS_KEY}
+  #     - S3_SECRET_ACCESS_KEY=${S3_SECRET_ACCESS_KEY}
+  #     - S3_BUCKET=${S3_BUCKET_NAME}
+  #   depends_on:
+  #     s3:
+  #       condition: service_started

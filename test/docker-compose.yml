@@ -1,0 +1,20 @@
+services:
+  backend:
+    networks:
+      - lufin_test
+  db:
+    networks:
+      - lufin_test
+  test:
+    build: .
+    environment:
+      - BACKEND_URI=${BACKEND_URI}
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - lufin_test
+
+networks:
+  lufin_test:
+    driver: bridge

@@ -22,3 +22,8 @@ Build Docker image: [./docker-build.sh](./docker-build.sh). Requires [lufin/lib]
 Run Docker image:
 
 `docker run -p 443:3000 -it lufin/frontend` (Assuming you want to bind frontend to port 443)
+
+Docker compose examples:
+
+- `PORT=3000 API_URL="http://localhost:4000" docker compose up`
+- `PORT=3000 API_URL="http://localhost:4000" PUBLIC_ADMIN_EMAIL="lufin@hloth.dev" docker compose up`

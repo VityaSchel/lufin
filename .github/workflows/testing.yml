@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Make start script executable
-        run: chmod +x test/start.sh
+        run: chmod +x test/start-all.sh && chmod +x test/start.sh
       - name: Run integration tests
         working-directory: test
-        run: ./start.sh
+        run: ./start-all.sh

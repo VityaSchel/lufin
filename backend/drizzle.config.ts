@@ -15,6 +15,9 @@ if (POSTGRESQL_DATABASE_URL) {
 } else if (SQLITE_DB_PATH) {
 	db = { type: "sqlite", url: SQLITE_DB_PATH };
 } else {
+	if (process.env.QUIET === "1") {
+		process.exit(0);
+	}
 	throw new Error("Please set POSTGRESQL_CONNECTION_STRING or SQLITE_DB_PATH");
 }
 

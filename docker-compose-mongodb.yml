@@ -1,0 +1,23 @@
+services:
+  db:
+    image: mongo:7-jammy
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGODB_DB_NAME}
+    healthcheck:
+      test: ["CMD-SHELL", 'mongosh --eval ''db.adminCommand("ping")''']
+      interval: 1s
+      timeout: 1s
+      retries: 20
+    attach: false
+  backend:
+    environment:
+      - MONGODB_CONNECTION_STRING=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@db:27017/${MONGODB_DB_NAME}?authSource=admin
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # test:
+  #   environment:
+  #     - MONGODB_CONNECTION_STRING=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@db:27017/${MONGODB_DB_NAME}?authSource=admin
