@@ -6,17 +6,17 @@ test=$3
 
 configs=""
 
-test_config="-f ./docker-compose.test.yml"
 backend_config="-f ../backend/docker-compose.backend.yml --env-file ./test.env"
+test_config="-f ./docker-compose.test.yml"
 
-configs+="$backend_config"
+configs="$configs $backend_config"
 
 add_service_configs() {
   local service=$1
-  configs+=" -f ../docker-compose.${service}.yml"
+  configs="$configs -f ../docker-compose.${service}.yml"
   if [ "$test" = "test" ]; then
-    configs+=" -f ./docker-compose.override.${service}-test.yml"
-    configs+=" --env-file ./test.${service}.env"
+    configs="$configs -f ./docker-compose.override.${service}-test.yml"
+    configs="$configs --env-file ./test.${service}.env"
   fi
 }
 
@@ -40,7 +40,7 @@ else
   exit 1
 fi
 
-configs+=" $test_config"
+configs="$configs $test_config"
 
 echo "Using configurations: $configs"
 
