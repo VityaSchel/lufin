@@ -13,11 +13,6 @@ services:
       - SQLITE_DB_PATH=/usr/src/app/sqlite/lufin.db
     volumes:
       - lufin_sqlite:/usr/src/app/sqlite
-  # test:
-  #   environment:
-  #     - SQLITE_DB_PATH=/usr/src/app/sqlite/lufin.db
-  #   volumes:
-  #     - lufin_sqlite:/usr/src/app/sqlite
 
 volumes:
   lufin_sqlite:

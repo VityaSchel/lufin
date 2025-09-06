@@ -17,7 +17,3 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
-  # test:
-  #   environment:
-  #     - MONGODB_CONNECTION_STRING=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@db:27017/${MONGODB_DB_NAME}?authSource=admin

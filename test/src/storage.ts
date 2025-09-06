@@ -20,7 +20,7 @@ if ([Boolean(s3Envs), Boolean(uploadsDir)].filter(Boolean).length !== 1) {
 if (s3Envs) {
 	if (!s3AccessKey || !s3SecretAccessKey || !s3Endpoint || !s3Bucket) {
 		throw new Error(
-			"Please set all S3 variables: S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY, S3_ENDPOINT, S3_BUCKET"
+			"Please set all S3 variables: S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY, S3_ENDPOINT, S3_BUCKET",
 		);
 	}
 }
@@ -37,10 +37,10 @@ export function getStorage(): {
 } {
 	if (s3Envs) {
 		const s3 = new S3Client({
-			accessKeyId: "test",
-			secretAccessKey: "test1234",
-			endpoint: "http://s3:9000",
-			bucket: "lufin",
+			endpoint: process.env.S3_ENDPOINT,
+			accessKeyId: process.env.S3_ACCESS_KEY,
+			secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+			bucket: process.env.S3_BUCKET,
 		});
 		return {
 			storageName: "S3",
