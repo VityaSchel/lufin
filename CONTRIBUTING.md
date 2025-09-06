@@ -4,26 +4,22 @@ Thank you for taking time to learn how you can contribute to lufin.
 
 Generally all PRs are welcome and are reviewed manually. No AI-written code is allowed. AI assistance (such as code autocompletion) is allowed to some extent.
 
-Please take a moment to test your changes before submitting them. See [test/README.md -> Docker](./test/README.md#docker).
+You are encouraged to test your changes before submitting them, especially if you're making changes to lib, test or backend. See [test/README.md -> Docker](./test/README.md#docker).
 
-Keep in mind that the frontend is built using [FSD](https://feature-sliced.design/) methodology.
+## Frontend
 
-We maintain support for baseline most popular browsers versions. Any features available as ["baseline"](https://web-platform-dx.github.io/web-features/) can be used freely in the code. Any features that are going to be implemented in browsers in near future can be added with a polyfill.
+See [frontend/README.md](./frontend/README.md) and [frontend/CONTRIBUTING.md](./frontend/CONTRIBUTING.md).
 
-## Translation
+Interested in contributing support for a language or fixing translation? This project only localizes frontend, backend is completely in English. Jump directly to [frontend/CONTRIBUTING.md#translation](./frontend/CONTRIBUTING.md#translation).
 
-Learn how to contribute support for your language or fix translation.
+## Backend
 
-This project only localizes frontend, backend part is completely in English. For frontend we use experimental [ParaglideJS](https://inlang.com/m/gerre34r/library-inlang-paraglideJs) library, so I recommended reading the Basics page to get started. You might also want to install Sherlock VSCode extension. To get started with a PR, fork this repository, clone locally and run `bun install` in frontend‘s repository.
+See [backend/README.md](./backend/README.md) and [backend/CONTRIBUTING.md](./backend/CONTRIBUTING.md)
 
-All translations are stored in frontend/messages directory. Files must be two-characters code as defined by navigator.languages interface and Accept-Language header ([read more](https://inlang.com/m/gerre34r/library-inlang-paraglideJs/strategy#preferredlanguage)). You can also add regional languages such as `en-US.json`.
+## Library (shared code)
 
-Translation files must be plain JSON objects with no nesting. I suggest naming keys in camelCase and separate sections with underscore. For example, if we want to translate a label on confirm button inside of a confirmation dialog, we‘d use `deleteConfirmation_confirmButton`. Each translation file must have `"$schema": "https://inlang.com/schema/inlang-message-format"`.
+This module shares code for files encryption. See [lib/README.md](lib/README.md).
 
-After translating all keys and placing your translation to frontend/messages/\[language\].json file, add your two-characters language code to frontend/project.inlang/settings.json -> locales array.
+## Test suite
 
-Next, you need to add the language to LanguageSwitch component in src/features/language-switch.tsx. To display a flag, the language must be supported by [svg-country-flags](https://github.com/hampusborgos/country-flags/tree/main/svg) library. Add the following entry to languagesMap array: `{ code: 'xx', flag: () => import('svg-country-flags/svg/xx.svg?react'), name: 'Language name' },`. Flag‘s country code can differ from language code, you need to consult the svg-country-flags‘s docs to get the country code. Please write the language name in its own language.
-
-Finally, you must add a [date-fns](https://date-fns.org/v4.1.0/docs/I18n) locale corresponding to the added language. Add it to frontend/src/shared/utils/get-date-fns-locale.ts file.
-
-Before submitting PR, please make sure everything you‘ve added works correctly. You need to run `bun run build` and `bun run preview`.
+This utility tests lufin backend. Currently the following combinations are tested: fs+postgresql, fs+mongodb, fs+sqlite, s3+postgresql, s3+mongodb, s3+sqlite. See [test/README.md](test/README.md).

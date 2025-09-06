@@ -1,9 +1,20 @@
-# Lufin frontend
+# lufin frontend
 
 - `bun dev` — Start a development server
 - `bun run build` — Build static frontend
 - `bun preview` — Run HTTP server that serves `dist` build directory
 - `bun machine-translate` — Translate all i18n keys
+
+## Install
+
+Follow these steps to install frontend:
+
+1. Run `bun ci` in your terminal
+2. Run `cp .env.example .env && chmod 600 .env` in your terminal
+3. Open `.env` file in your preferred code editor and fill according to [instructions](#environment-variables)
+4. Run `bun run build` — this outputs a static frontend website files to the `frontend/dist` directory
+   - You must to run `bun run build` command each time you edit the `frontend/.env` file
+   - Set up your web server to serve `dist` directory to users (see [INSTALL.md -> Web server example configuration](../INSTALL.md#web-server-example-configuration))
 
 ## Environment variables
 

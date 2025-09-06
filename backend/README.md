@@ -1,4 +1,4 @@
-# Lufin backend
+# lufin backend
 
 - `bun dev` — Start a development server (not recommended for production, see below)
 - `bun start` — Start a production server
@@ -7,6 +7,17 @@
 - `bun dev:db:forcepush` — (For development) forcefully push current schema without migrations to the db
 
 Development server displays internal server errors in human-readable format for debugging, leaking path to lufin on your instance as well as any context information. Don't run it (`bun dev`) in production, rather use `bun start`!
+
+## Install
+
+Follow these steps to install backend:
+
+1. Run `bun ci` in your terminal
+2. Run `cp .env.example .env && chmod 600 .env` in your terminal
+3. Open `.env` file in your preferred code editor and fill according to [instructions](#environment-variables)
+4. Only for SQL databases (Postgres, SQLite): run `bun db:migrate` in your terminal
+5. Run `cp data-retention.config.example.json data-retention.config.json` in your terminal
+6. Open `data-retention.config.json` file in your preferred code editor and fill according to [instructions](#data-retentionconfigjson)
 
 ## Environment variables
 
@@ -25,6 +36,20 @@ Development server displays internal server errors in human-readable format for 
     - `UPLOADS_DIR` (Required) — Writable directory for uploaded files
 - `CORS_ORIGIN` (Optional) — Value for `Access-Control-Allow-Origin` header in responses. Required for frontend to work if you're hosting backend on a separate domain/subdomain.
 - `GRACE_PERIOD` (Optional) — Time in seconds to keep the page files after expiration to allow initialized downloads to complete. Default: `7200`
+
+## data-retention.config.json
+
+This config defines file pages expiration settings for your lufin instance.
+
+- `seconds` is the max. time for a file up to `limit` megabytes (1000 \* 1000 bytes) to be stored on your server
+- In the [example](./data-retention.config.example.json):
+  - files up to 10 MB can be stored at most for 365 days
+  - files up to 50 MB can be stored at most for 150 days
+  - files up to 100 megabytes can be stored at most 50 days
+  - files over 100 megabytes cannot be stored
+- This limitation is enforced for sum size of all files within one page, these limits don't prevent an abuser from creating several pages and uploading several big files
+- It's not recommended to set limit more than 100 MB because chunking is not supported
+- If you're using Cloudflare free tier, keep in mind that it limits uploads to 100 MB/request
 
 ## Docker
 

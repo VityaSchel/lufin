@@ -19,7 +19,7 @@ Lufin (Let’s Upload that File—Next) is a modern alternative to [lufi](https:
   - 📊 XLSX spreadsheets
   - 📝 Text files
   - 📖 PDF
-- 🗣️ Translated to 26 languages: English, Русский, Українська, Беларуская, Български, Čeština, Dansk, Nederlands, Eesti, Suomi, Français, Deutsch, Ελληνικά, Magyar, Italiano, Latviešu, Lietuvių, Norsk, Polski, Português, Română, Slovenčina, Slovenščina, Español, Svenska, Türkçe. See [CONTRIBUTING.md](./CONTRIBUTING.md#Translation) for info how to contibute support for a language.
+- 🗣️ Translated to 26 languages: English, Русский, Українська, Беларуская, Български, Čeština, Dansk, Nederlands, Eesti, Suomi, Français, Deutsch, Ελληνικά, Magyar, Italiano, Latviešu, Lietuvių, Norsk, Polski, Português, Română, Slovenčina, Slovenščina, Español, Svenska, Türkçe. See [CONTRIBUTING.md](./CONTRIBUTING.md#frontend) for information on how to contibute support for a language.
 - 🛡️ Client-side metadata stripping such as EXIF from images
 - 🔥 Configurable data retention settings based on files size
 - 🔐 Optional end-to-end encryption using AES-GCM allowing user to opt-out to embed files via hotlinks

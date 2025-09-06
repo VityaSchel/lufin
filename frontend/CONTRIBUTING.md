@@ -1,0 +1,27 @@
+# Contributing to lufin frontend
+
+If you haven't already, take a moment to read [frontend/README.md](./README.md) to understand how to configure frontend development workflow.
+
+All changes must be linted using [eslint](https://eslint.org/) and formatted using [prettier](https://prettier.io/). Do not change eslint.config.js or .prettierrc without consulting with project's maintainers first.
+
+## Code
+
+Please keep in mind that the frontend is using [FSD](https://feature-sliced.design/) frontend methodology.
+
+We maintain support for baseline most popular browsers versions. Any features available as ["baseline"](https://web-platform-dx.github.io/web-features/) can be used freely in the code. Any features that are going to be implemented in browsers in near future can be added with a polyfill.
+
+## Translation
+
+We use experimental [ParaglideJS](https://inlang.com/m/gerre34r/library-inlang-paraglideJs) library, so I recommended reading the [Basics page](https://inlang.com/m/gerre34r/library-inlang-paraglideJs/basics) to get started. You might also want to install [Sherlock VSCode extension](https://inlang.com/m/r7kp499g/app-inlang-ideExtension). To get started with a PR, fork this repository, clone it locally to your machine and run `bun install` in frontend's repository.
+
+All translations are stored in [frontend/messages](./messages/) directory. Files must be two-characters code as defined by navigator.languages interface and Accept-Language header ([read more](https://inlang.com/m/gerre34r/library-inlang-paraglideJs/strategy#preferredlanguage)). You can also add regional languages such as `en-US.json`.
+
+Translation files must be plain JSON objects with no nesting. I suggest naming keys in camelCase and separate sections with underscore. For example, if we want to translate a label on confirm button inside of a confirmation dialog, we'd use `deleteConfirmation_confirmButton`. Each translation file must have `"$schema": "https://inlang.com/schema/inlang-message-format"`.
+
+After translating all keys and placing your translation to frontend/messages/\[language\].json file, add your two-characters language code to frontend/project.inlang/settings.json -> locales array.
+
+Next, you need to add the language to LanguageSwitch component in src/features/language-switch.tsx. To display a flag, the language must be supported by [svg-country-flags](https://github.com/hampusborgos/country-flags/tree/main/svg) library. Add the following entry to languagesMap array: `{ code: 'xx', flag: () => import('svg-country-flags/svg/xx.svg?react'), name: 'Language name' },`. Flag's country code can differ from language code, you need to consult the svg-country-flags's docs to get the country code. Please write the language name in its own language.
+
+Finally, you must add a [date-fns](https://date-fns.org/v4.1.0/docs/I18n) locale corresponding to the added language. Add it to frontend/src/shared/utils/get-date-fns-locale.ts file.
+
+Before submitting PR, please make sure everything you've added works correctly. You need to run `bun run build` and `bun run preview`.
