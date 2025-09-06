@@ -1,0 +1,6 @@
+services:
+  test:
+    environment:
+      - UPLOADS_DIR=/usr/src/app/uploads
+    volumes:
+      - lufin:/usr/src/app/uploads

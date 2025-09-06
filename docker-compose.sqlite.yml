@@ -1,18 +1,20 @@
 services:
-  # sqlite-init:
-  #   image: alpine:3.14
-  #   user: root
-  #   group_add:
-  #     - "1000"
-  #   volumes:
-  #     - lufin_sqlite:/tmp/vol
-  #   command: sh -c "chown -R 1000:1000 /tmp/vol && tail -f /dev/null"
-  #   restart: unless-stopped
+  db:
+    image: alpine:latest
+    user: root
+    group_add:
+      - "1000"
+    volumes:
+      - lufin_sqlite:/tmp/vol
+    command: sh -c "chown -R 1000:1000 /tmp/vol && tail -f /dev/null"
+    restart: unless-stopped
   backend:
     environment:
-      - SQLITE_DB_PATH=/usr/src/app/sqlite/lufin.db
+      - SQLITE_DB_PATH=${SQLITE_DB_DIR}/lufin.db
     volumes:
-      - lufin_sqlite:/usr/src/app/sqlite
+      - lufin_sqlite:${SQLITE_DB_DIR}
+    depends_on:
+      - db
 
 volumes:
   lufin_sqlite:

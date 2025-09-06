@@ -1,23 +1,18 @@
 services:
-  # fs-init:
-  #   image: alpine:3.14
-  #   user: root
-  #   group_add:
-  #     - "1000"
-  #   volumes:
-  #     - lufin:/tmp/vol
-  #   command: sh -c "chown -R 1000:1000 /tmp/vol && tail -f /dev/null"
-  #   restart: unless-stopped
+  fs-init:
+    image: alpine:latest
+    user: root
+    group_add:
+      - "1000"
+    volumes:
+      - lufin:/tmp/vol
+    command: sh -c "chown -R 1000:1000 /tmp/vol && tail -f /dev/null"
+    restart: unless-stopped
   backend:
     environment:
       - UPLOADS_DIR=/usr/src/app/uploads
     volumes:
       - lufin:/usr/src/app/uploads
-  # test:
-  #   environment:
-  #     - UPLOADS_DIR=/usr/src/app/uploads
-  #   volumes:
-  #     - lufin:/usr/src/app/uploads
 
 volumes:
   lufin:

@@ -4,16 +4,19 @@ storage=$1
 db=$2
 test=$3
 
-configs = ""
+configs=""
 
-configs += " -f ../backend/docker-compose.yml"
+test_config="-f ./docker-compose.test.yml"
+backend_config="-f ../backend/docker-compose.backend.yml --env-file ./test.env"
+
+configs+="$backend_config"
 
 add_service_configs() {
   local service=$1
-  configs += " -f ../docker-compose.${service}.yml"
+  configs+=" -f ../docker-compose.${service}.yml"
   if [ "$test" = "test" ]; then
-    configs += " -f ./docker-compose.override.${service}-test.yml"
-    configs += " --env-file ./test.${service}.env"
+    configs+=" -f ./docker-compose.override.${service}-test.yml"
+    configs+=" --env-file ./test.${service}.env"
   fi
 }
 
@@ -37,9 +40,17 @@ else
   exit 1
 fi
 
-configs += " -f docker-compose.yml"
+configs+=" $test_config"
 
-docker compose "$configs" up --build --abort-on-container-exit --exit-code-from test
+echo "Using configurations: $configs"
+
+cd ../lib
+docker build . -t lufin/lib
+cd ../test
+
+# docker compose $configs config
+
+docker compose $configs up --build --abort-on-container-exit --exit-code-from test
 exit_code=$?
-docker compose "$configs" down --volumes
+docker compose $configs down --volumes
 exit $exit_code

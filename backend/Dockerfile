@@ -29,4 +29,4 @@ COPY --from=prerelease /usr/src/app/package.json .
 COPY --from=prerelease /usr/src/app/data-retention.config.example.json data-retention.config.json
 
 USER bun
-ENTRYPOINT [ "sh", "-c", "QUIET=1 bun db:migrate && bun start --port 3000 --host" ]
+ENTRYPOINT [ "sh", "-c", "QUIET=1 bun db:migrate && bun start" ]
