@@ -1,0 +1,24 @@
+services:
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    environment:
+      - DOMAIN=${DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - lufin_frontend:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+  frontend:
+    volumes:
+      - lufin_frontend:/usr/src/app/dist
+
+volumes:
+  caddy_data:
+  caddy_config:

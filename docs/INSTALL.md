@@ -23,15 +23,39 @@ Requirements for any option:
 
 ## Option A. Docker (recommended)
 
-This is the easiest and fastest way to spin up lufin with everything needed bundled into a single container. Currently only a single container is available with PostgreSQL DB, managed  and storing files locally as a mounted Docker volume.
+This is the easiest and fastest way to spin up lufin. We offer any combination of dbs and storages: PostgreSQL, MongoDB or SQLite + S3 or local uploads dir. For frontend we offer Caddy with fully automatic HTTPS out of the box but you're free to opt out and serve static frontend yourself. [Learn more](../docker/caddy/README.md) about lufin frontend serving in Docker.
 
 ### Requirements
 
-- [Docker](https://docs.docker.com/engine/install/) installed
+- [Docker Engine](https://docs.docker.com/engine/install/) installed
+- [Docker Compose](https://docs.docker.com/compose/install/) installed
 
 ### Install
 
-TBD
+> [!CAUTION]
+> **WORK IN PROGRESS!** Currently only test suite is working with docker
+> I need to make run.sh script work with environment variables
+> and write guide for you on how to properly pass these envs to docker
+> stay tuned and follow [#14](https://github.com/VityaSchel/lufin/issues/14)!
+
+Start with local uploads and SQLite:
+
+```bash
+./run.sh fs sqlite
+```
+
+stop:
+
+```bash
+./run.sh stop fs sqlite
+```
+
+reload:
+
+```bash
+./run.sh reload fs sqlite
+```
+
 
 ## Option B. Manual install from sources
 

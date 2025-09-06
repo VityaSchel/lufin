@@ -1,0 +1,11 @@
+{$DOMAIN} {
+	handle /api/* {
+		reverse_proxy backend:3000
+	}
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		encode
+		file_server
+	}
+}

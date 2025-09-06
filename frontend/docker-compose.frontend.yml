@@ -6,8 +6,3 @@ services:
       args:
         - API_URL=${API_URL}
         - PUBLIC_ADMIN_EMAIL=${PUBLIC_ADMIN_EMAIL}
-    healthcheck:
-      test: ['CMD-SHELL', 'bun -e "fetch(''http://localhost:3000'').then(res => res.ok)"']
-      interval: 1s
-      timeout: 1s
-      retries: 20

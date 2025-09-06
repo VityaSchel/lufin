@@ -26,12 +26,4 @@ ENV VITE_CONTACT_EMAIL=$PUBLIC_ADMIN_EMAIL
 RUN bun run build
 
 FROM base AS release
-COPY --from=install /temp/prod/node_modules node_modules
-# COPY --from=install /temp/prod/vendor vendor
 COPY --from=prerelease /usr/src/app/dist dist
-COPY --from=prerelease /usr/src/app/tsconfig.json .
-COPY --from=prerelease /usr/src/app/package.json .
-
-USER bun
-ENTRYPOINT [ "bun", "run", "preview", "--port", "3000", "--host" ]
-# TODO: change to Caddy

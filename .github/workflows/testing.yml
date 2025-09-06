@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Make start script executable
-        run: chmod +x test/start-all.sh && chmod +x test/start.sh
+        run: chmod +x run.sh && chmod +x test/start-all.sh
       - name: Run integration tests
         working-directory: ./test
         run: ./start-all.sh
