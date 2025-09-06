@@ -4,11 +4,17 @@ services:
     entrypoint: sh
     command: -c 'mkdir -p /data/lufin && /usr/bin/minio server /data'
     environment:
-      MINIO_ROOT_USER: test
-      MINIO_ROOT_PASSWORD: test1234
+      - MINIO_ROOT_USER=test
+      - MINIO_ROOT_PASSWORD=test1234
     networks:
-      - lufintest
-    attach: false
+      - lufin
+    healthcheck:
+      test: timeout 5s bash -c ':> /dev/tcp/127.0.0.1/9000' || exit 1
+      interval: 5s
+      retries: 1
+      start_period: 5s
+      timeout: 5s
+    # attach: false
   backend:
     environment:
       - S3_ENDPOINT=http://s3:9000

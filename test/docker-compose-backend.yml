@@ -1,16 +1,16 @@
 services:
   backend:
-    build:
-      context: ../backend
-      dockerfile: ../test/Dockerfile.backend.test
+    build: ../backend
+    environment:
+      - PORT=4000
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          'bun -e "fetch(''http://localhost:3000'').then(res => res.ok)"',
+          'bun -e "fetch(''http://localhost:$$PORT'').then(res => res.ok)"',
         ]
       interval: 1s
       timeout: 1s
       retries: 20
     networks:
-      - lufintest
+      - lufin

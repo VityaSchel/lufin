@@ -9,6 +9,9 @@ import { getStorage } from "./storage";
 const { db, dbName, open, close } = getDb();
 const { storage, storageName } = getStorage();
 
+const apiUrl = process.env.BACKEND_URI
+if (!apiUrl) throw new Error("No BACKEND_URI env var set");
+
 beforeAll(async () => {
 	await open();
 });
@@ -21,7 +24,7 @@ console.log("Starting tests...");
 
 describe(`Lufin with ${dbName}+${storageName}`, async () => {
 	await test("should return correct limits", async () => {
-		const req = await fetch("http://backend:3000/limits");
+		const req = await fetch(apiUrl + "/limits");
 		expect(req.status).toEqual(200);
 		const res = await req.json();
 		expect(res).toEqual([
@@ -45,7 +48,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 		body.append("expiresAt", "1");
 		body.append("deleteAtFirstDownload", "false");
 		body.append("encrypted", "false");
-		const req = await fetch("http://backend:3000/upload", {
+		const req = await fetch(apiUrl + "/upload", {
 			method: "POST",
 			body,
 		});
@@ -62,7 +65,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 		body.append("expiresAt", String(Date.now() - 1));
 		body.append("deleteAtFirstDownload", "false");
 		body.append("encrypted", "false");
-		const req = await fetch("http://backend:3000/upload", {
+		const req = await fetch(apiUrl + "/upload", {
 			method: "POST",
 			body,
 		});
@@ -79,7 +82,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 		body.append("expiresAt", String(Date.now() + (31536000 + 1) * 1000));
 		body.append("deleteAtFirstDownload", "false");
 		body.append("encrypted", "false");
-		const req = await fetch("http://backend:3000/upload", {
+		const req = await fetch(apiUrl + "/upload", {
 			method: "POST",
 			body,
 		});
@@ -98,7 +101,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 	unencryptedSingleFileBody.append("file", unencryptedSingleFile);
 
 	await test("should throw on invalid upload request for non existing page", async () => {
-		const req = await fetch("http://backend:3000/upload/invalidvalue", {
+		const req = await fetch(apiUrl + "/upload/invalidvalue", {
 			method: "POST",
 			body: unencryptedSingleFileBody,
 		});
@@ -111,7 +114,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 	});
 
 	await test("should throw on invalid upload page for non existing page", async () => {
-		const req = await fetch("http://backend:3000/upload/invalidvalue", {
+		const req = await fetch(apiUrl + "/upload/invalidvalue", {
 			method: "POST",
 			body: unencryptedSingleFileBody,
 		});
@@ -162,7 +165,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 				body.append("deleteAtFirstDownload", "false");
 				body.append("encrypted", String(encrypted));
 				if (checksum) body.append("checksum", checksum);
-				const req = await fetch("http://backend:3000/upload", {
+				const req = await fetch(apiUrl + "/upload", {
 					method: "POST",
 					body,
 				});
@@ -175,7 +178,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 			await test("should throw on invalid upload request", async () => {
 				const body = new FormData();
 				const req = await fetch(
-					"http://backend:3000/upload/" + page.tmpUploadId,
+					apiUrl + "/upload/" + page.tmpUploadId,
 					{
 						method: "POST",
 						body,
@@ -192,7 +195,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 			await test("should accept uploads", async () => {
 				const ws = new WebSocket(
-					"ws://backend:3000/updates/" + page.websocketChannelId,
+					apiUrl + "/updates/" + page.websocketChannelId,
 				);
 				const promise = new Promise<void>((resolve) => {
 					ws.onmessage = (e) => {
@@ -204,7 +207,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 				const body = new FormData();
 				body.append("file", file);
 				const response = await fetch(
-					"http://backend:3000/upload/" + page.tmpUploadId,
+					apiUrl + "/upload/" + page.tmpUploadId,
 					{
 						method: "POST",
 						body,
@@ -240,13 +243,13 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 			await test("should throw on get page request while it's pending", async () => {
 				const req = await fetch(
-					"http://backend:3000/page/" + page.links.download,
+					apiUrl + "/page/" + page.links.download,
 				);
 				expect(req.status).toEqual(404);
 			});
 
 			await test("should throw on delete page request while it's pending", async () => {
-				const req = await fetch("http://backend:3000/page", {
+				const req = await fetch(apiUrl + "/page", {
 					method: "DELETE",
 					headers: { Authorization: page.links.delete },
 				});
@@ -255,7 +258,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 			await test("should finish upload", async () => {
 				const ws = new WebSocket(
-					"ws://backend:3000/updates/" + page.websocketChannelId,
+					apiUrl + "/updates/" + page.websocketChannelId,
 				);
 				const promise = new Promise<void>((resolve) => {
 					ws.onmessage = (e) => {
@@ -268,7 +271,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 					};
 				});
 				const req = await fetch(
-					"http://backend:3000/upload/" + page.tmpUploadId + "/finish",
+					apiUrl + "/upload/" + page.tmpUploadId + "/finish",
 					{ method: "POST" },
 				);
 				expect(req.ok).toBeTruthy();
@@ -288,13 +291,13 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 			});
 
 			await test("should throw on invalid page", async () => {
-				const req = await fetch("http://backend:3000/page/invalidvalue");
+				const req = await fetch(apiUrl + "/page/invalidvalue");
 				expect(req.status).toEqual(404);
 			});
 
 			await test("should return page files", async () => {
 				const req = await fetch(
-					"http://backend:3000/page/" + page.links.download,
+					apiUrl + "/page/" + page.links.download,
 				);
 				expect(req.status).toEqual(200);
 				const res = await req.json();
@@ -327,7 +330,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 			await test("should return file content by its name", async () => {
 				const req = await fetch(
-					"http://backend:3000/page/" + page.links.download + "/" + file.name,
+					apiUrl + "/page/" + page.links.download + "/" + file.name,
 				);
 				expect(req.status).toEqual(200);
 				expect(req.headers.get("content-type")).toEqual(
@@ -338,7 +341,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 			await test("should return file content by its index", async () => {
 				const req = await fetch(
-					"http://backend:3000/page/" + page.links.download + "/0",
+					apiUrl + "/page/" + page.links.download + "/0",
 				);
 				expect(req.status).toEqual(200);
 				expect(req.headers.get("content-type")).toEqual(
@@ -349,14 +352,14 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 			await test("should throw on invalid basic page info request", async () => {
 				const req = await fetch(
-					"http://backend:3000/page/" + page.links.download + "/info",
+					apiUrl + "/page/" + page.links.download + "/info",
 					{ headers: { Authorization: "invalidvalue" } },
 				);
 				expect(req.status).toEqual(404);
 			});
 
 			await test("should delete page", async () => {
-				const req = await fetch("http://backend:3000/page", {
+				const req = await fetch(apiUrl + "/page", {
 					headers: { Authorization: page.links.delete },
 					method: "DELETE",
 				});
@@ -399,7 +402,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 		createPageBody.append("expiresAt", (Date.now() + 2500).toString());
 		createPageBody.append("deleteAtFirstDownload", "true");
 		createPageBody.append("encrypted", "false");
-		const req = await fetch("http://backend:3000/upload", {
+		const req = await fetch(apiUrl + "/upload", {
 			method: "POST",
 			body: createPageBody,
 		});
@@ -417,7 +420,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 			})
 			.parse(res);
 		const ws = new WebSocket(
-			"ws://backend:3000/updates/" + page.websocketChannelId,
+			apiUrl + "/updates/" + page.websocketChannelId,
 		);
 		const waitForSaved = new Promise<void>((resolve) => {
 			const onMsg = (e: MessageEvent) => {
@@ -430,7 +433,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 		const uploadFileBody = new FormData();
 		uploadFileBody.append("file", file);
 		const response = await fetch(
-			"http://backend:3000/upload/" + page.tmpUploadId,
+			apiUrl + "/upload/" + page.tmpUploadId,
 			{
 				method: "POST",
 				body: uploadFileBody,
@@ -449,7 +452,7 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 				resolve();
 			};
 		});
-		await fetch("http://backend:3000/upload/" + page.tmpUploadId + "/finish", {
+		await fetch(apiUrl + "/upload/" + page.tmpUploadId + "/finish", {
 			method: "POST",
 		});
 		await waitForFinish;
@@ -463,11 +466,11 @@ describe(`Lufin with ${dbName}+${storageName}`, async () => {
 
 	await test("should delete after first download", async () => {
 		const req1 = await fetch(
-			"http://backend:3000/page/" + oneTimePageId + "/0",
+			apiUrl + "/page/" + oneTimePageId + "/0",
 		);
 		expect(req1.status).toEqual(200);
 		const req2 = await fetch(
-			"http://backend:3000/page/" + oneTimePageId + "/0",
+			apiUrl + "/page/" + oneTimePageId + "/0",
 		);
 		expect(req2.status).toEqual(404);
 	});

@@ -5,19 +5,19 @@ services:
     group_add:
       - "1000"
     volumes:
-      - lufin_files:/tmp/recover_data
+      - lufin:/tmp/recover_data
     command: sh -c "chown -R 1000:1000 /tmp/recover_data && tail -f /dev/null"
     restart: unless-stopped
   backend:
     environment:
       - UPLOADS_DIR=/usr/src/app/uploads
     volumes:
-      - lufin_files:/usr/src/app/uploads
+      - lufin:/usr/src/app/uploads
   test:
     environment:
       - UPLOADS_DIR=/usr/src/app/uploads
     volumes:
-      - lufin_files:/usr/src/app/uploads
+      - lufin:/usr/src/app/uploads
 
 volumes:
-  lufin_files:
+  lufin:
