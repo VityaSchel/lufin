@@ -16,7 +16,7 @@ try {
 		s3AccessKey || s3SecretAccessKey || s3Endpoint || s3Bucket || s3Region;
 
 	if ([Boolean(s3Envs), Boolean(uploadsDir)].filter(Boolean).length !== 1) {
-		throw new Error("Please set only S3 variables or UPLOADS_DIR");
+		throw new Error("Please set either S3 variables or UPLOADS_DIR");
 	}
 
 	if (s3Envs) {

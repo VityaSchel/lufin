@@ -1,0 +1,1 @@
+docker build -t lufin/lib:latest .

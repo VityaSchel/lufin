@@ -33,6 +33,5 @@ COPY --from=prerelease /usr/src/app/tsconfig.json .
 COPY --from=prerelease /usr/src/app/package.json .
 
 USER bun
-EXPOSE 3000/tcp
 ENTRYPOINT [ "bun", "run", "preview", "--port", "3000", "--host" ]
 # TODO: change to Caddy

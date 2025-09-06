@@ -1,6 +1,5 @@
-# FROM lufin/lib:latest AS base
 FROM oven/bun:1 AS base
-WORKDIR /usr/src/app
+WORKDIR /usr/src/lib
 
 FROM base AS install
 # RUN mkdir -p /temp/dev
@@ -21,11 +20,8 @@ COPY . .
 
 FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/src src
-COPY --from=prerelease /usr/src/app/drizzle drizzle
-COPY --from=prerelease /usr/src/app/tsconfig.json .
-COPY --from=prerelease /usr/src/app/data-retention.config.example.json data-retention.config.json
-COPY --from=prerelease /usr/src/app/package.json .
+COPY --from=prerelease /usr/src/lib/src src
+COPY --from=prerelease /usr/src/lib/tsconfig.json .
+COPY --from=prerelease /usr/src/lib/package.json .
 
-USER bun
-ENTRYPOINT [ "bun", "start", "--port", "3000", "--host", "0.0.0.0" ]
+RUN mkdir -p /temp && ln -s /usr/src/lib /temp/lib
