@@ -5,6 +5,6 @@ dbs=(postgres mongo sqlite)
 
 for storage in "${storages[@]}"; do
   for db in "${dbs[@]}"; do
-    ./start.sh "$storage" "$db"
+    ./start.sh "$storage" "$db" test
   done
 done

@@ -2,35 +2,53 @@
 
 storage=$1
 db=$2
+test=$3
+
+configs = ""
+
+configs += " -f ../backend/docker-compose.yml"
 
 if [ "$storage" = "s3" ]; then
-  storage_compose="../docker-compose.s3.yml"
-  storage_compose_test_override="./docker-compose.override.s3-test.yml"
+  configs += " -f ../docker-compose.s3.yml"
+  if [ "$test" = "test" ]; then
+    configs += " -f ./docker-compose.override.s3-test.yml"
+    configs += " --env-file ./test.s3.env"
+  fi
 elif [ "$storage" = "fs" ]; then
-  storage_compose="../docker-compose.fs.yml"
-  storage_compose_test_override="./docker-compose.override.fs-test.yml"
+  configs += " -f ../docker-compose.fs.yml"
+  if [ "$test" = "test" ]; then
+    configs += " -f ./docker-compose.override.fs-test.yml"
+    configs += " --env-file ./test.fs.env"
+  fi
 else
   echo "Error: Invalid storage type. Use 's3' or 'fs'." >&2
   exit 1
 fi
 
 if [ "$db" = "mongo" ]; then
-  db_compose="../docker-compose.mongodb.yml"
-  db_compose_test_override="./docker-compose.override.mongodb-test.yml"
+  configs += " -f ../docker-compose.mongodb.yml"
+  if [ "$test" = "test" ]; then
+    configs += " -f ./docker-compose.override.mongodb-test.yml"
+    configs += " --env-file ./test.mongodb.env"
+  fi
 elif [ "$db" = "postgres" ]; then
-  db_compose="../docker-compose.postgresql.yml"
-  db_compose_test_override="./docker-compose.override.postgresql-test.yml"
+  configs += " -f ../docker-compose.postgresql.yml"
+  if [ "$test" = "test" ]; then
+    configs += " -f ./docker-compose.override.postgresql-test.yml"
+    configs += " --env-file ./test.postgresql.env"
+  fi
 elif [ "$db" = "sqlite" ]; then
-  db_compose="../docker-compose.sqlite.yml"
-  db_compose_test_override="./docker-compose.override.sqlite-test.yml"
+  configs += " -f ../docker-compose.sqlite.yml"
+  if [ "$test" = "test" ]; then
+    configs += " -f ./docker-compose.override.sqlite-test.yml"
+    configs += " --env-file ./test.sqlite.env"
+  fi
 else
   echo "Error: Invalid database type. Use 'mongo', 'postgres' or 'sqlite'." >&2
   exit 1
 fi
 
-# TODO: add flag for testing to conditionally add override.*-test configs and -f docker-compose-test.yml
-# then move ./start.sh script to project root and put snippet to call it with a test flag in test subdirectory
-configs = "-f ../backend/docker-compose.yml -f $storage_compose -f $storage_compose_test_override -f $db_compose -f $db_compose_test_override -f docker-compose-test.yml"
+configs += " -f docker-compose.yml"
 
 docker compose "$configs" up --build --abort-on-container-exit --exit-code-from test
 exit_code=$?
