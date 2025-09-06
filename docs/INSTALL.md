@@ -3,7 +3,7 @@
 > [!Important]
 > You are solely responsible for your server safety, for content uploaded through your lufin instance and how it's used.
 
-- [Installation \& setup](#installation--setup)
+- [lufin installation \& setup](#lufin-installation--setup)
   - [Option A. Docker (recommended)](#option-a-docker-recommended)
     - [Requirements](#requirements)
     - [Install](#install)
@@ -56,14 +56,14 @@ This is the recommended way of installing lufin for contributors or people who a
 
 ### Install
 
-1. Install frontend following steps in [frontend/README.md -> Install](./frontend/README.md#install)
-2. Install backend following steps in [backend/README.md -> Install](./backend/README.md#install)
+1. Install frontend following steps in [frontend/README.md -> Install](../frontend/README.md#install)
+2. Install backend following steps in [backend/README.md -> Install](../backend/README.md#install)
 3. Set up a regular job for cleaning up expired pages to automatically run `bun /path/to/lufin/backend/src/jobs/cleanup-expired-pages.ts` command
     - One way is to use [Cron](https://en.wikipedia.org/wiki/Cron) which comes with most linux installations
       - add `0 * * * * /home/youruser/.bun/bin/bun --env-file=/var/www/lufin/backend/.env /var/www/lufin/backend/src/jobs/cleanup-expired-pages.ts` to the crontab, see [crontab.guru](https://crontab.guru/#0_*_*_*_*) to adjust frequency
 4.  Set up a system daemon that will run backend (command `bun start` in the /path/to/lufin/backend directory)
     - One way is to use [systemd](https://en.wikipedia.org/wiki/Systemd) which comes with most linux installations
-      - For example service config see [contrib/systemd-lufin-backend.service](./contrib/systemd-lufin-backend.service)
+      - For example service config see [contrib/systemd-lufin-backend.service](../contrib/systemd-lufin-backend.service)
     - Backend must be running under the same user who created `backend/.env` file, this file contains sensetive values and should not be readable by other users
     - You should not run backend as the root user or as any other sudoer, create a separate linux user (e.g. `lufin`) and restrict its access to only lufin directory
     - You can use the `PORT` environment variable to set the backend API port
@@ -79,8 +79,8 @@ In order for lufin to work correctly, please ensure that your webserver+reverse 
 
 Ensure your website is secured with a TLS certificate. Caddy handles it fully automatically. Nginx requires configuration. If you use Nginx I recommend certbot with Let's Encrypt or delegate certificate management to Cloudflare.
 
-- See [contrib/lufin.caddy](contrib/lufin.caddy) for Caddy configuration
-- See [contrib/nginx.conf](contrib/nginx.conf) for Nginx configuration
+- See [contrib/lufin.caddy](../contrib/lufin.caddy) for Caddy configuration
+- See [contrib/nginx.conf](../contrib/nginx.conf) for Nginx configuration
 
 ## Troubleshooting
 

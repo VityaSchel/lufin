@@ -61,7 +61,7 @@ See also: a related project — Firefox-based browser extension for taking full-
 
 ## Installation
 
-Read [INSTALL.md](./INSTALL.md) for steps to install and run lufin on your machine.
+Read [INSTALL.md](./docs/INSTALL.md) for steps to install and run lufin on your machine.
 
 ## FAQ
 

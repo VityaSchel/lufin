@@ -14,7 +14,7 @@ Follow these steps to install frontend:
 3. Open `.env` file in your preferred code editor and fill according to [instructions](#environment-variables)
 4. Run `bun run build` — this outputs a static frontend website files to the `frontend/dist` directory
    - You must to run `bun run build` command each time you edit the `frontend/.env` file
-   - Set up your web server to serve `dist` directory to users (see [INSTALL.md -> Web server example configuration](../INSTALL.md#web-server-example-configuration))
+   - Set up your web server to serve `dist` directory to users (see [INSTALL.md -> Web server example configuration](../docs/INSTALL.md#web-server-example-configuration))
 
 ## Environment variables
 

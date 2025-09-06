@@ -1,13 +1,13 @@
 services:
   db:
     image: alpine:latest
+    restart: unless-stopped
     user: root
     group_add:
       - "1000"
     volumes:
       - lufin_sqlite:/tmp/vol
     command: sh -c "chown -R 1000:1000 /tmp/vol && tail -f /dev/null"
-    restart: unless-stopped
     stop_grace_period: 0s
   backend:
     environment:
