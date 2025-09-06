@@ -54,14 +54,19 @@ const app = new Elysia({
 	.use(getFilesPageInfoRoute)
 	.use(updatesWebsocketRoute);
 
+let shuttingDown = false;
+const exit = async () => {
+	if (shuttingDown) return;
+	shuttingDown = true;
+	await Promise.all([closeStorage(), closeDb(), app.stop()]);
+	process.exit(0);
+};
+process.on("SIGINT", exit);
+process.on("SIGTERM", exit);
+
 app.listen(
 	{ port: process.env.PORT || 3000, hostname: process.env.HOST },
 	({ hostname, port }) => {
 		console.log(`Server is now listening on http://${hostname}:${port}`);
 	},
 );
-
-process.on("SIGINT", async () => {
-	await Promise.all([closeStorage(), closeDb(), app.stop()]);
-	process.exit(0);
-});

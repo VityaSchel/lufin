@@ -24,3 +24,5 @@
 Build Docker image: [./docker-build.sh](./docker-build.sh).
 
 Run Docker image: `docker run --env-file .env -it lufin/test`
+
+Test all combinations: `./start-all.sh`

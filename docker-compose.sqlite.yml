@@ -8,6 +8,7 @@ services:
       - lufin_sqlite:/tmp/vol
     command: sh -c "chown -R 1000:1000 /tmp/vol && tail -f /dev/null"
     restart: unless-stopped
+    stop_grace_period: 0s
   backend:
     environment:
       - SQLITE_DB_PATH=${SQLITE_DB_DIR}/lufin.db

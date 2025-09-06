@@ -4,4 +4,4 @@ services:
       - MONGODB_CONNECTION_STRING=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@db:27017/${MONGODB_DB_NAME}?authSource=admin
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy

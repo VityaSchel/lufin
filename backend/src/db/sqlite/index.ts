@@ -142,7 +142,7 @@ export const sqliteDb: LufinDbBuilder<
 		);
 	},
 	async close() {
-		await conn.close();
+		conn.close();
 	},
 });
 
