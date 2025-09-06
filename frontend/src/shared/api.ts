@@ -1,6 +1,11 @@
 import { z } from 'zod'
 
-export const apiUrl = new URL(import.meta.env.VITE_API_URL)
+const VITE_API_URL = import.meta.env.VITE_API_URL
+if (typeof VITE_API_URL !== 'string' || VITE_API_URL.length === 0) {
+  throw new Error('VITE_API_URL is not defined or empty (check frontend/.env)')
+}
+
+export const apiUrl = new URL(VITE_API_URL)
 
 export async function getFilesPage({ pageId, password }: { pageId: string; password?: string }) {
   const res = await fetch(new URL('page/' + pageId, apiUrl), {
