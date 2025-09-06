@@ -21,4 +21,5 @@ jobs:
       - name: Make start script executable
         run: chmod +x test/start-all.sh && chmod +x test/start.sh
       - name: Run integration tests
-        run: ./test/start-all.sh
+        working-directory: ./test
+        run: ./start-all.sh
