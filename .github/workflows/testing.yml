@@ -21,5 +21,4 @@ jobs:
       - name: Make start script executable
         run: chmod +x docker/get-docker-compose-params.sh test/start-all.sh lib/docker-build.sh
       - name: Run integration tests
-        working-directory: ./test
-        run: ./start-all.sh
+        run: ./test/start-all.sh
