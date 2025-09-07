@@ -7,8 +7,9 @@ services:
       - '443:443'
       - '443:443/udp'
     environment:
-      - DOMAIN=${DOMAIN}
+      - DOMAIN=${CADDY_DOMAIN}
       - BACKEND_PORT=${BACKEND_PORT:-3000}
+      - AUTO_HTTPS=${AUTO_HTTPS:-}
     volumes:
       - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
       - lufin_frontend:/srv

@@ -54,16 +54,17 @@ This is the easiest and fastest way to spin up lufin. We offer any combination o
 > Currently it's not possible to redefine Caddy ports and to instruct Caddy not to enable HTTPS
 > Follow [#16](https://github.com/VityaSchel/lufin/issues/16) for updates
 
-1. Run `./generate-env.sh` file and answer questions to generate a .env file
+1. Clone lufin to your machine & cd into project's root
+2. Run `./generate-env.sh` file and answer questions to generate a .env file
    - Choose database and storage for lufin
-    - Databases:
-      - PostgreSQL is recommended for most cases
-      - SQLite is a good alternative for low-end machines
-      - MongoDB can be used as your personal preference
-    - Storages:
-      - Local uploads is fastest and recommended for most cases
-      - Remote S3 can be used for machines with small disk capacity
-2. Run `./run.sh` command with selected database and storage passed as arguments
+   - Databases:
+     - PostgreSQL is recommended for most cases
+     - SQLite is a good alternative for low-end machines
+     - MongoDB can be used as your personal preference
+   - Storages:
+     - Local uploads is fastest and recommended for most cases
+     - Remote S3 can be used for machines with small disk capacity
+3. Run `./run.sh` command with selected database and storage passed as arguments
    - Caddy is configured to bind to ports 80 and 443 on your host machine by default
 
 ### Run.sh examples

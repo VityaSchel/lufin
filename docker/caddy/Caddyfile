@@ -1,3 +1,8 @@
+{
+	auto_https {$AUTO_HTTPS:}
+	admin off
+}
+
 {$DOMAIN} {
 	handle_path /api/* {
 		reverse_proxy backend:{$BACKEND_PORT}

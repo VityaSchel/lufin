@@ -24,6 +24,7 @@ Example with SQLite and local uploads dir:
 
 ```bash
 export DOMAIN="localhost"
+export CADDY_DOMAIN=$DOMAIN
 export EMAIL="lufin@fake.local"
 
 # Do not change lines below
