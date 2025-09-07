@@ -45,26 +45,26 @@ This is the easiest and fastest way to spin up lufin. We offer any combination o
 
 ### Install
 
-> [!CAUTION]
-> **WORK IN PROGRESS!** Currently only test suite is working with docker
-> I need to make run.sh script work with environment variables
-> and write guide for you on how to properly pass these envs to docker
-> stay tuned and follow [#14](https://github.com/VityaSchel/lufin/issues/14)!
-
 > [!Note]
 > Only local S3 is currently supported in Docker deployment ([minio](https://hub.docker.com/r/minio/minio))
 > I'm working on adding support for external S3 such as Cloudflare R2!
+> Follow [#15](https://github.com/VityaSchel/lufin/issues/15) for updates.
 
-1. Choose database and storage for lufin
-   - Databases:
-     - PostgreSQL is recommended for most cases
-     - SQLite is a good alternative for low-end machines
-     - MongoDB can be used as your personal preference
-   - Storages:
-     - Local uploads is fastest and recommended for most cases
-     - Remote S3 can be used for machines with small disk capacity
-2. Run `./generate-env.sh` file and answer questions to generate a .env file
-3. Run `./run.sh` command with selected database and storage passed as arguments
+> [!Note]
+> Currently it's not possible to redefine Caddy ports and to instruct Caddy not to enable HTTPS
+> Follow [#16](https://github.com/VityaSchel/lufin/issues/16) for updates
+
+1. Run `./generate-env.sh` file and answer questions to generate a .env file
+   - Choose database and storage for lufin
+    - Databases:
+      - PostgreSQL is recommended for most cases
+      - SQLite is a good alternative for low-end machines
+      - MongoDB can be used as your personal preference
+    - Storages:
+      - Local uploads is fastest and recommended for most cases
+      - Remote S3 can be used for machines with small disk capacity
+2. Run `./run.sh` command with selected database and storage passed as arguments
+   - Caddy is configured to bind to ports 80 and 443 on your host machine by default
 
 ### Run.sh examples
 
@@ -85,6 +85,8 @@ Reload:
 ```bash
 ./run.sh reload
 ```
+
+[Workaround for local HTTPS](../docker/caddy/README.md#local-https)
 
 ## Option B. Manual install from sources
 

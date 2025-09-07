@@ -4,7 +4,8 @@ set -euo pipefail
 
 storage=""
 db=""
-test=""
+test="0"
+webserver=""
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -17,14 +18,19 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     --test)
-      test="test"
+      test="1"
+      shift
+      ;;
+    --caddy)
+      webserver="caddy"
       shift
       ;;
     -h|--help)
-      echo "Usage: $0 --storage <storage> --db <db> [--test]"
+      echo "Usage: $0 --storage <storage> --db <db> [--caddy] [--test]"
       echo "Options:"
       echo "  --storage   Storage type: 's3' or 'fs'"
       echo "  --db        Database type: 'mongo', 'postgres' or 'sqlite'"
+      echo "  --caddy     Add Caddy web server"
       echo "  --test      Run in test mode"
       echo "  -h, --help  Show this help message"
       exit 0
@@ -47,16 +53,20 @@ fi
 configs="-f ./docker-compose.yml"
 
 backend_config="-f ./backend/docker-compose.backend.yml"
-if [ "$test" = "test" ]; then
+if [ "$test" = "1" ]; then
   backend_config="$backend_config --env-file ./test/test.env"
 fi
-
 configs="$configs $backend_config"
+
+if [ "$webserver" = "caddy" ]; then
+  webserver_config="-f ./docker/caddy/docker-compose.caddy.yml"
+  configs="$configs $webserver_config"
+fi
 
 add_service_configs() {
   local service=$1
   configs="$configs -f ./docker/docker-compose.${service}.yml"
-  if [ "$test" = "test" ]; then
+  if [ "$test" = "1" ]; then
     configs="$configs -f ./test/docker-compose.override.${service}-test.yml"
     configs="$configs --env-file ./test/test.${service}.env"
   fi
@@ -82,7 +92,7 @@ else
   exit 1
 fi
 
-if [ "$test" = "test" ]; then
+if [ "$test" = "1" ]; then
   test_config="-f ./test/docker-compose.test.yml"
   configs="$configs $test_config"
 fi
