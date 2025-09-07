@@ -9,6 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR/.."
 
 (cd ./lib && ./docker-build.sh)
+(cd ./backend && ./docker-build.sh)
 
 for storage in "${storages[@]}"; do
   for db in "${dbs[@]}"; do
