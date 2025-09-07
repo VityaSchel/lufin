@@ -63,7 +63,7 @@ This is the easiest and fastest way to spin up lufin. We offer any combination o
    - Storages:
      - Local uploads is fastest and recommended for most cases
      - Remote S3 can be used for machines with small disk capacity
-2. Fill .env file
+2. Run `./generate-env.sh` file and answer questions to generate a .env file
 3. Run `./run.sh` command with selected database and storage passed as arguments
 
 ### Run.sh examples
@@ -71,21 +71,20 @@ This is the easiest and fastest way to spin up lufin. We offer any combination o
 Start with local uploads and SQLite:
 
 ```bash
-./run.sh fs sqlite
+./run.sh start
 ```
 
 Stop:
 
 ```bash
-./run.sh stop fs sqlite
+./run.sh stop
 ```
 
 Reload:
 
 ```bash
-./run.sh reload fs sqlite
+./run.sh reload
 ```
-
 
 ## Option B. Manual install from sources
 

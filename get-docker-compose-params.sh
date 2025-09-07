@@ -2,15 +2,45 @@
 
 set -euo pipefail
 
-storage=${1:-}
-db=${2:-}
-test=${3:-}
+storage=""
+db=""
+test=""
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --storage)
+      storage="$2"
+      shift 2
+      ;;
+    --db)
+      db="$2"
+      shift 2
+      ;;
+    --test)
+      test="test"
+      shift
+      ;;
+    -h|--help)
+      echo "Usage: $0 --storage <storage> --db <db> [--test]"
+      echo "Options:"
+      echo "  --storage   Storage type: 's3' or 'fs'"
+      echo "  --db        Database type: 'mongo', 'postgres' or 'sqlite'"
+      echo "  --test      Run in test mode"
+      echo "  -h, --help  Show this help message"
+      exit 0
+      ;;
+    *)
+      echo "Error: Unknown option $1" >&2
+      echo "Use --help for usage information" >&2
+      exit 1
+      ;;
+  esac
+done
 
 if [ -z "$storage" ] || [ -z "$db" ]; then
-  echo "Usage: $0 <storage> <db> [test]" >&2
-  echo "- storage: 's3' or 'fs'" >&2
-  echo "- db: 'mongo', 'postgres' or 'sqlite'" >&2
-  echo "- test: 'test' to run tests, omit to run normally" >&2
+  echo "Error: Missing required arguments" >&2
+  echo "Usage: $0 --storage <storage> --db <db> [--test]" >&2
+  echo "Use --help for more information" >&2
   exit 1
 fi
 
