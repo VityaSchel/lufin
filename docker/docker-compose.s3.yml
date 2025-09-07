@@ -7,6 +7,8 @@ services:
     environment:
       - MINIO_ROOT_USER=${S3_ACCESS_KEY}
       - MINIO_ROOT_PASSWORD=${S3_SECRET_ACCESS_KEY}
+    volumes:
+      - s3_data:/data
     healthcheck:
       test: timeout 5s bash -c ':> /dev/tcp/127.0.0.1/9000' || exit 1
       interval: 5s
@@ -24,3 +26,6 @@ services:
     depends_on:
       s3:
         condition: service_healthy
+
+volumes:
+  s3_data:

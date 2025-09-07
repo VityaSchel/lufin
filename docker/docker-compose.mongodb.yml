@@ -11,6 +11,8 @@ services:
       interval: 1s
       timeout: 1s
       retries: 20
+    volumes:
+      - mongodb_data:/data/db
     attach: false
   backend:
     environment:

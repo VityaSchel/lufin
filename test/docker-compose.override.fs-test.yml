@@ -3,4 +3,4 @@ services:
     environment:
       - UPLOADS_DIR=/usr/src/app/uploads
     volumes:
-      - lufin:/usr/src/app/uploads
+      - uploads:/usr/src/app/uploads

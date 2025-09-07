@@ -6,16 +6,16 @@ services:
     group_add:
       - "1000"
     volumes:
-      - lufin_sqlite:/tmp/vol
+      - sqlite_data:/tmp/vol
     command: sh -c "chown -R 1000:1000 /tmp/vol && tail -f /dev/null"
     stop_grace_period: 0s
   backend:
     environment:
       - SQLITE_DB_PATH=${SQLITE_DB_DIR:-/usr/src/app/sqlite}/lufin.db
     volumes:
-      - lufin_sqlite:${SQLITE_DB_DIR:-/usr/src/app/sqlite}
+      - sqlite_data:${SQLITE_DB_DIR:-/usr/src/app/sqlite}
     depends_on:
       - db
 
 volumes:
-  lufin_sqlite:
+  sqlite_data:

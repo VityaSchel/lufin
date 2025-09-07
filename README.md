@@ -30,6 +30,7 @@ Lufin (Let’s Upload that File—Next) is a modern alternative to [lufi](https:
 - ✏️ Automatic file renaming with option to keep original filenames
 - 📀 Multiple databases support (MongoDB, PostgreSQL, SQLite)
 - ⚡️ Fully static frontend (no SSR, no Next.js needed running for the website)
+- 📦 Docker Compose deployment with automatic HTTPS out of the box
 - 💻 Links to uploaded files are stored in LocalStorage
 - 💾 Importable/exportable LocalStorage with a button to clean up expired pages
 
@@ -45,8 +46,7 @@ Demo: [lufin.hloth.dev](https://lufin.hloth.dev)
 - [Lufin — a modern self-hosted file-sharing service](#lufin--a-modern-self-hosted-file-sharing-service)
   - [Screenshotter browser extension](#screenshotter-browser-extension)
   - [Installation](#installation)
-  - [FAQ](#faq)
-    - [Motivation](#motivation)
+  - [Motivation](#motivation)
   - [License](#license)
   - [Donate](#donate)
 
@@ -63,15 +63,13 @@ See also: a related project — Firefox-based browser extension for taking full-
 
 Read [INSTALL.md](./docs/INSTALL.md) for steps to install and run lufin on your machine.
 
-## FAQ
-
-### Motivation
+## Motivation
 
 I was working on this project in August 2023 - October 2023 as a part of a larger platform for one of my Freelance clients. In late 2024 I had to leave working on them because they were constantly harassing, threatening and abusing me. This is a cleaned up version of filesharing subproject that I made for them, originally built as a microfrontend for Next.js.
 
 I made this project while I was working primarily with React and Next.js as web frameworks and MongoDB as my favorite database. Things have changed and nowadays I only use Svelte and PostgreSQL. First commits were deliberetly offset by exactly -22 months.
 
-Before publishing this project I rewrote the backend from Fastify to Elysia, migrated from Next.js to Vite, from Next router to React Router, from i18next to paraglide js, optimized build size and separated code to dynamic chunks.
+Before publishing this project I rewrote the backend from Fastify to Elysia, migrated from Next.js to Vite, from Next router to React Router, from i18next to paraglide js, optimized build size, separated code to dynamic chunks and put everything into Docker Compose containers.
 
 ## License
 

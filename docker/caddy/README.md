@@ -10,7 +10,7 @@ The recommended web server that runs lufin static frontend is Caddy.
 
 ## Run
 
-Recommended way is to run it with all other services via run.sh script. If you're coming from [INSTALL.md](../../docs/INSTALL.md), simply follow the steps there.
+Recommended way is to run it with all other services via run.sh script. If you're coming from [INSTALL.md](../../docs/INSTALL.md#option-a-docker-recommended), simply follow the steps there.
 
 To start Caddy serving frontend and backend in Docker:
 1. Build [lufin/lib](../../lib/README.md) image
@@ -34,6 +34,14 @@ export PUBLIC_ADMIN_EMAIL="${EMAIL}"
 docker compose -f ../../docker-compose.yml -f ../../backend/docker-compose.backend.yml -f ./docker-compose.caddy.yml -f ../docker-compose.fs.yml -f ../docker-compose.sqlite.yml up --build -d
 ```
 
+To permanently delete everything including database and uploaded files (**DANGER!!**):
+
+```bash
+docker compose -f ../../docker-compose.yml -f ./docker-compose.caddy.yml -f ../docker-compose.fs.yml -f ../docker-compose.sqlite.yml -f ../../backend/docker-compose.backend.yml down --volumes
+```
+
+## Local HTTPS
+
 If you specified a local domain (such as `localhost`), you need to add Caddy's root CA certificate to your system/browser/proxy. [Learn more](https://caddyserver.com/docs/running#local-https-with-docker) about Caddy's root CA for local HTTPS. **You don't need to do this for real domains.**
 
 As of 2025/09/07 the following examples should work. Note that many web browsers ignore system's trust store nowadays. Refer to the Caddy documentation to learn how to add Caddy's root CA to browser's trust store.
@@ -54,10 +62,4 @@ Windows:
 
 ```bash
 docker compose cp caddy:/data/caddy/pki/authorities/local/root.crt %TEMP%/lufin-local-https.crt && certutil -addstore -f "ROOT" %TEMP%/lufin-local-https.crt
-```
-
-To permanently delete everything including database and uploaded files (**DANGER!!**):
-
-```bash
-docker compose -f ../../docker-compose.yml -f ./docker-compose.caddy.yml -f ../docker-compose.fs.yml -f ../docker-compose.sqlite.yml -f ../../backend/docker-compose.backend.yml down --volumes
 ```

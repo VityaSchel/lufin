@@ -11,6 +11,8 @@ services:
       interval: 1s
       timeout: 1s
       retries: 20
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
     attach: false
   backend:
     environment:

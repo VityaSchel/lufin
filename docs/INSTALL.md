@@ -6,7 +6,9 @@
 - [lufin installation \& setup](#lufin-installation--setup)
   - [Option A. Docker (recommended)](#option-a-docker-recommended)
     - [Requirements](#requirements)
+    - [Persistant data storage locations](#persistant-data-storage-locations)
     - [Install](#install)
+    - [Run.sh examples](#runsh-examples)
   - [Option B. Manual install from sources](#option-b-manual-install-from-sources)
     - [Requirements](#requirements-1)
     - [Install](#install-1)
@@ -28,6 +30,19 @@ This is the easiest and fastest way to spin up lufin. We offer any combination o
 - [Docker Engine](https://docs.docker.com/engine/install/) installed
 - [Docker Compose](https://docs.docker.com/compose/install/) installed
 
+### Persistant data storage locations
+
+| Container                                 | Volume                                                                                                                                                                                                                   | Docker Compose Group                                |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------- |
+| Static frontend build                     | `lufin_frontend`                                                                                                                                                                                                         | **External volume outside of Docker Compose group** |
+| SQLite (if choosen as db)                 | `sqlite_data`                                                                                                                                                                                                            | `lufin` Docker Compose group                        |
+| PostgreSQL (if choosen as db)             | `postgresql_data`                                                                                                                                                                                                        | `lufin` Docker Compose group                        |
+| MongoDB (if choosen as db)                | `mongodb_data`                                                                                                                                                                                                           | `lufin` Docker Compose group                        |
+| Uploads directory (if choosen as storage) | `uploads`                                                                                                                                                                                                                | `lufin` Docker Compose group                        |
+| S3 data directory (if choosen as storage) | `s3_data`                                                                                                                                                                                                                | `lufin` Docker Compose group                        |
+| Caddy (if used)                           | `caddy_data` ([issued TLS certificates](https://caddyserver.com/docs/conventions#data-directory)) and `caddy_config` ([internal Caddy configurations](https://caddyserver.com/docs/conventions#configuration-directory)) | `lufin` Docker Compose group                        |
+|                                           |                                                                                                                                                                                                                          |                                                     |
+
 ### Install
 
 > [!CAUTION]
@@ -36,19 +51,36 @@ This is the easiest and fastest way to spin up lufin. We offer any combination o
 > and write guide for you on how to properly pass these envs to docker
 > stay tuned and follow [#14](https://github.com/VityaSchel/lufin/issues/14)!
 
+> [!Note]
+> Only local S3 is currently supported in Docker deployment ([minio](https://hub.docker.com/r/minio/minio))
+> I'm working on adding support for external S3 such as Cloudflare R2!
+
+1. Choose database and storage for lufin
+   - Databases:
+     - PostgreSQL is recommended for most cases
+     - SQLite is a good alternative for low-end machines
+     - MongoDB can be used as your personal preference
+   - Storages:
+     - Local uploads is fastest and recommended for most cases
+     - Remote S3 can be used for machines with small disk capacity
+2. Fill .env file
+3. Run `./run.sh` command with selected database and storage passed as arguments
+
+### Run.sh examples
+
 Start with local uploads and SQLite:
 
 ```bash
 ./run.sh fs sqlite
 ```
 
-stop:
+Stop:
 
 ```bash
 ./run.sh stop fs sqlite
 ```
 
-reload:
+Reload:
 
 ```bash
 ./run.sh reload fs sqlite
@@ -59,7 +91,7 @@ reload:
 
 This is the recommended way of installing lufin for contributors or people who actively develop lufin.
 
-> [!Important]
+> [!CAUTION]
 > Do not expose your database to the internet unless you're 100% sure it's secured with strong authorization mechanisms.
 
 ### Requirements
