@@ -13,17 +13,15 @@
     - [Web server example configuration](#web-server-example-configuration)
   - [Troubleshooting](#troubleshooting)
 
-Please familiarize yourself with all installation options and choose a single one to start.
-
-Requirements for any option:
+Requirements:
 - A domain name(s) and completed DNS setup
-- A server
+- A server machine capable of running 24/7
 - An IP address that is publicly available in the internet
   - or a tunnel that allows your server to be reachable in the internet
 
 ## Option A. Docker (recommended)
 
-This is the easiest and fastest way to spin up lufin. We offer any combination of dbs and storages: PostgreSQL, MongoDB or SQLite + S3 or local uploads dir. For frontend we offer Caddy with fully automatic HTTPS out of the box but you're free to opt out and serve static frontend yourself. [Learn more](../docker/caddy/README.md) about lufin frontend serving in Docker.
+This is the easiest and fastest way to spin up lufin. We offer any combination of dbs and storages: PostgreSQL, MongoDB or SQLite + S3 or local uploads dir. For frontend we offer Caddy with fully automatic HTTPS out of the box but you can opt out and serve static frontend yourself. [Learn more](../docker/caddy/README.md) about lufin frontend serving in Docker.
 
 ### Requirements
 

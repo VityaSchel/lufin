@@ -14,7 +14,7 @@ if [ -z "$storage" ] || [ -z "$db" ]; then
   exit 1
 fi
 
-configs=""
+configs="-f ./docker-compose.yml"
 
 backend_config="-f ./backend/docker-compose.backend.yml"
 if [ "$test" = "test" ]; then

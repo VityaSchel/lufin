@@ -8,17 +8,17 @@ services:
       - '443:443/udp'
     environment:
       - DOMAIN=${DOMAIN}
+      - BACKEND_PORT=${BACKEND_PORT:-3000}
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
       - lufin_frontend:/srv
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
       - backend
-  frontend:
-    volumes:
-      - lufin_frontend:/usr/src/app/dist
 
 volumes:
   caddy_data:
   caddy_config:
+  lufin_frontend:
+    external: true

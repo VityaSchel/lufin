@@ -11,9 +11,9 @@ services:
     stop_grace_period: 0s
   backend:
     environment:
-      - SQLITE_DB_PATH=${SQLITE_DB_DIR}/lufin.db
+      - SQLITE_DB_PATH=${SQLITE_DB_DIR:-/usr/src/app/sqlite}/lufin.db
     volumes:
-      - lufin_sqlite:${SQLITE_DB_DIR}
+      - lufin_sqlite:${SQLITE_DB_DIR:-/usr/src/app/sqlite}
     depends_on:
       - db
 

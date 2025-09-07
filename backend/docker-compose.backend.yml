@@ -1,7 +1,7 @@
 services:
   backend:
     image: lufin/backend:latest
-    build: ../backend
+    build: ./backend
     restart: unless-stopped
     environment:
       - PORT=${BACKEND_PORT:-3000}

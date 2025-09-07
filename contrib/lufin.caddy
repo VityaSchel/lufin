@@ -2,7 +2,7 @@
 lufin.mydomain.com {
 	# Assuming you host backend and frontend on the same domain
 	# and `VITE_API_URL` is https://lufin.mydomain.com/api
-	handle /api/* {
+	handle_path /api/* {
 		# and you run backend with PORT=3000
 		reverse_proxy :3000
 	}

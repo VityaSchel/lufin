@@ -27,3 +27,4 @@ RUN bun run build
 
 FROM base AS release
 COPY --from=prerelease /usr/src/app/dist dist
+ENTRYPOINT ["true"]

@@ -21,7 +21,7 @@
 
 ## Docker
 
-Build Docker image: [./docker-build.sh](./docker-build.sh).
+Build Docker image: [./docker-build.sh](./docker-build.sh). Requires [lufin/lib](../lib/README.md) Docker image available locally. 
 
 Run Docker image: `docker run --env-file .env -it lufin/test`
 

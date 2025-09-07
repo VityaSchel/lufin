@@ -1,8 +1,0 @@
-services:
-  frontend:
-    image: lufin/frontend:latest
-    build:
-      context: .
-      args:
-        - API_URL=${API_URL}
-        - PUBLIC_ADMIN_EMAIL=${PUBLIC_ADMIN_EMAIL}

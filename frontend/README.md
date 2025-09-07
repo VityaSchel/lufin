@@ -25,9 +25,14 @@ Environment variables are inlined by Vite during build time. Runtime injection i
 
 ## Docker
 
-Build Docker image: [./docker-build.sh](./docker-build.sh). Requires [lufin/lib](../lib) Docker image available locally. The image only compiles a static frontend build without HTTP server. This should usually be coupled with [Caddy service](../docker/caddy/README.md).
+Build static Docker image: [./docker-build.sh](./docker-build.sh). Requires [lufin/lib](../lib/README.md) Docker image available locally. The image only compiles a static frontend exported to `lufin_frontend` volume build without HTTP server. This should usually be coupled with [Caddy service](../docker/caddy/README.md).
 
 Examples:
 
-- `API_URL="http://localhost:4000" ./docker-build.sh`
-- `API_URL="http://localhost:4000" PUBLIC_ADMIN_EMAIL="lufin@hloth.dev" ./docker-build.sh`
+```bash
+API_URL="http://localhost:4000" ./docker-build.sh
+```
+
+```bash
+API_URL="http://localhost:4000" PUBLIC_ADMIN_EMAIL="lufin@hloth.dev" ./docker-build.sh
+```
