@@ -1,0 +1,8 @@
+services:
+  s3:
+    networks:
+      - lufin_test
+  test:
+    depends_on:
+      s3:
+        condition: service_healthy

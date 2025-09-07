@@ -7,6 +7,7 @@ db=""
 test="0"
 webserver=""
 https="0"
+minio="0"
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -30,14 +31,19 @@ while [[ $# -gt 0 ]]; do
       https="1"
       shift
       ;;
+    --minio)
+      minio="1"
+      shift
+      ;;
     -h|--help)
-      echo "Usage: $0 --storage <storage> --db <db> [--test] [--caddy] [--https]"
+      echo "Usage: $0 --storage <storage> --db <db> [--test] [--caddy] [--https] [--minio]"
       echo "Options:"
       echo "  --storage   Storage type: 's3' or 'fs'"
       echo "  --db        Database type: 'mongo', 'postgres' or 'sqlite'"
       echo "  --test      Run in testing mode (for lufin developers)"
       echo "  --caddy     Add Caddy web server"
       echo "  --https     Add HTTPS config for Caddy"
+      echo "  --minio     Add local S3 MinIO service"
       echo "  -h, --help  Show this help message"
       exit 0
       ;;
@@ -51,7 +57,7 @@ done
 
 if [ -z "$storage" ] || [ -z "$db" ]; then
   echo "Error: Missing required arguments" >&2
-  echo "Usage: $0 --storage <storage> --db <db> [--test]" >&2
+  echo "Usage: $0 --storage <storage> --db <db>" >&2
   echo "Use --help for more information" >&2
   exit 1
 fi
@@ -83,6 +89,9 @@ add_service_configs() {
 
 if [ "$storage" = "s3" ]; then
   add_service_configs "s3"
+  if [ "$minio" = "1" ]; then
+    add_service_configs "s3-minio"
+  fi
 elif [ "$storage" = "fs" ]; then
   add_service_configs "fs"
 else

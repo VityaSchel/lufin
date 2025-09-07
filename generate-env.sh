@@ -23,11 +23,12 @@ fi
 # POSTGRES_PASSWORD
 # POSTGRES_DB
 
-# S3:
+# == Depends ==
+# S3 (automatic if minio or manual otherwise):
 # S3_BUCKET_NAME
 # S3_ACCESS_KEY
 # S3_SECRET_ACCESS_KEY
-# S3_ENDPOINT (http://s3:9000)
+# S3_ENDPOINT (http://s3:9000 for minio)
 
 
 # == Unsupported ==
@@ -124,10 +125,54 @@ if [ "$storage_type" == "fs" ]; then
   STORAGE_TYPE="fs"
 elif [ "$storage_type" == "s3" ]; then
   STORAGE_TYPE="s3"
-  S3_BUCKET_NAME="lufinfiles"
-  S3_ACCESS_KEY="lufin_s3_admin"
-  S3_SECRET_ACCESS_KEY=$(od -vAn -N32 -tx1 /dev/urandom | tr -d ' \n')
-  S3_ENDPOINT="http://s3:9000"
+  echo "Deploy S3 locally with MinIO? (yes/no)"
+  echo "Answer \"yes\" if you're unsure."
+  echo "Answer \"no\" if you already have S3 storage, such as Cloudflare R2 or AWS."
+  read use_minio
+  if [ "$use_minio" == "yes" ]; then
+    echo ""
+    S3_BUCKET_NAME="lufinfiles"
+    S3_ACCESS_KEY="lufin_s3_admin"
+    S3_SECRET_ACCESS_KEY=$(od -vAn -N32 -tx1 /dev/urandom | tr -d ' \n')
+    S3_ENDPOINT="http://s3:9000"
+    S3_REGION=""
+  elif [ "$use_minio" == "no" ]; then
+    echo "Enter your S3 bucket name: (e.g. \"my-bucket\")"
+    read S3_BUCKET_NAME
+    if [ -z "$S3_BUCKET_NAME" ]; then
+      echo "S3 bucket name cannot be empty"
+      exit 1
+    fi
+    echo ""
+
+    echo "Enter your S3 access key ID:"
+    read S3_ACCESS_KEY
+    if [ -z "$S3_ACCESS_KEY" ]; then
+      echo "S3 access key ID cannot be empty"
+      exit 1
+    fi
+    echo ""
+
+    echo "Enter your S3 secret access key:"
+    read S3_SECRET_ACCESS_KEY
+    if [ -z "$S3_SECRET_ACCESS_KEY" ]; then
+      echo "S3 secret access key cannot be empty"
+      exit 1
+    fi
+    echo ""
+
+    echo "Enter your S3 endpoint URL: (e.g. \"https://s3.amazonaws.com\" or \"https://<your-account>.r2.cloudflarestorage.com\")"
+    read S3_ENDPOINT
+    if [ -z "$S3_ENDPOINT" ]; then
+      echo "S3 endpoint URL cannot be empty"
+      exit 1
+    fi
+    echo ""
+
+    echo "Enter your S3 region (optional): (e.g. \"us-east-1\" or leave empty to skip)"
+    read S3_REGION
+    echo ""
+  fi
 else
   echo "Unknown storage type: $storage_type"
   exit 1

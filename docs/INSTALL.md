@@ -39,16 +39,11 @@ This is the easiest and fastest way to spin up lufin. We offer any combination o
 | PostgreSQL (if choosen as db)             | `postgresql_data`                                                                                                                                                                                                        | `lufin` Docker Compose group                        |
 | MongoDB (if choosen as db)                | `mongodb_data`                                                                                                                                                                                                           | `lufin` Docker Compose group                        |
 | Uploads directory (if choosen as storage) | `uploads`                                                                                                                                                                                                                | `lufin` Docker Compose group                        |
-| S3 data directory (if choosen as storage) | `s3_data`                                                                                                                                                                                                                | `lufin` Docker Compose group                        |
+| Minio S3 data directory (if choosen as storage) | `s3_data`                                                                                                                                                                                                                | `lufin` Docker Compose group                        |
 | Caddy (if used)                           | `caddy_data` ([issued TLS certificates](https://caddyserver.com/docs/conventions#data-directory)) and `caddy_config` ([internal Caddy configurations](https://caddyserver.com/docs/conventions#configuration-directory)) | `lufin` Docker Compose group                        |
 |                                           |                                                                                                                                                                                                                          |                                                     |
 
 ### Install
-
-> [!Note]
-> Only local S3 is currently supported in Docker deployment ([minio](https://hub.docker.com/r/minio/minio))
-> I'm working on adding support for external S3 such as Cloudflare R2!
-> Follow [#15](https://github.com/VityaSchel/lufin/issues/15) for updates.
 
 1. Clone lufin to your machine & cd into project's root
 2. Run `./generate-env.sh` file and answer questions to generate a .env file
@@ -61,6 +56,7 @@ This is the easiest and fastest way to spin up lufin. We offer any combination o
      - MongoDB can be used as your personal preference
    - Storages:
      - Local uploads is fastest and recommended for most cases
+     - Local Minio S3 can be beneficial for very high load due to caching
      - Remote S3 can be used for machines with small disk capacity
 3. Run `./run.sh` command with selected database and storage passed as arguments
 
