@@ -50,12 +50,10 @@ This is the easiest and fastest way to spin up lufin. We offer any combination o
 > I'm working on adding support for external S3 such as Cloudflare R2!
 > Follow [#15](https://github.com/VityaSchel/lufin/issues/15) for updates.
 
-> [!Note]
-> Currently it's not possible to redefine Caddy ports and to instruct Caddy not to enable HTTPS
-> Follow [#16](https://github.com/VityaSchel/lufin/issues/16) for updates
-
 1. Clone lufin to your machine & cd into project's root
 2. Run `./generate-env.sh` file and answer questions to generate a .env file
+   - If you're running lufin as part of a larger platform or with other web services, or using Cloudflare, or want to manage TLS certificates yourself, you will need a reverse proxy running in front of it. Answer "no" when asked whether you want to enable Caddy automatic HTTPS. In all other cases, it's recommended that you answer "yes".
+   - Tip: if you want to keep automatic HTTPS but change the default binding to 80/443 ports, you can answer "yes" and then manually change ports in the generated .env file!
    - Choose database and storage for lufin
    - Databases:
      - PostgreSQL is recommended for most cases
@@ -65,11 +63,12 @@ This is the easiest and fastest way to spin up lufin. We offer any combination o
      - Local uploads is fastest and recommended for most cases
      - Remote S3 can be used for machines with small disk capacity
 3. Run `./run.sh` command with selected database and storage passed as arguments
-   - Caddy is configured to bind to ports 80 and 443 on your host machine by default
+
+[Workaround for local HTTPS](../docker/caddy/README.md#local-https)
 
 ### Run.sh examples
 
-Start with local uploads and SQLite:
+Start
 
 ```bash
 ./run.sh start
@@ -87,7 +86,11 @@ Reload:
 ./run.sh reload
 ```
 
-[Workaround for local HTTPS](../docker/caddy/README.md#local-https)
+Stop everything and **permanently delete** everything, including databases and locally uploaded files:
+
+```bash
+./run.sh permadel
+```
 
 ## Option B. Manual install from sources
 

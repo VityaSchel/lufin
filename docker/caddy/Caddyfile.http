@@ -1,0 +1,16 @@
+{
+	auto_https off
+	admin off
+}
+
+http://{$DOMAIN} {
+	handle_path /api/* {
+		reverse_proxy backend:{$BACKEND_PORT}
+	}
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		encode
+		file_server
+	}
+}

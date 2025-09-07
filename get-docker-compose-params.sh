@@ -6,6 +6,7 @@ storage=""
 db=""
 test="0"
 webserver=""
+https="0"
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -25,13 +26,18 @@ while [[ $# -gt 0 ]]; do
       webserver="caddy"
       shift
       ;;
+    --https)
+      https="1"
+      shift
+      ;;
     -h|--help)
-      echo "Usage: $0 --storage <storage> --db <db> [--caddy] [--test]"
+      echo "Usage: $0 --storage <storage> --db <db> [--test] [--caddy] [--https]"
       echo "Options:"
       echo "  --storage   Storage type: 's3' or 'fs'"
       echo "  --db        Database type: 'mongo', 'postgres' or 'sqlite'"
+      echo "  --test      Run in testing mode (for lufin developers)"
       echo "  --caddy     Add Caddy web server"
-      echo "  --test      Run in test mode"
+      echo "  --https     Add HTTPS config for Caddy"
       echo "  -h, --help  Show this help message"
       exit 0
       ;;
@@ -61,6 +67,9 @@ configs="$configs $backend_config"
 if [ "$webserver" = "caddy" ]; then
   webserver_config="-f ./docker/caddy/docker-compose.caddy.yml"
   configs="$configs $webserver_config"
+  if [ "$https" = "1" ]; then
+    configs="$configs -f ./docker/caddy/docker-compose.override.caddy-https.yml"
+  fi
 fi
 
 add_service_configs() {

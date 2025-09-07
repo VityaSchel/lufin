@@ -1,5 +1,4 @@
 {
-	auto_https {$AUTO_HTTPS:}
 	admin off
 }
 

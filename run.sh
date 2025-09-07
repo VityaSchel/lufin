@@ -28,6 +28,8 @@ get_compose_params() {
   fi
   admin_email=$(grep '^PUBLIC_ADMIN_EMAIL=' .env | cut -d '=' -f2)
 
+  caddy_https_port=$(grep '^CADDY_HTTPS_PORT=' .env | cut -d '=' -f2)
+
   if ! (cd ./lib && ./docker-build.sh); then
     echo "Error building lib" >&2
     exit 1
@@ -38,7 +40,13 @@ get_compose_params() {
     exit 1
   fi
 
-  configs=$(./get-docker-compose-params.sh --storage "$storage" --db "$db" --caddy)
+  if [ -n "$caddy_https_port" ]; then
+    https_flag="--https"
+  else
+    https_flag=""
+  fi
+
+  configs=$(./get-docker-compose-params.sh --storage "$storage" --db "$db" --caddy $https_flag)
 
   COMPOSE_PARAMS="--env-file .env $configs"
 }

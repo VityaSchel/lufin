@@ -1,0 +1,5 @@
+services:
+  caddy:
+    ports:
+      - ${CADDY_HTTPS_PORT:-443}:443
+      - ${CADDY_HTTPS_PORT:-443}:443/udp
