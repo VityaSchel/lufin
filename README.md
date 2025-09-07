@@ -50,7 +50,6 @@ Demo: [lufin.hloth.dev](https://lufin.hloth.dev)
   - [License](#license)
   - [Donate](#donate)
 
-
 ## Screenshotter browser extension
 
 See also: a related project — Firefox-based browser extension for taking full-screen, partial, full-screen cropped screenshots, with a built-in image editor and an option to instantly upload to your choosen lufin instance. Free, no ads, no trackers, no metrics, 100% opensource.

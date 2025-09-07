@@ -13,6 +13,7 @@ The recommended web server that runs lufin static frontend is Caddy.
 Recommended way is to run it with all other services via run.sh script. If you're coming from [INSTALL.md](../../docs/INSTALL.md#option-a-docker-recommended), simply follow the steps there.
 
 To start Caddy serving frontend and backend in Docker:
+
 1. Build [lufin/lib](../../lib/README.md) image
 2. Build [lufin/frontend](../../frontend/README.md#docker) image
 3. Mount frontend container's /usr/src/app/dist to `lufin_frontend`
