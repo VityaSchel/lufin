@@ -17,3 +17,14 @@ services:
       interval: 1s
       timeout: 1s
       retries: 20
+    labels:
+      ofelia.enabled: "true"
+      ofelia.job-exec.cleanup-expired-pages.schedule: "@every 60s"
+      ofelia.job-exec.cleanup-expired-pages.command: "bun /usr/src/app/src/jobs/cleanup-expired-pages.ts"
+  ofelia:
+    image: mcuadros/ofelia:latest
+    depends_on:
+      - backend
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
