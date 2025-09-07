@@ -6,6 +6,8 @@ services:
     environment:
       - PORT=${BACKEND_PORT:-3000}
       - HOST=0.0.0.0
+    volumes:
+      - ./backend/data-retention.config.json:/usr/src/app/data-retention.config.json:ro
     healthcheck:
       test:
         [

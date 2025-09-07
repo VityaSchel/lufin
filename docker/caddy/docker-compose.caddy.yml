@@ -9,8 +9,8 @@ services:
       - BACKEND_PORT=${BACKEND_PORT:-3000}
       - AUTO_HTTPS=${AUTO_HTTPS:-}
     volumes:
-      - ./docker/caddy/${CADDYFILE_CONFIG:-Caddyfile.https}:/etc/caddy/Caddyfile
-      - lufin_frontend:/srv
+      - ./docker/caddy/${CADDYFILE_CONFIG:-Caddyfile.https}:/etc/caddy/Caddyfile:ro
+      - lufin_frontend:/srv:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:

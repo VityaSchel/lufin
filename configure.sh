@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd $SCRIPT_DIR
+
 if [ -f ".env" ]; then
   echo "Error: .env file already exists. Please remove it first if you want to generate a new one."
   exit 1
@@ -217,4 +222,6 @@ if [ -n "$CADDY_HTTPS_PORT" ]; then
   echo "CADDY_HTTPS_PORT=$CADDY_HTTPS_PORT" >> .env 
 fi
 
+echo "☝️ You are encouraged to manually configure upload limits and expiration settings in the backend/data-retention.config.json file. Run \"cp backend/data-retention.config.example.json backend/data-retention.config.json\" to start with a template. Refer to docs/INSTALL.md file for instructions. If you don't copy the data retention config file, it will be automatically copied from the default settings."
+echo ""
 echo "Written .env file successfully. Now run \"./run.sh start\""

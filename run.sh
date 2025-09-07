@@ -15,7 +15,7 @@ cd $SCRIPT_DIR
 
 get_compose_params() {
   if [ ! -f .env ]; then
-    echo "Error: .env file not found. You may need to run ./generate-env.sh first." >&2
+    echo "Error: .env file not found. You may need to run ./configure.sh first." >&2
     exit 1
   fi
 
@@ -23,7 +23,7 @@ get_compose_params() {
   db=$(grep '^DB_TYPE=' .env | cut -d '=' -f2)
   api_url=$(grep '^API_URL=' .env | cut -d '=' -f2)
   if [ -z "$storage" ] || [ -z "$db" ] || [ -z "$api_url" ]; then
-    echo "Error: STORAGE_TYPE, DB_TYPE or API_URL not set in .env file. You may need to run ./generate-env.sh first." >&2
+    echo "Error: STORAGE_TYPE, DB_TYPE or API_URL not set in .env file. You may need to run ./configure.sh first." >&2
     exit 1
   fi
   admin_email=$(grep '^PUBLIC_ADMIN_EMAIL=' .env | cut -d '=' -f2)
@@ -32,6 +32,11 @@ get_compose_params() {
 
   if ! (cd ./lib && ./docker-build.sh); then
     echo "Error building lib" >&2
+    exit 1
+  fi
+
+  if ! (cd ./backend && ./docker-build.sh); then
+    echo "Error building backend" >&2
     exit 1
   fi
   
@@ -46,7 +51,7 @@ get_compose_params() {
     https_flag=""
   fi
 
-  configs=$(./get-docker-compose-params.sh --storage "$storage" --db "$db" --caddy $https_flag)
+  configs=$(./docker/get-docker-compose-params.sh --storage "$storage" --db "$db" --caddy $https_flag)
 
   COMPOSE_PARAMS="--env-file .env $configs"
 }

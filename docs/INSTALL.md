@@ -13,6 +13,7 @@
     - [Requirements](#requirements-1)
     - [Install](#install-1)
     - [Web server example configuration](#web-server-example-configuration)
+  - [data-retention.config.json](#data-retentionconfigjson)
   - [Troubleshooting](#troubleshooting)
 
 Requirements:
@@ -46,7 +47,7 @@ This is the easiest and fastest way to spin up lufin. We offer any combination o
 ### Install
 
 1. Clone lufin to your machine & cd into project's root
-2. Run `./generate-env.sh` file and answer questions to generate a .env file
+2. Run `./configure.sh` file and answer questions
    - If you're running lufin as part of a larger platform or with other web services, or using Cloudflare, or want to manage TLS certificates yourself, you will need a reverse proxy running in front of it. Answer "no" when asked whether you want to enable Caddy automatic HTTPS. In all other cases, it's recommended that you answer "yes".
    - Tip: if you want to keep automatic HTTPS but change the default binding to 80/443 ports, you can answer "yes" and then manually change ports in the generated .env file!
    - Choose database and storage for lufin
@@ -136,6 +137,20 @@ Ensure your website is secured with a TLS certificate. Caddy handles it fully au
 
 - See [contrib/lufin.caddy](../contrib/lufin.caddy) for Caddy configuration
 - See [contrib/nginx.conf](../contrib/nginx.conf) for Nginx configuration
+
+## data-retention.config.json
+
+This backend config defines file pages expiration settings for your lufin instance.
+
+- `seconds` is the max. time for a file up to `limit` megabytes (1000 \* 1000 bytes) to be stored on your server
+- In the [example](../backend/data-retention.config.example.json):
+  - files up to 10 MB can be stored at most for 365 days
+  - files up to 50 MB can be stored at most for 150 days
+  - files up to 100 megabytes can be stored at most 50 days
+  - files over 100 megabytes cannot be stored
+- This limitation is enforced for sum size of all files within one page, these limits don't prevent an abuser from creating several pages and uploading several big files
+- It's not recommended to set limit more than 100 MB because chunking is not supported
+- If you're using Cloudflare free tier, keep in mind that it limits uploads to 100 MB/request
 
 ## Troubleshooting
 
