@@ -25,7 +25,7 @@ get_compose_params() {
   fi
 
   ./build-lib.sh
-  ./get-docker-compose-params.sh "$storage" "$db"
+  ./get-docker-compose-params.sh --storage "$storage" --db "$db"
 }
 
 case "$cmd" in
