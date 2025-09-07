@@ -5,6 +5,8 @@ set -euo pipefail
 cmd=$1
 shift || true
 
+./build-lib.sh
+
 case "$cmd" in
   up)
     docker compose $(./get-docker-compose-params.sh "$@") up -d

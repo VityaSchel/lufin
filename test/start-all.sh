@@ -2,12 +2,13 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-cd "$SCRIPT_DIR/.."
-
 storages=(s3 fs)
 dbs=(postgres mongo sqlite)
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR/.."
+
+./build-lib.sh
 
 for storage in "${storages[@]}"; do
   for db in "${dbs[@]}"; do
