@@ -5,6 +5,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd $SCRIPT_DIR
 
+base="$SCRIPT_DIR/"
+
 storage=""
 db=""
 test="0"
@@ -65,28 +67,28 @@ if [ -z "$storage" ] || [ -z "$db" ]; then
   exit 1
 fi
 
-configs="-f ../docker-compose.yml"
+configs="-f $base../docker-compose.yml"
 
-backend_config="-f ../backend/docker-compose.backend.yml"
+backend_config="-f $base../backend/docker-compose.backend.yml"
 if [ "$test" = "1" ]; then
-  backend_config="$backend_config --env-file ../test/test.env"
+  backend_config="$backend_config --env-file $base../test/test.env"
 fi
 configs="$configs $backend_config"
 
 if [ "$webserver" = "caddy" ]; then
-  webserver_config="-f ../docker/caddy/docker-compose.caddy.yml"
+  webserver_config="-f $base./caddy/docker-compose.caddy.yml"
   configs="$configs $webserver_config"
   if [ "$https" = "1" ]; then
-    configs="$configs -f ../docker/caddy/docker-compose.override.caddy-https.yml"
+    configs="$configs -f $base./caddy/docker-compose.override.caddy-https.yml"
   fi
 fi
 
 add_service_configs() {
   local service=$1
-  configs="$configs -f ../docker/docker-compose.${service}.yml"
+  configs="$configs -f $base./docker-compose.${service}.yml"
   if [ "$test" = "1" ]; then
-    configs="$configs -f ../test/docker-compose.override.${service}-test.yml"
-    configs="$configs --env-file ../test/test.${service}.env"
+    configs="$configs -f $base../test/docker-compose.override.${service}-test.yml"
+    configs="$configs --env-file $base../test/test.${service}.env"
   fi
 }
 
@@ -114,7 +116,7 @@ else
 fi
 
 if [ "$test" = "1" ]; then
-  test_config="-f ../test/docker-compose.test.yml"
+  test_config="-f $base../test/docker-compose.test.yml"
   configs="$configs $test_config"
 fi
 
