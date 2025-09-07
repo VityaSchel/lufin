@@ -21,3 +21,5 @@ services:
       db:
         condition: service_healthy
   
+volumes:
+  postgresql_data:
