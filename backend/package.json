@@ -10,7 +10,7 @@
     "start": "NODE_ENV=production bun --bun src/index.ts",
     "dev:db:generate": "bun --bun drizzle-kit generate",
     "dev:db:forcepush": "bun --bun drizzle-kit push --force",
-    "db:migrate": "ls node_modules && bun --bun drizzle-kit migrate"
+    "db:migrate": "bun --bun drizzle-kit migrate"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.3.3",

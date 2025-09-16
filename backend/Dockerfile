@@ -1,5 +1,5 @@
 # FROM lufin/lib:latest AS base
-FROM oven/bun:1 AS base
+FROM oven/bun:1.2.21 AS base
 WORKDIR /usr/src/app
 
 FROM base AS install
