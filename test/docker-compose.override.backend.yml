@@ -6,4 +6,4 @@ services:
       - -c
       - echo '[{"limit":10,"seconds":31536000},{"limit":50,"seconds":12960000},{"limit":100,"seconds":4320000}]' > /usr/src/app/data-retention.config.json && QUIET=1 bun db:migrate && exec bun start
     labels: !reset
-  ofelia: !remove
+  ofelia: !reset
