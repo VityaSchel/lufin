@@ -160,4 +160,4 @@ This backend config defines file pages expiration settings for your lufin instan
   - "413 Request Entity Too Large" — your reverse proxy sets a request size limit
   - Websockets connection problems — your proxy might block websocket connections by default: check cloudflare (if you're using it), check your reverse proxy settings
   - Websockets timeout — your server is uploading files to the S3 cloud so slow that you need to increase your reverse proxy connection idle timeout
-- Otherwise [open an issue](https://github.com/VityaSchel/lufin/issues/new)
+- Otherwise [open an issue](https://git.hloth.dev/hloth/lufin/issues/new)

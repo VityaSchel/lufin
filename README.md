@@ -1,6 +1,6 @@
 # Lufin — a modern self-hosted file-sharing service
 
-[![CodeQL status](https://github.com/VityaSchel/lufin/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/VityaSchel/lufin/actions/workflows/github-code-scanning/codeql) [![Testing](https://github.com/VityaSchel/lufin/actions/workflows/testing.yml/badge.svg)](https://github.com/VityaSchel/lufin/actions/workflows/testing.yml)
+[![Testing](https://git.hloth.dev/hloth/lufin/badges/workflows/testing/badge.svg)](https://git.hloth.dev/hloth/lufin/actions?workflow=testing.yml)
 
 Lufin (Let’s Upload that File—Next) is a modern alternative to [lufi](https://framagit.org/fiat-tux/hat-softwares/lufi).
 
@@ -54,9 +54,9 @@ Demo: [lufin.hloth.dev](https://lufin.hloth.dev)
 
 See also: a related project — Firefox-based browser extension for taking full-screen, partial, full-screen cropped screenshots, with a built-in image editor and an option to instantly upload to your choosen lufin instance. Free, no ads, no trackers, no metrics, 100% opensource.
 
-<img width="1505" alt="Screenshotter editor" src="https://github.com/user-attachments/assets/89d9ac3a-cf86-480e-bb21-b8edb08bd069" />
+<img width="1505" alt="Screenshotter editor" src="docs/lufin-screenshotter.png" />
 
-[Visit screenshotter repository](https://github.com/VityaSchel/lufin-screenshotter)
+[Visit screenshotter repository](https://git.hloth.dev/hloth/lufin-screenshotter)
 
 ## Installation
 

@@ -1,17 +1,13 @@
 name: Testing
 permissions:
   contents: read
+
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  integration-tests:
-    name: integration-tests
+  tests:
+    name: tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,5 +16,5 @@ jobs:
           fetch-depth: 0
       - name: Make start script executable
         run: chmod +x docker/get-docker-compose-params.sh test/start-all.sh lib/docker-build.sh
-      - name: Run integration tests
+      - name: Run tests
         run: ./test/start-all.sh

@@ -2,7 +2,7 @@ import { Link } from '$shared/ui/components/link'
 import { Link as ReactRouterLink } from 'react-router'
 import { LanguageSwitch } from '$features/language-switch'
 import Logo from '$assets/logo.svg'
-import BiLogoGithub from '$assets/icons/github-logo.svg?react'
+import TablerLogoGit from '$assets/icons/git-logo.svg?react'
 import { m } from '$m'
 
 export function AppBar() {
@@ -38,12 +38,12 @@ export function AppBar() {
           </div>
           <div className="flex items-center gap-4">
             <a
-              href="https://github.com/VityaSchel/lufin"
+              href="https://git.hloth.dev/hloth/lufin"
               rel="noopener noreferrer"
               target="_blank"
               className="rounded-full"
             >
-              <BiLogoGithub fontSize={32} />
+              <TablerLogoGit fontSize={32} />
             </a>
             <LanguageSwitch />
           </div>
