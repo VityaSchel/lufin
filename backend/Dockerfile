@@ -27,5 +27,5 @@ COPY --from=prerelease /usr/src/app/drizzle.config.ts .
 COPY --from=prerelease /usr/src/app/tsconfig.json .
 COPY --from=prerelease /usr/src/app/package.json .
 
-USER bun
-ENTRYPOINT [ "sh", "-c", "QUIET=1 bun db:migrate && exec bun start" ]
+# USER bun
+ENTRYPOINT [ "sh", "-c", "bun db:migrate && exec bun start" ]

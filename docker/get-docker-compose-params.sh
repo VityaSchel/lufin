@@ -71,6 +71,7 @@ configs="-f $base../docker-compose.yml"
 
 backend_config="-f $base../backend/docker-compose.backend.yml"
 if [ "$test" = "1" ]; then
+  backend_config="$backend_config -f $base../test/docker-compose.override.backend.yml"
   backend_config="$backend_config --env-file $base../test/test.env"
 fi
 configs="$configs $backend_config"

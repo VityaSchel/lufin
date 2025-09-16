@@ -14,6 +14,7 @@ cd "$SCRIPT_DIR/.."
 for storage in "${storages[@]}"; do
   for db in "${dbs[@]}"; do
     configs=$(./docker/get-docker-compose-params.sh --storage "$storage" --db "$db" --test --minio)
+    # docker compose $configs config
     docker compose $configs up --build --abort-on-container-exit --exit-code-from test
     exit_code=$?
     docker compose $configs down --volumes
