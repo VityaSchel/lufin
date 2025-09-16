@@ -1,6 +1,6 @@
 # Lufin — a modern self-hosted file-sharing service
 
-[![Testing](https://git.hloth.dev/hloth/lufin/badges/workflows/testing/badge.svg)](https://git.hloth.dev/hloth/lufin/actions?workflow=testing.yml)
+[![Testing](https://git.hloth.dev/hloth/lufin/badges/workflows/testing.yml/badge.svg)](https://git.hloth.dev/hloth/lufin/actions?workflow=testing.yml)
 
 Lufin (Let’s Upload that File—Next) is a modern alternative to [lufi](https://framagit.org/fiat-tux/hat-softwares/lufi).
 
