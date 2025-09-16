@@ -8,7 +8,8 @@ try {
 		path.join(__dirname, "../data-retention.config.json"),
 		"utf-8",
 	);
-} catch {
+} catch(e) {
+	console.error(e)
 	throw new Error(
 		"data-retention.config.json file not found or could not be read",
 	);
@@ -17,7 +18,8 @@ try {
 let configDeserialized: unknown;
 try {
 	configDeserialized = JSON.parse(configSerialized);
-} catch {
+} catch (e) {
+	console.error(e)
 	throw new Error("data-retention.config.json file is not valid JSON");
 }
 
