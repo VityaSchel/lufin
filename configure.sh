@@ -81,6 +81,7 @@ if [ "$AUTO_HTTPS" == "off" ]; then
     exit 1
   fi
   CADDY_HTTP_PORT="$backend_port"
+  CADDY_HTTPS_PORT=""
 else
   CADDY_HTTP_PORT="80"
   CADDY_HTTPS_PORT="443"
